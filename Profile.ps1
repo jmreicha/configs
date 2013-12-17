@@ -22,13 +22,13 @@ function prompt {
         return " "
 }
 
-# for editing your PowerShell profile
+# Edit your PowerShell profile
 Function Edit-Profile
 {
     vim $profile
 }
 
-# for editing your Vim settings
+# Edit your Vim settings
 Function Edit-Vimrc
 {
     vim $home\_vimrc
