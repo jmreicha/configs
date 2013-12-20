@@ -13,7 +13,7 @@ Customizes the following:
 
 To use, copy the Profile.ps1 file to the following location (Win 7):
 
-*C:\Users\Username\My Documents\WindowsPowerShell*
+<code>C:\Users\Username\My Documents\WindowsPowerShell</code>
 
 .tmux.conf
 ---
@@ -22,7 +22,7 @@ The primary purpose of this config is to bind the keys in a similar fashion to t
 
 Reference Table:
 
-* logout close current screen
+* <code>logout</code> close current split or window
 * <code>^a d</code> detach from session
 * <code>^a -</code> create horizontal split
 * <code>^a |</code> create vertical split
