@@ -4,7 +4,7 @@ configs
 A repository of my custom configs
 
 Profile.ps1
------------
+---
 
 Customizes the following:
 
@@ -14,3 +14,22 @@ Customizes the following:
 To use, copy the Profile.ps1 file to the following location (Win 7):
 
 *C:\Users\Username\My Documents\WindowsPowerShell*
+
+.tmux.conf
+---
+
+The primary purpose of this config is to bind the keys in a similar fashion to the way they are bound in screen.
+
+Reference Table:
+
+* logout close current screen
+* <code>^a d</code> detach from session
+* <code>^a -</code> create horizontal split
+* <code>^a |</code> create vertical split
+* <code>^a up</code> move up between splits
+* <code>^a down</code> move down between splits
+* <code>^a ,</code> rename current window
+* <code>^a n</code> move forward one window
+* <code<^a p</code> move backward one window
+* <code>^a c</code> create new window
+* <code>^a [0-9]</code> jump to numbered window
