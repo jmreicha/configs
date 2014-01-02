@@ -20,6 +20,8 @@ To use, copy the Profile.ps1 file to the following location (Win 7):
 
 The primary purpose of this config is to bind the keys in a similar fashion to the way they are bound in screen.
 
+This file should be placed into the <code>~/.tmux.conf</code> file if it is not already present.  A tmux reload may be required.
+
 Reference Table:
 
 * <code>logout</code> close current split or window
