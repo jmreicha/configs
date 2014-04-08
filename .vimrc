@@ -7,6 +7,7 @@ set textwidth=80
 set number
 set showcmd
 set cursorline
+set paste
 
 "" Syntax highlighting
 syntax on
