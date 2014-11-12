@@ -95,3 +95,6 @@ endfunction
 
 " Highlight trailing whitespace
 au BufEnter,BufWinEnter,StdinReadPost *.py call MatchWhitespace()
+
+" Markdown higlighting
+au BufNewFile,BufReadPost *.md set filetype=markdown
