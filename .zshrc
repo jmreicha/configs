@@ -1,31 +1,44 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+# Set vim to default editor
+export EDITOR=/usr/bin/vim
+
+# go path
+export PATH=$PATH:/usr/local/go/bin
+
+# CoreOS administration - only works on VPN
+export ETCDCTL_PEERS=http://172.16.1.10:4001
+export FLEETCTL_ENDPOINT=http://172.16.1.10:4001
+
+# Kubernetes
+export KUBERNETES_MASTER=http://172.16.1.100:8080
+
+# AWS cli tab completion
+source /usr/local/bin/aws_zsh_completer.sh
+
 # Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
 ZSH_THEME="clean"
 
-# Uncomment the following line to use case-sensitive completion.
+# use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
+# disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
-# Uncomment the following line to change how often to auto-update (in days).
+# change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
 
-# Uncomment the following line to disable colors in ls.
+# disable colors in ls.
 # DISABLE_LS_COLORS="true"
 
-# Uncomment the following line to disable auto-setting terminal title.
+# disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
-# Uncomment the following line to enable command auto-correction.
+# enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
+# display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -81,3 +94,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
