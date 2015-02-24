@@ -7,6 +7,14 @@ export EDITOR=/usr/bin/vim
 # go path
 export PATH=$PATH:/usr/local/go/bin
 
+# boot2docker
+export DOCKER_CERT_PATH=/Users/josh/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.59.103:2376
+
+# OSXContainer
+#export DOCKER_HOST=tcp://192.168.200.2:2375
+
 # CoreOS administration - only works on VPN
 export ETCDCTL_PEERS=http://172.16.1.10:4001
 export FLEETCTL_ENDPOINT=http://172.16.1.10:4001
