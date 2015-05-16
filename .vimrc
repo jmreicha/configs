@@ -16,6 +16,8 @@ Bundle 'fatih/vim-go'
 "" Color schemes
 Bundle 'flazz/vim-colorschemes'
 
+filetype plugin indent on
+
 "" Vim colorscheme
 colorscheme jellybeans
 
