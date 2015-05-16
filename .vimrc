@@ -1,8 +1,25 @@
 "" Automatically reload .vimrc whenever it's edited
 au! BufWritePost $MYVIMRC source $MYVIMRC
 
-"" Basics
+"" Vundle config
 set nocompatible
+filetype off
+
+"" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#rc()
+
+"" let Vundle manage Vundle
+Bundle 'gmarik/Vundle.vim'
+"" GO syntax highlighting
+Bundle 'fatih/vim-go'
+"" Color schemes
+Bundle 'flazz/vim-colorschemes'
+
+"" Vim colorscheme
+colorscheme jellybeans
+
+"" Basics
 set textwidth=80
 set number
 set showcmd
@@ -52,21 +69,6 @@ func! WordProcessorMode()
         setlocal noexpandtab
         endfu
 com! WP call WordProcessorMode()
-
-"" Highlight long lines
-highlight LongLine ctermbg=darkblue guibg=darkblue
-
-"" Highlight lines over 80 characters
-function! LongLines()
-    if exists('+colorcolumn')
-        setlocal colorcolumn=80
-    else
-        " au BufWinEnter * let w:m2=matchadd('LongLine', '\%>80v.\+', -1)
-        au BufEnter,BufWinEnter,StdinReadPost *.py,*.sh match LongLine /\%>80v.\+/
-    endif
-endfunction
-
-au BufEnter,BufWinEnter * call LongLines()
 
 " Use below to highlight group for bad whitespace matching in Python
 highlight BadWhitespace ctermbg=red guibg=red
