@@ -15,6 +15,8 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'fatih/vim-go'
 "" Color schemes
 Bundle 'flazz/vim-colorschemes'
+"" Terraform
+Bundle 'markcornick/vim-terraform'
 
 filetype plugin indent on
 
