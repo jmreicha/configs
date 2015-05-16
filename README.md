@@ -3,6 +3,19 @@ configs
 
 A repository of my custom configs
 
+.vimrc
+---
+
+Uses the Vundle package manager to download and install a few useful helpers:
+
+ * Go syntax highlighting and workflow
+ * Terraform syntax highlighting
+ * Huge number of custom color schems
+ 
+To install the these plugins on a freshly set up machine you can run `:Bundleinstall` from within a Vim buffer to go get additional packages.
+
+Outside of the plugins, this .rc does a number of things.  You can look at the `.vimrc` file for more specifics and examples.
+
 Profile.ps1
 ---
 
