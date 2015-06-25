@@ -1,90 +1,69 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set vim to default editor
-export EDITOR=/usr/bin/vim
+# Set name of the theme to load
+# Look in ~/.oh-my-zsh/themes/
+ZSH_THEME="clean"
 
-# go path
-export PATH=$PATH:/usr/local/go/bin
+# Docker aliases
+alias dc="docker-compose"
+alias dm="docker-machine"
+alias dp="docker ps"
+alias di="docker images"
 
-# boot2docker
-export DOCKER_CERT_PATH=/Users/josh/.boot2docker/certs/boot2docker-vm
+# GO paths
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# Dinghy
+export DOCKER_HOST=tcp://127.0.0.1:2376
+export DOCKER_CERT_PATH=/Users/josh/.dinghy/certs
 export DOCKER_TLS_VERIFY=1
-export DOCKER_HOST=tcp://192.168.59.103:2376
+
+# boot2docker/docker-machine
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/josh/.docker/machine/machines/dev"
+export DOCKER_MACHINE_NAME="dev"
 
 # OSXContainer
 #export DOCKER_HOST=tcp://192.168.200.2:2375
 
-# CoreOS administration - only works on VPN
-export ETCDCTL_PEERS=http://172.16.1.10:4001
-export FLEETCTL_ENDPOINT=http://172.16.1.10:4001
+# Kubernetes prod master
+#export KUBERNETES_MASTER=http://172.16.1.100:8080
 
-# Kubernetes
-export KUBERNETES_MASTER=http://172.16.1.100:8080
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
 
-# AWS cli tab completion
-source /usr/local/bin/aws_zsh_completer.sh
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
 
-# Set name of the theme to load.
-ZSH_THEME="clean"
-
-# use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git knife vagrant)
+plugins=(git knife vagrant go)
 
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
+# Paths
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -92,16 +71,4 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+source $ZSH/oh-my-zsh.sh
