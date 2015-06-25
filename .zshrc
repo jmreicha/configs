@@ -41,22 +41,14 @@ ENABLE_CORRECTION="true"
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git knife vagrant go)
+# Export SSH key so it doesn't need to be passed in every time.
+#export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Paths
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -65,10 +57,18 @@ else
   export EDITOR='vim'
 fi
 
+# Plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git knife vagrant go)
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 source $ZSH/oh-my-zsh.sh
