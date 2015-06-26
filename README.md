@@ -1,7 +1,11 @@
 configs
 =======
 
-A repository of my custom configs
+A repository of my custom configs.
+
+The best way to use this repo is to clone it to some location on your desktop and then create a symlink to where the config file would live locally.
+
+For example, `ln -s jmreicha/configs/.zshrc ~/.zshrc` will link the config to the correct system path.  Then you can just edit `~/.zshrc` if you want to make adjustments and can more easily keep configs in sync with commits, etc.
 
 .vimrc
 ---
