@@ -1,22 +1,29 @@
-"" Automatically reload .vimrc whenever it's edited
-au! BufWritePost $MYVIMRC source $MYVIMRC
-
 "" Vundle config
 set nocompatible
 filetype off
 
 "" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/Bundle/Vundle.vim
 call vundle#rc()
 
 "" let Vundle manage Vundle
 Bundle 'gmarik/Vundle.vim'
-"" GO syntax highlighting
+"" GO tools
 Bundle 'fatih/vim-go'
 "" Color schemes
 Bundle 'flazz/vim-colorschemes'
 "" Terraform
 Bundle 'markcornick/vim-terraform'
+"" Git
+Bundle 'tpope/vim-fugitive'
+"" JSON highlighting
+Bundle 'elzr/vim-json'
+"" Nerdtree
+Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
+Bundle 'jistr/vim-nerdtree-tabs'
+"" Ctl-P
+Bundle 'kien/ctrlp.vim'
 
 filetype plugin indent on
 
@@ -50,19 +57,37 @@ set scrolloff=3
 set visualbell
 set whichwrap=b,s,h,l,<,>,[,]
 
+" Auto source vimrc on save
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
+
+" Open NerdTree on start
+autocmd vimenter * NERDTree
+" Toggle  NerdTreeTabs on start
+let g:nerdtree_tabs_open_on_console_startup=1
+" Jump to the main window
+autocmd VimEnter * wincmd p
+" Close NerdTree if no files specified
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" NerdTree behavior
+map <C-n> :NERDTreeToggle<CR>
+let NERDTreeHighlightCursorline=1
+
 " Filetype based auto indenting
 filetype indent on
 
-"" Newline shortcut
+" Newline shortcut
 nnoremap <S-J> o<Esc>
 
-"" Turn off search highlight
+" Turn off search highlight
 nnoremap <CR> :noh<CR><CR>
 
-"" Change comment color
+" Change comment color
 hi comment ctermfg=green
 
-"" Word processing
+" Word processing
 func! WordProcessorMode()
         setlocal formatoptions=t1
         setlocal textwidth=140
