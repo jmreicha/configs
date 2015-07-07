@@ -81,6 +81,22 @@ filetype indent on
 " Newline shortcut
 nnoremap <S-J> o<Esc>
 
+" Tab navigation shortcuts
+nnoremap <C-j> gT
+nnoremap <C-k> gt
+nnoremap <C-Left> gT
+nnoremap <C-Right> gt
+nnoremap 1<cr> 1gt
+nnoremap 2<cr> 2gt
+nnoremap 3<cr> 3gt
+nnoremap 4<cr> 4gt
+nnoremap 5<cr> 5gt
+nnoremap 6<cr> 6gt
+nnoremap 7<cr> 7gt
+nnoremap 8<cr> 8gt
+nnoremap 9<cr> 9gt
+nnoremap 0<cr> :tablast<cr>
+
 " Turn off search highlight
 nnoremap <CR> :noh<CR><CR>
 
