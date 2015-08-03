@@ -16,9 +16,15 @@ Uses the Vundle package manager to download and install a few useful helpers:
  * Terraform syntax highlighting
  * Huge number of custom color schems
  
-To install the these plugins on a freshly set up machine you can run `:Bundleinstall` from within a Vim buffer to go get additional packages.
+To install the these plugins on a freshly set up machine first you need to clone the Vundle project in to the approriate location, for example:
 
-Outside of the plugins, this .rc does a number of things.  You can look at the `.vimrc` file for more specifics and examples.
+```git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim``
+
+You will also need to add a few lines in your `vimrc` file to get it to work.  I already have them added so won't illustrate that step here.
+
+Then you can run `:PluginInstall` from within a Vim buffer to go get additional packages.
+
+You can look at my `.vimrc` file for more specifics and examples of everything that I have set up.
 
 Profile.ps1
 ---
