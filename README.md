@@ -18,7 +18,7 @@ Uses the Vundle package manager to download and install a few useful helpers:
  
 To install the these plugins on a freshly set up machine first you need to clone the Vundle project in to the approriate location, for example:
 
-```git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim``
+```git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim```
 
 You will also need to add a few lines in your `vimrc` file to get it to work.  I already have them added so won't illustrate that step here.
 
