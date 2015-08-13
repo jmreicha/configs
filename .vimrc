@@ -14,24 +14,35 @@ Bundle 'fatih/vim-go'
 Bundle 'flazz/vim-colorschemes'
 "" Terraform
 Bundle 'markcornick/vim-terraform'
-"" Git
+"" Git integration
 Bundle 'tpope/vim-fugitive'
+"" Show Git file changes
+Bundle 'airblade/vim-gitgutter'
 "" JSON highlighting
 Bundle 'elzr/vim-json'
-"" Nerdtree
+"" Nerdtree stuff
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'jistr/vim-nerdtree-tabs'
-"" Ctl-P
+"" Fuzzy file searching
 Bundle 'kien/ctrlp.vim'
+"" Keep track of parenths
+Bundle 'luochen1990/rainbow'
+"" Better status line
+Bundle 'bling/vim-airline'
+"" Whitespace highlighting
+Bundle 'ntpeters/vim-better-whitespace'
 
 filetype plugin indent on
 
 "" Vim colorscheme
-colorscheme jellybeans
+colorscheme xoria256
+
+"" Highlight lines over 80 characters
+set textwidth=80
+set colorcolumn=+1
 
 "" Basics
-set textwidth=80
 set number
 set showcmd
 set cursorline
@@ -63,12 +74,18 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
+" Turn on rainbow parentheses
+let g:rainbow_active = 1
+
+" Turn on airline
+set laststatus=2
+
 " Open NerdTree on start
-autocmd vimenter * NERDTree
+" autocmd vimenter * NERDTree
 " Toggle  NerdTreeTabs on start
-let g:nerdtree_tabs_open_on_console_startup=1
+" let g:nerdtree_tabs_open_on_console_startup=1
 " Jump to the main window
-autocmd VimEnter * wincmd p
+" autocmd VimEnter * wincmd p
 " Close NerdTree if no files specified
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 " NerdTree behavior
@@ -102,46 +119,6 @@ nnoremap <CR> :noh<CR><CR>
 
 " Change comment color
 hi comment ctermfg=green
-
-" Word processing
-func! WordProcessorMode()
-        setlocal formatoptions=t1
-        setlocal textwidth=140
-        map j gj
-        map k gk
-        setlocal smartindent
-        setlocal spell spelllang=en_us
-        setlocal noexpandtab
-        endfu
-com! WP call WordProcessorMode()
-
-" Use below to highlight group for bad whitespace matching in Python
-highlight BadWhitespace ctermbg=red guibg=red
-
-" Match all tabs at the begging of a line as bad
-" Match trailing whitespace as bad
-" Match lines containing only whitespace as bad
-" In diff_mode, ignore lines containing just a single space (diff adds these)
-let diff_mode=0
-au FileType diff let diff_mode=1
-function! MatchWhitespace()
-    if !g:diff_mode
-        match BadWhitespace /^\t\+/
-        match BadWhitespace /\s\+$/
-        match BadWhitespace /\S\s\+$/
-        match BadWhitespace /^ \+$/
-        match BadWhitespace / \+$/
-    else
-        match BadWhitespace /^\t\+/
-        match BadWhitespace /\s\{2,\}$/
-        match BadWhitespace /\S\s\+$/
-        match BadWhitespace /^ \{2,\}$/
-        match BadWhitespace / \{2,\}$/
-    endif
-endfunction
-
-" Highlight trailing whitespace
-au BufEnter,BufWinEnter,StdinReadPost *.py call MatchWhitespace()
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
