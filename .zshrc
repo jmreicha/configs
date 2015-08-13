@@ -3,13 +3,16 @@ export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
 # Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="clean"
+ZSH_THEME="af-magic"
 
 # Docker aliases
 alias dc="docker-compose"
 alias dm="docker-machine"
 alias dp="docker ps"
 alias di="docker images"
+
+# Misc aliases
+alias vimrc="vim ~/.vimrc"
 
 # GO paths
 export GOPATH=$HOME/go
