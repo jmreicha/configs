@@ -20,7 +20,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 "" JSON highlighting
 Bundle 'elzr/vim-json'
-"" Nerdtree stuff
+"" Nerdtree
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'jistr/vim-nerdtree-tabs'
@@ -32,6 +32,12 @@ Bundle 'luochen1990/rainbow'
 Bundle 'bling/vim-airline'
 "" Whitespace highlighting
 Bundle 'ntpeters/vim-better-whitespace'
+"" Syntax highlighting
+Bundle 'scrooloose/syntastic'
+"" Quotes/Parenths
+""Bundle 'tpope/vim-surround'
+"" Code completion
+""Bundle 'Valloric/YouCompleteMe'
 
 filetype plugin indent on
 
@@ -55,6 +61,9 @@ syntax on
 set ignorecase
 set hlsearch
 set incsearch
+
+"" Yank to system clipboard
+set clipboard=unnamed
 
 "" Editing behavior
 set tabstop=4
@@ -80,17 +89,8 @@ let g:rainbow_active = 1
 " Turn on airline
 set laststatus=2
 
-" Open NerdTree on start
-" autocmd vimenter * NERDTree
-" Toggle  NerdTreeTabs on start
-" let g:nerdtree_tabs_open_on_console_startup=1
-" Jump to the main window
-" autocmd VimEnter * wincmd p
 " Close NerdTree if no files specified
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" NerdTree behavior
-map <C-n> :NERDTreeToggle<CR>
-let NERDTreeHighlightCursorline=1
 
 " Filetype based auto indenting
 filetype indent on
