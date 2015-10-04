@@ -76,6 +76,7 @@ set nowrap
 set scrolloff=3
 set visualbell
 set whichwrap=b,s,h,l,<,>,[,]
+set backspace=indent,eol,start
 
 " Auto source vimrc on save
 augroup reload_vimrc " {
@@ -86,11 +87,24 @@ augroup END " }
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
 
+" Syntastic statusline
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+" Sytnastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_loc_list_height=5
+let g:syntastic_check_on_wq = 0
+" Better symbols
+let g:syntastic_error_symbol = 'XX'
+let g:syntastic_warning_symbol = '!!'
+" Automatically close location-list on quit
+autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
+
 " Turn on airline
 set laststatus=2
-
-" Close NerdTree if no files specified
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " Filetype based auto indenting
 filetype indent on
@@ -122,3 +136,6 @@ hi comment ctermfg=green
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Change swap directory
+"set directory=/tmp/vim
