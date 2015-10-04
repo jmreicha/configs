@@ -23,11 +23,11 @@ export DOCKER_HOST=tcp://127.0.0.1:2376
 export DOCKER_CERT_PATH=/Users/josh/.dinghy/certs
 export DOCKER_TLS_VERIFY=1
 
-# boot2docker/docker-machine
+# docker-machine
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_CERT_PATH="/Users/josh/.docker/machine/machines/dev"
-export DOCKER_MACHINE_NAME="dev"
+export DOCKER_CERT_PATH="/Users/josh/.docker/machine/machines/default"
+export DOCKER_MACHINE_NAME="default"
 
 # OSXContainer
 #export DOCKER_HOST=tcp://192.168.200.2:2375
