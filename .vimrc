@@ -136,6 +136,3 @@ hi comment ctermfg=green
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Change swap directory
-"set directory=/tmp/vim
