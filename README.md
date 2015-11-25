@@ -1,7 +1,7 @@
 configs
 =======
 
-A repository of my custom configs.
+A repository for my configs and dotfiles.
 
 The best way to use this repo is to clone it to some location on your desktop and then create a symlink to where the config file would live locally.
 
@@ -10,21 +10,48 @@ For example, `ln -s jmreicha/configs/.zshrc ~/.zshrc` will link the config to th
 .vimrc
 ---
 
-Uses the Vundle package manager to download and install a few useful helpers:
+Uses the Vundle package manager to download and install some additional packages (this list may change).
 
- * Go syntax highlighting and workflow
- * Terraform syntax highlighting
- * Huge number of custom color schems
+```
+"" GO tools
+Bundle 'fatih/vim-go'
+"" Color schemes
+Bundle 'flazz/vim-colorschemes'
+"" Terraform
+Bundle 'markcornick/vim-terraform'
+"" Git integration
+Bundle 'tpope/vim-fugitive'
+"" Show Git file changes
+Bundle 'airblade/vim-gitgutter'
+"" JSON highlighting
+Bundle 'elzr/vim-json'
+"" Nerdtree
+Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
+Bundle 'jistr/vim-nerdtree-tabs'
+"" Fuzzy file searching
+Bundle 'kien/ctrlp.vim'
+"" Keep track of parenths
+Bundle 'luochen1990/rainbow'
+"" Better status line
+Bundle 'bling/vim-airline'
+"" Whitespace highlighting
+Bundle 'ntpeters/vim-better-whitespace'
+"" Syntax highlighting
+Bundle 'scrooloose/syntastic'
+"" Dockerfile syntax highlighting
+Bundle 'ekalinin/Dockerfile.vim'
+```
  
-To install the these plugins on a freshly set up machine first you need to clone the Vundle project in to the approriate location, for example:
+To install the these plugins on a fresh machine, first you need to clone the Vundle project in to the approriate location.
 
 ```git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim```
 
-You will also need to add a few lines in your `vimrc` file to get it to work.  I already have them added so won't illustrate that step here.
+From there, you will also need to add a few lines in your `vimrc` file to get it to work.  I already have them added so won't illustrate that step here.
 
 Then you can run `:PluginInstall` from within a Vim buffer to go get additional packages.
 
-You can look at my `.vimrc` file for more specifics and examples of everything that I have set up.
+You can look at my `.vimrc` file for more specific details, I try to comment most of my configurations.
 
 Profile.ps1
 ---
