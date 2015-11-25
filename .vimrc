@@ -34,10 +34,8 @@ Bundle 'bling/vim-airline'
 Bundle 'ntpeters/vim-better-whitespace'
 "" Syntax highlighting
 Bundle 'scrooloose/syntastic'
-"" Quotes/Parenths
-""Bundle 'tpope/vim-surround'
-"" Code completion
-""Bundle 'Valloric/YouCompleteMe'
+"" Dockerfile syntax highlighting
+Bundle 'ekalinin/Dockerfile.vim'
 
 filetype plugin indent on
 
@@ -52,7 +50,6 @@ set colorcolumn=+1
 set number
 set showcmd
 set cursorline
-set paste
 
 "" Syntax highlighting
 syntax on
