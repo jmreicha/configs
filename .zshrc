@@ -18,23 +18,6 @@ alias vimrc="vim ~/.vimrc"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
-# Dinghy
-export DOCKER_HOST=tcp://127.0.0.1:2376
-export DOCKER_CERT_PATH=/Users/josh/.dinghy/certs
-export DOCKER_TLS_VERIFY=1
-
-# docker-machine
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_CERT_PATH="/Users/josh/.docker/machine/machines/default"
-export DOCKER_MACHINE_NAME="default"
-
-# OSXContainer
-#export DOCKER_HOST=tcp://192.168.200.2:2375
-
-# Kubernetes prod master
-#export KUBERNETES_MASTER=http://172.16.1.100:8080
-
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
 
