@@ -10,36 +10,23 @@ alias dc="docker-compose"
 alias dm="docker-machine"
 alias dp="docker ps"
 alias di="docker images"
+alias me-config='docker run -it --rm aboutdotme/config'
 
 # Misc aliases
 alias vimrc="vim ~/.vimrc"
+alias zshrc="vim ~/.zshrc"
+alias z="vim ~/.zshrc"
+alias v="vim ~/.vimrc"
 
 # GO paths
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
-# Dinghy
-export DOCKER_HOST=tcp://127.0.0.1:2376
-export DOCKER_CERT_PATH=/Users/josh/.dinghy/certs
-export DOCKER_TLS_VERIFY=1
-
-# docker-machine
-export DOCKER_TLS_VERIFY="1"
-export DOCKER_HOST="tcp://192.168.99.100:2376"
-export DOCKER_CERT_PATH="/Users/josh/.docker/machine/machines/default"
-export DOCKER_MACHINE_NAME="default"
-
-# OSXContainer
-#export DOCKER_HOST=tcp://192.168.200.2:2375
-
-# Kubernetes prod master
-#export KUBERNETES_MASTER=http://172.16.1.100:8080
-
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -75,3 +62,20 @@ plugins=(git docker knife vagrant go common-aliases jsontools)
 # export ARCHFLAGS="-arch x86_64"
 
 source $ZSH/oh-my-zsh.sh
+
+# thefuck settings
+eval $(thefuck --alias)
+
+# Terraform
+PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
+
+# Dockerize settings
+export PATH=$PATH:/Users/jmreicha/github.com/docker-dev
+export COMPOSE_PROJECT_NAME=dev
+#eval $(docker-machine env dev)
+alias dc="docker-compose"
+alias dm="docker-machine"
+export MACHINE_IP=192.168.99.100
+
+# Dockerize environment variables and aliases
+source /Users/jmreicha/.dockerizerc
