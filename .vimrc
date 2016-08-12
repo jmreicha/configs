@@ -36,15 +36,25 @@ Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'scrooloose/syntastic'
 "" Dockerfile syntax highlighting
 Bundle 'ekalinin/Dockerfile.vim'
+"" Autocomplete
+Bundle 'Valloric/YouCompleteMe'
 
 filetype plugin indent on
+
+"" Put swap files in swapfiles directory
+set directory=$HOME/.vim/swapfiles//
 
 "" Vim colorscheme
 colorscheme xoria256
 
+"" Correctly handle yml
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
 "" Highlight lines over 80 characters
 set textwidth=80
 set colorcolumn=+1
+"" No automatic line wrapping
+set formatoptions-=t
 
 "" Basics
 set number
