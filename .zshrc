@@ -71,11 +71,8 @@ PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
 
 # Dockerize settings
 export PATH=$PATH:/Users/jmreicha/github.com/docker-dev
-export COMPOSE_PROJECT_NAME=dev
-#eval $(docker-machine env dev)
 alias dc="docker-compose"
 alias dm="docker-machine"
-export MACHINE_IP=192.168.99.100
 
 # Dockerize environment variables and aliases
 source /Users/jmreicha/.dockerizerc
