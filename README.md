@@ -32,10 +32,10 @@ packages (this list may change).
 'airblade/vim-gitgutter'
 "" JSON highlighting Bundle
 'elzr/vim-json'
-""Nerdtree Bundle
+"" Nerdtree Bundle
 'scrooloose/nerdtree'
-Bundle 'Xuyuanp/nerdtree-git-plugin'
-Bundle 'jistr/vim-nerdtree-tabs'
+'Xuyuanp/nerdtree-git-plugin'
+'jistr/vim-nerdtree-tabs'
 "" Fuzzy file searching Bundle
 'kien/ctrlp.vim'
 "" Keep track of parenths Bundle
@@ -54,8 +54,7 @@ To install the these plugins on a fresh machine, first you need to clone the
 Vundle project in to the approriate location.
 
 ```
-git clone https://github.com/gmarik/Vundle.vim.git
-~/.vim/bundle/Vundle.vim
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 From there, you will also need to add a few lines in your `vimrc` file to get
@@ -88,12 +87,17 @@ the way they are bound in screen.
 This file should be placed into the <code>~/.tmux.conf</code> file if it is not
 already present.  A tmux reload may be required.
 
+### .hyperterm.js
+
+The hyperterm configuration file allows you to customize hyperterm.
+
 Reference Table:
 
-* <code>logout</code> close current split or window <code>^a d</code> detach
-* from session <code>^a -</code> create horizontal split <code>^a |</code>
-* create vertical split <code>^a up</code> move up between splits <code>^a
-* down</code> move down between splits <code>^a ,</code> rename current window
-* <code>^a n</code> move forward one window <code<^a p</code> move backward one
-* window <code>^a c</code> create new window <code>^a [0-9]</code> jump to
-* numbered window
+* `logout` close current split or window `^a d` detach from session
+* `^a -` create horizontal split
+* `^a |` create vertical split
+* `^a up` move up between splits
+* `^a down` move down between splits
+* `^a ,` rename current window
+* `^a n` move forward one window <code<^a p</code> move backward one window
+* `^a c` create new window `^a [0-9]` jump to numbered window
