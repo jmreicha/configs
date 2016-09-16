@@ -37,12 +37,13 @@ Bundle 'scrooloose/syntastic'
 "" Dockerfile syntax highlighting
 Bundle 'ekalinin/Dockerfile.vim'
 "" Autocomplete
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
 
+" Filetype based auto indenting
 filetype plugin indent on
 
 "" Put swap files in swapfiles directory
-set directory=$HOME/.vim/swapfiles//
+set directory=$HOME/.vim/
 
 "" Vim colorscheme
 colorscheme xoria256
@@ -107,14 +108,13 @@ let g:syntastic_check_on_wq = 0
 " Better symbols
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!!'
+" Javascript linting
+let g:syntastic_javascript_checkers = ['eslint']
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
 " Turn on airline
 set laststatus=2
-
-" Filetype based auto indenting
-filetype indent on
 
 " Newline shortcut
 nnoremap <S-J> o<Esc>
