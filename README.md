@@ -20,34 +20,34 @@ Uses the Vundle package manager to download and install some additional
 packages (this list may change).
 
 ```
-"" GO tools Bundle
-'fatih/vim-go'
-"" Color schemes Bundle
-'flazz/vim-colorschemes'
-"" Terraform Bundle
-'markcornick/vim-terraform'
-"" Git integration Bundle
-'tpope/vim-fugitive'
-"" Show Git file changes Bundle
-'airblade/vim-gitgutter'
-"" JSON highlighting Bundle
-'elzr/vim-json'
-"" Nerdtree Bundle
-'scrooloose/nerdtree'
-'Xuyuanp/nerdtree-git-plugin'
-'jistr/vim-nerdtree-tabs'
-"" Fuzzy file searching Bundle
-'kien/ctrlp.vim'
-"" Keep track of parenths Bundle
-'luochen1990/rainbow'
-"" Better status line Bundle
-'bling/vim-airline'
-"" Whitespace highlighting Bundle
-'ntpeters/vim-better-whitespace'
-"" Syntax highlighting Bundle
-'scrooloose/syntastic'
-"" Dockerfile syntax highlighting Bundle
-'ekalinin/Dockerfile.vim'
+"" GO tools
+Bundle 'fatih/vim-go'
+"" Color schemes
+Bundle 'flazz/vim-colorschemes'
+"" Terraform
+Bundle 'markcornick/vim-terraform'
+"" Git integration
+Bundle 'tpope/vim-fugitive'
+"" Show Git file changes
+Bundle 'airblade/vim-gitgutter'
+"" JSON highlighting
+Bundle 'elzr/vim-json'
+"" Nerdtree
+Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
+Bundle 'jistr/vim-nerdtree-tabs'
+"" Fuzzy file searching
+Bundle 'kien/ctrlp.vim'
+"" Keep track of parenths
+Bundle 'luochen1990/rainbow'
+"" Better status line
+Bundle 'bling/vim-airline'
+"" Whitespace highlighting
+Bundle 'ntpeters/vim-better-whitespace'
+"" Syntax highlighting
+Bundle 'scrooloose/syntastic'
+"" Dockerfile syntax highlighting
+Bundle 'ekalinin/Dockerfile.vim'
 ```
  
 To install the these plugins on a fresh machine, first you need to clone the
