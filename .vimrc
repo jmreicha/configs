@@ -13,13 +13,14 @@ Bundle 'fatih/vim-go'
 "" Color schemes
 Bundle 'flazz/vim-colorschemes'
 "" Terraform
-Bundle 'markcornick/vim-terraform'
+Bundle 'hashivim/vim-terraform'
 "" Git integration
 Bundle 'tpope/vim-fugitive'
 "" Show Git file changes
 Bundle 'airblade/vim-gitgutter'
 "" JSON highlighting
 Bundle 'elzr/vim-json'
+"" YAML highlighting
 "" Nerdtree
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
@@ -38,6 +39,10 @@ Bundle 'scrooloose/syntastic'
 Bundle 'ekalinin/Dockerfile.vim'
 "" Autocomplete
 "Bundle 'Valloric/YouCompleteMe'
+"" Javascript tools
+Bundle 'othree/yajs.vim'
+"" nginx config highlighting
+Bundle 'chr4/nginx.vim'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -46,10 +51,14 @@ filetype plugin indent on
 set directory=$HOME/.vim/
 
 "" Vim colorscheme
-colorscheme xoria256
+colorscheme ir_black
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+"" Handle nginx configs
+autocmd BufNewFile,BufRead,BufReadPost *.conf set syntax=nginx
+autocmd BufNewFile,BufRead,BufReadPost *.tmpl set syntax=nginx
 
 "" Highlight lines over 80 characters
 set textwidth=80
@@ -92,6 +101,10 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
+" Terraform
+let g:terraform_align=1
+let g:terraform_fmt_on_save = 1
+
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
 
@@ -109,7 +122,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!!'
 " Javascript linting
-let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_javascript_checkers = ['eslint']
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
@@ -139,7 +152,7 @@ nnoremap 0<cr> :tablast<cr>
 nnoremap <CR> :noh<CR><CR>
 
 " Change comment color
-hi comment ctermfg=green
+"hi comment ctermfg=green
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
