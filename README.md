@@ -6,8 +6,22 @@ A repository for my configs and dotfiles.
 The best way to use this repo is to clone it to some location on your desktop
 and then create a symlink to where the config file would live locally.
 
-For example, `ln -s ~/configs/.zshrc ~/.zshrc` will link the config to the
-correct system path.  Be sure to use the FULL path to the config file when
+### Install zsh
+
+```
+sudo apt-get install zsh
+chsh -s $(which zsh)
+logout
+```
+
+### Install oh-my-zsh
+
+```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
+The command, `ln -s ~/configs/.zshrc ~/.zshrc` will link the config to the
+correct system path in the users home directory.  Be sure to use the FULL path to the config file when
 linking, otherwise you might run into issues.  Here `client` is just cloned to
 the home directory and referenced there.
 
@@ -16,8 +30,24 @@ adjustments and can more easily keep configs in sync with commits, etc.
 
 ### .vimrc
 
-Uses the Vundle package manager to download and install some additional
-packages (this list may change).
+The command, `ln -s ~/configs/.vimrc ~/.vimrc` will link the Vim configuration into the
+correct system path in the users home directory.
+ 
+To install the these plugins on a fresh machine, first you need to clone the
+Vundle project in to the approriate location.
+
+```
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+
+From there, you will also need to add a few lines in your `vimrc` file to get
+it to work.  I already have them added so won't illustrate that step here.
+
+Then you can open up Vim and run `:PluginInstall` to go get additional packages.  There
+might be errors when running Vim the first time, these can be ignored.
+
+This `.vimrc` uses the Vundle package manager to download and install some additional
+packages (thse can be found ithe the .vimrc).
 
 ```
 "" GO tools
@@ -49,19 +79,6 @@ Bundle 'scrooloose/syntastic'
 "" Dockerfile syntax highlighting
 Bundle 'ekalinin/Dockerfile.vim'
 ```
- 
-To install the these plugins on a fresh machine, first you need to clone the
-Vundle project in to the approriate location.
-
-```
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-```
-
-From there, you will also need to add a few lines in your `vimrc` file to get
-it to work.  I already have them added so won't illustrate that step here.
-
-Then you can run `:PluginInstall` from within a Vim buffer to go get additional
-packages.
 
 You can look at my `.vimrc` file for more specific details, I try to comment
 most of my configurations.
