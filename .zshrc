@@ -24,11 +24,14 @@ alias v="vim ~/.vimrc"
 alias kc=kubectl
 alias ksys=kubectl --namespace=kube-system
 
+# Helm tab completion
+#source <(helm completion bash)
+
 # Paths
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # RVM
 #export PATH="$PATH:$HOME/.rvm/bin"
-# man pages
+# MAN
 #export MANPATH="/usr/local/man:$MANPATH"
 # GO
 #export GOPATH=$HOME/go
@@ -42,7 +45,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 #source /usr/local/bin/virtualenvwrapper.sh
 
 # Owner
-export USER_NAME="YOUR NAME"
+#export USER_NAME="YOUR NAME"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -86,7 +89,7 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker vagrant go common-aliases jsontools virtualenv pip python osx kubectl)
+plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip python osx)
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -105,5 +108,10 @@ plugins=(git docker vagrant go common-aliases jsontools virtualenv pip python os
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+
+# startup virtualenv-burrito
+#if [ -f $HOME/.venvburrito/startup.sh ]; then
+#    . $HOME/.venvburrito/startup.sh
+#fi
 
 source $ZSH/oh-my-zsh.sh
