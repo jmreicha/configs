@@ -1,10 +1,19 @@
 configs
 =======
 
-A repository for my configs and dotfiles.
+A repository for all my configs and dotfiles.  I also keep track of my preferred command line produdictivity tools here.
 
-The best way to use this repo is to clone it to some location on your desktop
-and then create a symlink to where the config file would live locally.
+The best way to use this repo is to clone it and create a symlink (shown below).
+
+### Tools
+
+* [jq](https://stedolan.github.io/jq/) - json parser
+* [yq](https://github.com/mikefarah/yq) - yaml parser
+* [shellcheck](https://github.com/koalaman/shellcheck) - analysis tool for shell scripts
+* [fzf](https://github.com/junegunn/fzf) - better fuzzy finder 
+* [ripgrep](https://github.com/BurntSushi/ripgrep) - better grep
+* [hstr](https://github.com/dvorka/hstr) - better history
+* [fd](https://github.com/sharkdp/fd) - better find
 
 ### Install zsh
 
