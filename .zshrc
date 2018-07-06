@@ -1,3 +1,7 @@
+######
+# Misc
+######
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -7,31 +11,22 @@ ZSH_THEME="af-magic"
 # Bash end of line kill
 bindkey \^U backward-kill-line
 
-# Docker aliases
-alias dc="docker-compose"
-alias dm="docker-machine"
-alias dp="docker ps"
-alias di="docker images"
+#######################
+# Environment variables
+#######################
 
-# Compose aliases
-alias dc="docker-compose"
-alias dm="docker-machine"
+# Kubernetes PS1 prompt
+#source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+#PROMPT='$(kube_ps1)'$PROMPT
+#KUBE_PS1_BINARY="/usr/local/bin/kubectl"
 
-# Misc aliases
-alias vimrc="vim ~/.vimrc"
-alias zshrc="vim ~/.zshrc"
-alias z="vim ~/.zshrc"
-alias v="vim ~/.vimrc"
+# hstr
+export HISTFILE=~/.zsh_history
+export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
+bindkey -s "\C-r" "\eqhh\n"
 
-# Kubernetes
-alias kc=kubectl
-alias ksys=kubectl --namespace=kube-system
-
-# Helm tab completion
-#source <(helm completion bash)
-
-# Paths
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Python3 path
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 # RVM
 #export PATH="$PATH:$HOME/.rvm/bin"
 # MAN
@@ -47,8 +42,67 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 #export PROJECT_HOME=$HOME/projects
 #source /usr/local/bin/virtualenvwrapper.sh
 
+# Virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+# This seems to break with custom path for Python3
+#source /usr/local/bin/virtualenvwrapper.sh
+
+# virtualenv-burrito
+#if [ -f $HOME/.venvburrito/startup.sh ]; then
+#    . $HOME/.venvburrito/startup.sh
+#fi
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# This causes 'complete:13: command not found: compdef' error
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Export SSH key so it doesn't need to be passed in every time.
+export SSH_KEY_PATH="~/.ssh/id_rsa"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
 # Owner
 #export USER_NAME="YOUR NAME"
+
+#########
+# Aliases
+#########
+
+# Docker aliases
+alias dc="docker-compose"
+alias dm="docker-machine"
+alias dp="docker ps"
+alias di="docker images"
+
+# Compose aliases
+alias dc="docker-compose"
+alias dm="docker-machine"
+
+# Kubernetes aliases
+alias kgpa="kgp --all-namespaces"
+alias kgn="k get nodes"
+alias ktn="k top nodes"
+alias ktp="k top pods"
+alias ktpa="k top pods --all-namespaces"
+
+# Misc aliases
+alias vimrc="vim ~/.vimrc"
+alias zshrc="vim ~/.zshrc"
+alias z="vim ~/.zshrc"
+alias v="vim ~/.vimrc"
+
+# Helm tab completion
+#source <(helm completion bash)
+
+#####
+# Zsh
+#####
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -74,9 +128,6 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
-#
-# Export SSH key so it doesn't need to be passed in every time.
-export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -92,7 +143,7 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip python osx)
+plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip python osx kubectl helm)
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -105,16 +156,5 @@ plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip p
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# startup virtualenv-burrito
-#if [ -f $HOME/.venvburrito/startup.sh ]; then
-#    . $HOME/.venvburrito/startup.sh
-#fi
 
 source $ZSH/oh-my-zsh.sh
