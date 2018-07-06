@@ -1,10 +1,19 @@
 configs
 =======
 
-A repository for my configs and dotfiles.
+A repository for all my configs and dotfiles.  I also keep track of my preferred command line produdictivity tools here.
 
-The best way to use this repo is to clone it to some location on your desktop
-and then create a symlink to where the config file would live locally.
+The best way to use this repo is to clone it and create a symlink (shown below).
+
+### Tools
+
+* [jq](https://stedolan.github.io/jq/) - json parser
+* [yq](https://github.com/mikefarah/yq) - yaml parser
+* [shellcheck](https://github.com/koalaman/shellcheck) - analysis tool for shell scripts
+* [fzf](https://github.com/junegunn/fzf) - better fuzzy finder 
+* [ripgrep](https://github.com/BurntSushi/ripgrep) - better grep
+* [hstr](https://github.com/dvorka/hstr) - better history
+* [fd](https://github.com/sharkdp/fd) - better find
 
 ### Install zsh
 
@@ -20,21 +29,26 @@ logout
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-The command, `ln -s ~/configs/.zshrc ~/.zshrc` will link the config to the
-correct system path in the users home directory.  Be sure to use the FULL path to the config file when
-linking, otherwise you might run into issues.  Here `client` is just cloned to
-the home directory and referenced there.
+### Configure .zshrc
 
-After setting up the link, you can just edit `~/.zshrc` if you want to make
-adjustments and can more easily keep configs in sync with commits, etc.
+```
+rm ~/.zshrc
+ln -s ~/configs/.zshrc ~/.zshrc
+```
 
-### .vimrc
+This will link the `.zshrc` defined in this repo to the correct system path in the home directory.  Be sure to use the FULL path to the config repo when linking, otherwise you might run into linking issues.  Here `client` is just cloned to the home directory and referenced there.
 
-The command, `ln -s ~/configs/.vimrc ~/.vimrc` will link the Vim configuration into the
-correct system path in the users home directory.
+After setting up the link, you can just edit `~/.zshrc` if you want to make adjustments and can more easily keep configs in sync with commits, etc.
+
+### Configure .vimrc
+
+```
+ln -s ~/configs/.vimrc ~/.vimrc
+```
+
+Same as above, this will link the Vim configuration into the correct location.
  
-To install the these plugins on a fresh machine, first you need to clone the
-Vundle project in to the approriate location.
+To install the Vim plugins on a fresh machine, first clone the Vundle project in to the approriate location.
 
 ```
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -83,7 +97,7 @@ Bundle 'ekalinin/Dockerfile.vim'
 You can look at my `.vimrc` file for more specific details, I try to comment
 most of my configurations.
 
-### Profile.ps1
+### Configure Profile.ps1
 
 Customizes the following:
 
@@ -96,25 +110,10 @@ To use, copy the Profile.ps1 file to the following location (Win 7):
 <code>C:\Users\Username\My Documents\WindowsPowerShell</code>
 ```
 
-### .tmux.conf
+### Configure .tmux.conf
 
 The primary purpose of this config is to bind the keys in a similar fashion to
 the way they are bound in screen.
 
 This file should be placed into the <code>~/.tmux.conf</code> file if it is not
 already present.  A tmux reload may be required.
-
-### .hyperterm.js
-
-The hyperterm configuration file allows you to customize hyperterm.
-
-Reference Table:
-
-* `logout` close current split or window `^a d` detach from session
-* `^a -` create horizontal split
-* `^a |` create vertical split
-* `^a up` move up between splits
-* `^a down` move down between splits
-* `^a ,` rename current window
-* `^a n` move forward one window <code<^a p</code> move backward one window
-* `^a c` create new window `^a [0-9]` jump to numbered window
