@@ -43,6 +43,8 @@ Bundle 'ekalinin/Dockerfile.vim'
 Bundle 'othree/yajs.vim'
 "" nginx config highlighting
 Bundle 'chr4/nginx.vim'
+"" Hanldle more text objects
+Bundle 'wellle/targets.vim'
 
 " Filetype based auto indenting
 filetype plugin indent on
