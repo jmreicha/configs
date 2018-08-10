@@ -14,6 +14,12 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
 
+# Not sure if this is working
+setopt HIST_IGNORE_ALL_DUPS
+
+# Helm tab completion
+#source <(helm completion bash)
+
 ##################
 # Custom functions
 ##################
@@ -45,18 +51,38 @@ alias kgpa="kgp --all-namespaces"
 alias kgn="kubectl get nodes"
 alias ktn="kubectl top nodes"
 alias ktp="kubectl top pods --all-namespaces"
+alias ktpa="k top pods --all-namespaces"
 alias kctx="kubectx"
 alias kns="kubens"
 
-# Helm tab completion
-#source <(helm completion bash)
+##############
+# System paths
+##############
+
+# Python3 (OSX)
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+# RVM
+#export PATH="$PATH:$HOME/.rvm/bin"
+
+# MAN
+#export MANPATH="/usr/local/man:$MANPATH"
+
+# GO
+export GOPATH=$HOME/Go
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+# Terraform
+#PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
 
 #######################
 # Environment variables
 #######################
 
 # Kubernetes PS1 prompt
-#source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+#source /usr/local/opt/kube-ps1/share/kube-ps1.sh
 #PROMPT='$(kube_ps1)'$PROMPT
 #KUBE_PS1_BINARY="/usr/local/bin/kubectl"
 
@@ -64,24 +90,6 @@ alias kns="kubens"
 export HISTFILE=~/.zsh_history
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
 bindkey -s "\C-r" "\eqhh\n"
-
-# Not sure if this is working
-setopt HIST_IGNORE_ALL_DUPS
-
-# Helm tab completion
-#source <(helm completion bash)
-
-# Python3 path
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-# RVM
-#export PATH="$PATH:$HOME/.rvm/bin"
-# MAN
-#export MANPATH="/usr/local/man:$MANPATH"
-# GO
-#export GOPATH=$HOME/go
-#export PATH=$PATH:$GOPATH/bin
-# Terraform
-#PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
@@ -163,7 +171,7 @@ zle_highlight+=(paste:none)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
-        python osx kubectl helm)
+        python osx kubectl helm zsh-autosuggestions)
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories

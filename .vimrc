@@ -20,7 +20,8 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 "" JSON highlighting
 Bundle 'elzr/vim-json'
-"" YAML highlighting
+"" Ansible highlighting
+Bundle "lepture/vim-jinja"
 "" Nerdtree
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
@@ -37,14 +38,14 @@ Bundle 'ntpeters/vim-better-whitespace'
 Bundle 'scrooloose/syntastic'
 "" Dockerfile syntax highlighting
 Bundle 'ekalinin/Dockerfile.vim'
-"" Autocomplete
-"Bundle 'Valloric/YouCompleteMe'
 "" Javascript tools
 Bundle 'othree/yajs.vim'
 "" nginx config highlighting
 Bundle 'chr4/nginx.vim'
 "" Hanldle more text objects
 Bundle 'wellle/targets.vim'
+"" Jsonnet highlighting
+Bundle 'google/vim-jsonnet'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -57,6 +58,7 @@ colorscheme ir_black
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+"let g:indent_guides_enable_on_vim_startup = 1
 
 "" Handle nginx configs
 autocmd BufNewFile,BufRead,BufReadPost *.conf set syntax=nginx
@@ -110,6 +112,9 @@ let g:terraform_fmt_on_save = 1
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
 
+" jsonnet formatting
+let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
+
 " Syntastic statusline
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -123,6 +128,9 @@ let g:syntastic_check_on_wq = 0
 " Better symbols
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!!'
+" Disable Python linting
+"let g:syntastic_python_checkers = []
+let g:syntastic_python_checkers = ['pyflakes']
 " Javascript linting
 "let g:syntastic_javascript_checkers = ['eslint']
 " Automatically close location-list on quit
