@@ -46,6 +46,8 @@ Bundle 'chr4/nginx.vim'
 Bundle 'wellle/targets.vim'
 "" Jsonnet highlighting
 Bundle 'google/vim-jsonnet'
+"" Python code formatting
+Bundle 'ambv/black'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -128,11 +130,18 @@ let g:syntastic_check_on_wq = 0
 " Better symbols
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!!'
+
 " Disable Python linting
-"let g:syntastic_python_checkers = []
-let g:syntastic_python_checkers = ['pyflakes']
+let g:syntastic_python_checkers = []
+"let g:syntastic_python_checkers = ['pyflakes']
+"let g:syntastic_python_checkers = ['pylint']
+
 " Javascript linting
 "let g:syntastic_javascript_checkers = ['eslint']
+
+" Automatically format Python files on save
+autocmd BufWritePre *.py execute ':Black'
+
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
