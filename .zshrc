@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="af-magic"
 
-# Zsh autosuggestion highlighting
+# Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
 
 # Bash hotkey for end of line kill
@@ -47,13 +47,15 @@ alias dp="docker ps"
 alias di="docker images"
 
 # Kubernetes
-alias kgpa="kgp --all-namespaces"
-alias kgn="kubectl get nodes"
+alias kgpa="kgp -o wide --all-namespaces"
+alias kgn="kubectl get nodes -o wide"
 alias ktn="kubectl top nodes"
 alias ktp="kubectl top pods --all-namespaces"
 alias ktpa="k top pods --all-namespaces"
-alias kctx="kubectx"
-alias kns="kubens"
+alias kdump="k get all --all-namespaces"
+alias klft="klf --tail 100"
+#alias kctx="kubectx"
+#alias kns="kubens"
 
 ##############
 # System paths
@@ -69,10 +71,11 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 #export MANPATH="/usr/local/man:$MANPATH"
 
 # GO
-export GOPATH=$HOME/Go
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+#export GOPATH=$HOME/Go
+#export GOROOT=/usr/local/opt/go/libexec
+#export PATH=$PATH:$GOPATH/bin
+#export PATH=$PATH:$GOROOT/bin
 
 # Terraform
 #PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
@@ -184,3 +187,5 @@ plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
 HIST_STAMPS="mm/dd/yyyy"
 
 source $ZSH/oh-my-zsh.sh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
