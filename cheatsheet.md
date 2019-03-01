@@ -25,3 +25,5 @@ Settings gist
 * Replace a single character - `r<character>`
 * Increase /decrease a number (normal mode) - `Ctrl + a / Ctrl + x`
 * Faster save - `:x` or `ZZ`
+* Jump to last insert - `gi`
+* Cycle through edits - `g;`
