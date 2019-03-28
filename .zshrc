@@ -6,10 +6,11 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="af-magic"
+#ZSH_THEME="af-magic"
+ZSH_THEME="josh-custom"
 
-# Zsh autosuggestion highlighting
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
+# Better terminal colors
+export TERM="xterm-256color"
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
@@ -19,6 +20,9 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Helm tab completion
 #source <(helm completion bash)
+
+# Set default kubernetes diff
+#export KUBERNETES_EXTERNAL_DIFF=colordiff
 
 ##################
 # Custom functions
@@ -39,6 +43,8 @@ alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
+alias ip="ip -c"
+alias ccat="bat"
 
 # Docker Compose
 alias dc="docker-compose"
@@ -54,10 +60,14 @@ alias ktp="kubectl top pods --all-namespaces"
 alias ktpa="k top pods --all-namespaces"
 alias kctx="kubectx"
 alias kns="kubens"
+alias kdump="kubectl get all --all-namespaces"
 
 ##############
 # System paths
 ##############
+
+# Krew k8s package manager
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Python3 (OSX)
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
@@ -69,10 +79,11 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 #export MANPATH="/usr/local/man:$MANPATH"
 
 # GO
-export GOPATH=$HOME/Go
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+#export GOPATH=$HOME/Go
+export GOROOT=/usr/lib/go-1.11
+export GOPATH=/usr/lib/go-1.11/bin
+export PATH="$PATH:$GOPATH:$GOPATH/bin"
+#export PATH=$PATH:$GOROOT/bin
 
 # Terraform
 #PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
@@ -113,19 +124,26 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 # Virtual environment settings
 ##############################
 
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/projects
-#source /usr/local/bin/virtualenvwrapper.sh
+# Pyenv pip
+export PATH="$HOME/.local/bin:$PATH"
+# Pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # Virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+#export WORKON_HOME=$HOME/.virtualenvs
+#export PROJECT_HOME=$HOME/projects
+#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+#export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 # This seems to break with custom path for Python3
 #source /usr/local/bin/virtualenvwrapper.sh
 
 # virtualenv-burrito
-#if [ -f $HOME/.venvburrito/startup.sh ]; then
-#    . $HOME/.venvburrito/startup.sh
-#fi
+if [ -f $HOME/.venvburrito/startup.sh ]; then
+    . $HOME/.venvburrito/startup.sh
+fi
 
 #####
 # Zsh
@@ -173,6 +191,9 @@ zle_highlight+=(paste:none)
 plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
         python osx kubectl helm zsh-autosuggestions)
 
+# Zsh autosuggestion highlighting
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
@@ -183,4 +204,11 @@ plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HIST_STAMPS="mm/dd/yyyy"
 
+# Load extra configurations
 source $ZSH/oh-my-zsh.sh
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin
