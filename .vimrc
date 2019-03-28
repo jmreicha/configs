@@ -22,10 +22,6 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'elzr/vim-json'
 "" Ansible highlighting
 Bundle "lepture/vim-jinja"
-"" Nerdtree
-Bundle 'scrooloose/nerdtree'
-Bundle 'Xuyuanp/nerdtree-git-plugin'
-Bundle 'jistr/vim-nerdtree-tabs'
 "" Fuzzy file searching
 Bundle 'kien/ctrlp.vim'
 "" Keep track of parenths
@@ -46,6 +42,15 @@ Bundle 'chr4/nginx.vim'
 Bundle 'wellle/targets.vim'
 "" Jsonnet highlighting
 Bundle 'google/vim-jsonnet'
+"" Typescript highlighting
+Bundle 'leafgarland/typescript-vim'
+"" Markdown tools
+Bundle 'godlygeek/tabular'
+Bundle 'plasticboy/vim-markdown'
+"" Surround tools
+Bundle 'tpope/vim-surround'
+"" Readline (bash) key bindings
+Bundle 'tpope/vim-rsi'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -105,6 +110,11 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
+" Markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_auto_extension_ext = 'txt'
+"let g:vim_markdown_folding_level = 3
+
 " Terraform
 let g:terraform_align=1
 let g:terraform_fmt_on_save = 1
@@ -119,6 +129,7 @@ let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
 " Sytnastic settings
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -139,8 +150,14 @@ autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 " Turn on airline
 set laststatus=2
 
+" Quick escape
+inoremap jj <Esc>
+
 " Newline shortcut
 nnoremap <S-J> o<Esc>
+
+" Insert a single character
+nnoremap <C-i> i_<Esc>r
 
 " Tab navigation shortcuts
 nnoremap <C-j> gT
