@@ -80,17 +80,14 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 #export MANPATH="/usr/local/man:$MANPATH"
 
 # GO
-<<<<<<< HEAD
 #export GOPATH=$HOME/Go
 export GOROOT=/usr/lib/go-1.11
 export GOPATH=/usr/lib/go-1.11/bin
 export PATH="$PATH:$GOPATH:$GOPATH/bin"
-=======
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 #export GOPATH=$HOME/Go
 #export GOROOT=/usr/local/opt/go/libexec
 #export PATH=$PATH:$GOPATH/bin
->>>>>>> 0a7d05eb3ec5e6e045e7c49e476e182ba503f4f2
 #export PATH=$PATH:$GOROOT/bin
 
 # Terraform
