@@ -53,14 +53,15 @@ alias dp="docker ps"
 alias di="docker images"
 
 # Kubernetes
-alias kgpa="kgp --all-namespaces"
-alias kgn="kubectl get nodes"
+alias kgpa="kgp -o wide --all-namespaces"
+alias kgn="kubectl get nodes -o wide"
 alias ktn="kubectl top nodes"
 alias ktp="kubectl top pods --all-namespaces"
 alias ktpa="k top pods --all-namespaces"
 alias kctx="kubectx"
 alias kns="kubens"
 alias kdump="kubectl get all --all-namespaces"
+alias klft="klf --tail 100"
 
 ##############
 # System paths
@@ -79,10 +80,17 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 #export MANPATH="/usr/local/man:$MANPATH"
 
 # GO
+<<<<<<< HEAD
 #export GOPATH=$HOME/Go
 export GOROOT=/usr/lib/go-1.11
 export GOPATH=/usr/lib/go-1.11/bin
 export PATH="$PATH:$GOPATH:$GOPATH/bin"
+=======
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+#export GOPATH=$HOME/Go
+#export GOROOT=/usr/local/opt/go/libexec
+#export PATH=$PATH:$GOPATH/bin
+>>>>>>> 0a7d05eb3ec5e6e045e7c49e476e182ba503f4f2
 #export PATH=$PATH:$GOROOT/bin
 
 # Terraform
@@ -191,7 +199,7 @@ zle_highlight+=(paste:none)
 plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
         python osx kubectl helm zsh-autosuggestions)
 
-# Zsh autosuggestion highlighting
+# Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
 # Uncomment the following line if you want to disable marking untracked files

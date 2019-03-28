@@ -6,44 +6,53 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
-"" let Vundle manage Vundle
+"" Let Vundle manage Vundle
 Bundle 'gmarik/Vundle.vim'
-"" GO tools
-Bundle 'fatih/vim-go'
-"" Color schemes
-Bundle 'flazz/vim-colorschemes'
+
+"" Highlighting
+
 "" Terraform
 Bundle 'hashivim/vim-terraform'
+"" JSON
+Bundle 'elzr/vim-json'
+"" Ansible
+Bundle "lepture/vim-jinja"
+"" Whitespace
+Bundle 'ntpeters/vim-better-whitespace'
+"" Syntax
+Bundle 'scrooloose/syntastic'
+"" Dockerfile
+Bundle 'ekalinin/Dockerfile.vim'
+"" Jsonnet
+Bundle 'google/vim-jsonnet'
+"" Typescript
+Bundle 'leafgarland/typescript-vim'
+"" Nginx
+Bundle 'chr4/nginx.vim'
+
+"" Git
+
 "" Git integration
 Bundle 'tpope/vim-fugitive'
 "" Show Git file changes
 Bundle 'airblade/vim-gitgutter'
-"" JSON highlighting
-Bundle 'elzr/vim-json'
-"" Ansible highlighting
-Bundle "lepture/vim-jinja"
+
+"" Productivity
+
+"" GO tools
+Bundle 'fatih/vim-go'
+"" Color schemes
+Bundle 'flazz/vim-colorschemes'
 "" Fuzzy file searching
 Bundle 'kien/ctrlp.vim'
 "" Keep track of parenths
 Bundle 'luochen1990/rainbow'
 "" Better status line
 Bundle 'bling/vim-airline'
-"" Whitespace highlighting
-Bundle 'ntpeters/vim-better-whitespace'
-"" Syntax highlighting
-Bundle 'scrooloose/syntastic'
-"" Dockerfile syntax highlighting
-Bundle 'ekalinin/Dockerfile.vim'
 "" Javascript tools
 Bundle 'othree/yajs.vim'
-"" nginx config highlighting
-Bundle 'chr4/nginx.vim'
 "" Hanldle more text objects
 Bundle 'wellle/targets.vim'
-"" Jsonnet highlighting
-Bundle 'google/vim-jsonnet'
-"" Typescript highlighting
-Bundle 'leafgarland/typescript-vim'
 "" Markdown tools
 Bundle 'godlygeek/tabular'
 Bundle 'plasticboy/vim-markdown'
@@ -51,6 +60,10 @@ Bundle 'plasticboy/vim-markdown'
 Bundle 'tpope/vim-surround'
 "" Readline (bash) key bindings
 Bundle 'tpope/vim-rsi'
+"" Python code formatting
+"Bundle 'ambv/black'
+"" Indent highlighting
+Bundle 'Yggdroot/indentLine'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -139,11 +152,18 @@ let g:syntastic_check_on_wq = 0
 " Better symbols
 let g:syntastic_error_symbol = 'XX'
 let g:syntastic_warning_symbol = '!!'
+
 " Disable Python linting
-"let g:syntastic_python_checkers = []
-let g:syntastic_python_checkers = ['pyflakes']
+let g:syntastic_python_checkers = []
+"let g:syntastic_python_checkers = ['pyflakes']
+"let g:syntastic_python_checkers = ['pylint']
+
 " Javascript linting
 "let g:syntastic_javascript_checkers = ['eslint']
+
+" Automatically format Python files on save
+autocmd BufWritePre *.py execute ':Black'
+
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
@@ -154,14 +174,12 @@ set laststatus=2
 inoremap jj <Esc>
 
 " Newline shortcut
-nnoremap <S-J> o<Esc>
+nnoremap <C-j> o<Esc>
 
 " Insert a single character
 nnoremap <C-i> i_<Esc>r
 
 " Tab navigation shortcuts
-nnoremap <C-j> gT
-nnoremap <C-k> gt
 nnoremap <C-Left> gT
 nnoremap <C-Right> gt
 nnoremap 1<cr> 1gt

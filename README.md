@@ -11,9 +11,10 @@ The best way to use this repo is to clone it and create a symlink (shown below).
 * [yq](https://github.com/mikefarah/yq) - yaml parser
 * [shellcheck](https://github.com/koalaman/shellcheck) - analysis tool for shell scripts
 * [fzf](https://github.com/junegunn/fzf) - better fuzzy finder 
-* [ripgrep](https://github.com/BurntSushi/ripgrep) - better grep
-* [hstr](https://github.com/dvorka/hstr) - better history
-* [fd](https://github.com/sharkdp/fd) - better find
+* [ripgrep](https://github.com/BurntSushi/ripgrep) - better `grep`
+* [hstr](https://github.com/dvorka/hstr) - better `history`
+* [fd](https://github.com/sharkdp/fd) - better `find`
+* [bat](https://github.com/sharkdp/bat) - better `cat`
 
 ### Install zsh
 
