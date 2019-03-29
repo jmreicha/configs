@@ -76,6 +76,7 @@ colorscheme ir_black
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+let g:indentLine_color_term = 40
 "let g:indent_guides_enable_on_vim_startup = 1
 
 "" Handle nginx configs
