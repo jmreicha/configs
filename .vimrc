@@ -15,11 +15,11 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'hashivim/vim-terraform'
 "" JSON
 Bundle 'elzr/vim-json'
-"" Ansible
+"" Ansible (Jinja templates)
 Bundle "lepture/vim-jinja"
 "" Whitespace
 Bundle 'ntpeters/vim-better-whitespace'
-"" Syntax
+"" General syntax
 Bundle 'scrooloose/syntastic'
 "" Dockerfile
 Bundle 'ekalinin/Dockerfile.vim'
@@ -29,6 +29,8 @@ Bundle 'google/vim-jsonnet'
 Bundle 'leafgarland/typescript-vim'
 "" Nginx
 Bundle 'chr4/nginx.vim'
+"" Yaml
+Bundle 'mrk21/yaml-vim'
 
 "" Git
 
@@ -43,8 +45,6 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'fatih/vim-go'
 "" Color schemes
 Bundle 'flazz/vim-colorschemes'
-"" Fuzzy file searching
-Bundle 'kien/ctrlp.vim'
 "" Keep track of parenths
 Bundle 'luochen1990/rainbow'
 "" Better status line
@@ -58,12 +58,17 @@ Bundle 'godlygeek/tabular'
 Bundle 'plasticboy/vim-markdown'
 "" Surround tools
 Bundle 'tpope/vim-surround'
+"" Comment tools
+Bundle 'tpope/vim-commentary'
 "" Readline (bash) key bindings
 Bundle 'tpope/vim-rsi'
-"" Python code formatting
-"Bundle 'ambv/black'
 "" Indent highlighting
 Bundle 'Yggdroot/indentLine'
+"" Fuzzy file searching and FZF integration
+Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Bundle 'junegunn/fzf.vim'
+"" Python code formatting
+"Bundle 'ambv/black'
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -76,6 +81,7 @@ colorscheme ir_black
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+"" Green indent
 let g:indentLine_color_term = 40
 "let g:indent_guides_enable_on_vim_startup = 1
 
@@ -117,6 +123,10 @@ set scrolloff=3
 set visualbell
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
+
+" Turn on airline
+set laststatus=2
+set wildmenu
 
 " Auto source vimrc on save
 augroup reload_vimrc " {
@@ -163,13 +173,12 @@ let g:syntastic_python_checkers = []
 "let g:syntastic_javascript_checkers = ['eslint']
 
 " Automatically format Python files on save
-autocmd BufWritePre *.py execute ':Black'
+"autocmd BufWritePre *.py execute ':Black'
 
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
-" Turn on airline
-set laststatus=2
+nnoremap <silent> <C-p> :FZF<CR>
 
 " Quick escape
 inoremap jj <Esc>
