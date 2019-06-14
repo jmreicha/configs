@@ -3,7 +3,7 @@ configs
 
 A repository for all my configs and dotfiles.  I also keep track of my preferred command line produdictivity tools here.
 
-The best way to use this repo is to clone it and create a symlink (shown below).
+The easiest way to use this repo is to clone it and run the `install.sh` script.
 
 ### Tools
 

@@ -133,8 +133,8 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 export PATH="$HOME/.local/bin:$PATH"
 # Pyenv
 export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+#eval "$(pyenv init -)"
+#eval "$(pyenv virtualenv-init -)"
 
 # Virtualenvwrapper
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
