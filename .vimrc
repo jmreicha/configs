@@ -1,74 +1,70 @@
-"" Vundle config
-set nocompatible
-filetype off
-
-"" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#rc()
-
-"" Let Vundle manage Vundle
-Bundle 'gmarik/Vundle.vim'
+"" Vim Plugins
+call plug#begin('~/.vim/plugged')
 
 "" Highlighting
 
 "" Terraform
-Bundle 'hashivim/vim-terraform'
+Plug 'hashivim/vim-terraform'
 "" JSON
-Bundle 'elzr/vim-json'
+Plug 'elzr/vim-json'
 "" Ansible (Jinja templates)
-Bundle "lepture/vim-jinja"
+Plug 'lepture/vim-jinja'
 "" Whitespace
-Bundle 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 "" General syntax
-Bundle 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 "" Dockerfile
-Bundle 'ekalinin/Dockerfile.vim'
+Plug 'ekalinin/Dockerfile.vim'
 "" Jsonnet
-Bundle 'google/vim-jsonnet'
+Plug 'google/vim-jsonnet'
 "" Typescript
-Bundle 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim'
 "" Nginx
-Bundle 'chr4/nginx.vim'
+Plug 'chr4/nginx.vim'
 "" Yaml
-Bundle 'mrk21/yaml-vim'
+Plug 'mrk21/yaml-vim'
 
 "" Git
 
 "" Git integration
-Bundle 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 "" Show Git file changes
-Bundle 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 "" Productivity
 
 "" GO tools
-Bundle 'fatih/vim-go'
+Plug 'fatih/vim-go'
 "" Color schemes
-Bundle 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 "" Keep track of parenths
-Bundle 'luochen1990/rainbow'
+Plug 'luochen1990/rainbow'
 "" Better status line
-Bundle 'bling/vim-airline'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 "" Javascript tools
-Bundle 'othree/yajs.vim'
+Plug 'othree/yajs.vim'
 "" Hanldle more text objects
-Bundle 'wellle/targets.vim'
+Plug 'wellle/targets.vim'
 "" Markdown tools
-Bundle 'godlygeek/tabular'
-Bundle 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 "" Surround tools
-Bundle 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 "" Comment tools
-Bundle 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 "" Readline (bash) key bindings
-Bundle 'tpope/vim-rsi'
-"" Indent highlighting
-Bundle 'Yggdroot/indentLine'
+Plug 'tpope/vim-rsi'
+"" Indent highlighting (Only for cetain filetypes, e.g. yaml)
+Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 "" Fuzzy file searching and FZF integration
-Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Bundle 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 "" Python code formatting
-"Bundle 'ambv/black'
+"Plug 'ambv/black'
+"" Better line highlighting
+"Plug 'miyakogi/conoline.vim'
+call plug#end()
 
 " Filetype based auto indenting
 filetype plugin indent on
@@ -98,7 +94,6 @@ set formatoptions-=t
 "" Basics
 set number
 set showcmd
-set cursorline
 
 "" Syntax highlighting
 syntax on
@@ -124,9 +119,18 @@ set visualbell
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 
-" Turn on airline
+"" Misc settings
 set laststatus=2
+set t_Co=256
 set wildmenu
+" set wildmode=longest:list,full
+
+"" Airline status settings
+" let g:airline_powerline_fonts = 1
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
+" let g:airline_symbols.space = "\ua0"
 
 " Auto source vimrc on save
 augroup reload_vimrc " {
@@ -141,7 +145,8 @@ let g:vim_markdown_auto_extension_ext = 'txt'
 
 " Terraform
 let g:terraform_align=1
-let g:terraform_fmt_on_save = 1
+" Terraform 0.11 has formatting issues so we disable for now
+"let g:terraform_fmt_on_save = 1
 
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
@@ -211,3 +216,32 @@ nnoremap <CR> :noh<CR><CR>
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Cursorcolumn settings
+"set cursorcolumn
+"highlight CursorColumn guibg=#303000 ctermbg=234
+
+" Highlight empty spaces with dots and tabs with dashes
+"set list listchars=tab:»-,trail:·,extends:»,precedes:«
+"set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
+
+" Convert spaces to tabs when reading file
+"autocmd! bufreadpost * set noexpandtab | retab! 4
+" convert tabs to spaces before writing file
+"autocmd! bufwritepre * set expandtab | retab! 4
+" convert spaces to tabs after writing file (to show guides again)
+"autocmd! bufwritepost * set noexpandtab | retab! 4
+
+" Cursorline highlighting and settings
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine guibg=#303000 ctermbg=234
+
+" Gitgutter colors - this seems to be an issue upgrading to vim8?
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=yellow
+highlight GitGutterDelete ctermfg=red
+highlight GitGutterChangeDelete ctermfg=yellow
