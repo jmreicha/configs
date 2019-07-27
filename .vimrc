@@ -53,6 +53,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-surround'
 "" Comment tools
 Plug 'tpope/vim-commentary'
+"" Search highlighting
+Plug 'romainl/vim-cool'
 "" Readline (bash) key bindings
 Plug 'tpope/vim-rsi'
 "" Indent highlighting (Only for cetain filetypes, e.g. yaml)
@@ -102,6 +104,8 @@ syntax on
 set ignorecase
 set hlsearch
 set incsearch
+hi Search ctermbg=LightGreen
+hi Search ctermfg=Red
 
 "" Yank to system clipboard
 set clipboard=unnamed
