@@ -18,11 +18,8 @@ bindkey \^U backward-kill-line
 # Not sure if this is working
 setopt HIST_IGNORE_ALL_DUPS
 
-# Helm tab completion
-#source <(helm completion bash)
-
 # Set default kubernetes diff
-#export KUBERNETES_EXTERNAL_DIFF=colordiff
+export KUBECTL_EXTERNAL_DIFF=colordiff
 
 ##################
 # Custom functions
@@ -44,7 +41,10 @@ alias zshrc="vim ~/.zshrc"
 alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias ip="ip -c"
-alias ccat="bat"
+alias ccat="bat --paging=never"
+# Debian/Ubuntu Python
+alias python="python3"
+alias pip="pip3"
 
 # Docker Compose
 alias dc="docker-compose"
@@ -53,8 +53,10 @@ alias dp="docker ps"
 alias di="docker images"
 
 # Kubernetes
-alias kgpa="kgp -o wide --all-namespaces"
+alias kgpa="kgp --all-namespaces"
+alias kgpaw="kgp -o wide --all-namespaces"
 alias kgn="kubectl get nodes -o wide"
+alias kdn="kubectl describe nodes"
 alias ktn="kubectl top nodes"
 alias ktp="kubectl top pods --all-namespaces"
 alias ktpa="k top pods --all-namespaces"
@@ -62,6 +64,13 @@ alias kctx="kubectx"
 alias kns="kubens"
 alias kdump="kubectl get all --all-namespaces"
 alias klft="klf --tail 100"
+alias ktop="k9s -n all"
+
+# Terraform
+alias tf="terraform"
+
+# AWS
+alias av="aws-vault"
 
 ##############
 # System paths
@@ -71,7 +80,7 @@ alias klft="klf --tail 100"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Python3 (OSX)
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+#export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 # RVM
 #export PATH="$PATH:$HOME/.rvm/bin"
@@ -90,17 +99,14 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 #export PATH=$PATH:$GOPATH/bin
 #export PATH=$PATH:$GOROOT/bin
 
-# Terraform
-#PATH=/usr/local/terraform/bin:$HOME/terraform:$PATH
-
 #######################
 # Environment variables
 #######################
 
-# Kubernetes PS1 prompt
-#source /usr/local/opt/kube-ps1/share/kube-ps1.sh
-#PROMPT='$(kube_ps1)'$PROMPT
-#KUBE_PS1_BINARY="/usr/local/bin/kubectl"
+# AWS
+export AWS_VAULT_BACKEND="pass"
+export AWS_SESSION_TTL="12h"
+export AWS_ASSUME_ROLE_TTL="4h"
 
 # hstr
 export HISTFILE=~/.zsh_history
@@ -193,7 +199,7 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible git docker vagrant go common-aliases jsontools virtualenv pip
+plugins=(ansible aws git docker vagrant go common-aliases jsontools virtualenv pip
         python osx kubectl helm zsh-autosuggestions)
 
 # Zsh autosuggestion highlighting - grey
@@ -212,8 +218,17 @@ HIST_STAMPS="mm/dd/yyyy"
 # Load extra configurations
 source $ZSH/oh-my-zsh.sh
 
-# FZF
+# FZF (assume ripgrep is installed)
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin
+
+# Enable AWS autocompletion on Linux with non standard path
+#source ~/.local/bin/aws_zsh_completer.sh
+
+# kubectx/kubens completions
+fpath=($ZSH/functions $ZSH/completions $fpath)
+autoload -U compinit && compinit
+
