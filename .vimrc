@@ -11,8 +11,8 @@ Plug 'elzr/vim-json'
 Plug 'lepture/vim-jinja'
 "" Whitespace
 Plug 'ntpeters/vim-better-whitespace'
-"" General syntax
-Plug 'scrooloose/syntastic'
+"" Syntax and linting
+Plug 'dense-analysis/ale'
 "" Dockerfile
 Plug 'ekalinin/Dockerfile.vim'
 "" Jsonnet
@@ -63,7 +63,7 @@ Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "" Python code formatting
-"Plug 'ambv/black'
+Plug 'ambv/black'
 "" Better line highlighting
 "Plug 'miyakogi/conoline.vim'
 call plug#end()
@@ -158,31 +158,11 @@ let g:rainbow_active = 1
 " jsonnet formatting
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
-" Syntastic statusline
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" Sytnastic settings
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_loc_list_height=5
-let g:syntastic_check_on_wq = 0
-" Better symbols
-let g:syntastic_error_symbol = 'XX'
-let g:syntastic_warning_symbol = '!!'
-
-" Disable Python linting
-let g:syntastic_python_checkers = []
-"let g:syntastic_python_checkers = ['pyflakes']
-"let g:syntastic_python_checkers = ['pylint']
-
-" Javascript linting
-"let g:syntastic_javascript_checkers = ['eslint']
+" ALE settings
+let g:ale_linters = {'python': ['pycodestyle', 'pylint']}
 
 " Automatically format Python files on save
-"autocmd BufWritePre *.py execute ':Black'
+autocmd BufWritePre *.py execute ':Black'
 
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
