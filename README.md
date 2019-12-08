@@ -16,6 +16,17 @@ The easiest way to use this repo is to clone it and run the `install.sh` script.
 * [fd](https://github.com/sharkdp/fd) - better `find`
 * [bat](https://github.com/sharkdp/bat) - better `cat`
 
+### Linters and code checkers
+
+ * Hadolint
+ * Yamllint
+ * Shellcheck
+ * Pylint
+ * Black
+ * Tflint
+ * Tfsec
+ * Conftest
+
 ### Install zsh
 
 ```
