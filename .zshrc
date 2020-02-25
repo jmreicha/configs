@@ -31,6 +31,10 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
+get_password () {
+  pass show "$1"
+}
+
 #########
 # Aliases
 #########
@@ -42,6 +46,7 @@ alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias ip="ip -c"
 alias ccat="bat --paging=never"
+alias diff="colordiff"
 # Debian/Ubuntu Python
 alias python="python3"
 alias pip="pip3"
@@ -90,10 +95,10 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # GO
 #export GOPATH=$HOME/Go
-export GOROOT=/usr/lib/go-1.11
-export GOPATH=/usr/lib/go-1.11/bin
-export PATH="$PATH:$GOPATH:$GOPATH/bin"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
+#export GOROOT=/usr/lib/go-1.11
+#export GOPATH=/usr/lib/go-1.11/bin
+#export PATH="$PATH:$GOPATH:$GOPATH/bin"
+#export PATH=$PATH:/usr/local/opt/go/libexec/bin
 #export GOPATH=$HOME/Go
 #export GOROOT=/usr/local/opt/go/libexec
 #export PATH=$PATH:$GOPATH/bin
@@ -106,7 +111,7 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin
 # AWS
 export AWS_VAULT_BACKEND="pass"
 export AWS_SESSION_TTL="12h"
-export AWS_ASSUME_ROLE_TTL="4h"
+export AWS_ASSUME_ROLE_TTL="1h"
 
 # hstr
 export HISTFILE=~/.zsh_history
@@ -122,6 +127,10 @@ export NVM_DIR="$HOME/.nvm"
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
+# Export secrets
+export NPM_TOKEN="$(get_password npm)"
+export PAGERDUTY="$(get_password pagerduty)"
+
 # You may need to manually set your language environment
 #export LANG=en_US.UTF-8
 
@@ -136,9 +145,9 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 ##############################
 
 # Pyenv pip
-export PATH="$HOME/.local/bin:$PATH"
+#export PATH="$HOME/.local/bin:$PATH"
 # Pyenv
-export PATH="$HOME/.pyenv/bin:$PATH"
+#export PATH="$HOME/.pyenv/bin:$PATH"
 #eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
 

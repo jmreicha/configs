@@ -63,7 +63,7 @@ Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "" Python code formatting
-Plug 'ambv/black'
+Plug 'psf/black'
 "" Better line highlighting
 "Plug 'miyakogi/conoline.vim'
 call plug#end()
@@ -74,6 +74,15 @@ filetype plugin indent on
 "" Put swap files in swapfiles directory
 set directory=$HOME/.vim/
 
+"" Faster escape
+"nnoremap <Tab> <Esc>
+"vnoremap <Tab> <Esc>gV
+"onoremap <Tab> <Esc>
+""cnoremap <Tab> <C-C><Esc>
+"inoremap <Tab> <Esc>`^
+"inoremap <S-Tab> <Tab>
+"inoremap jj <Esc>
+
 "" Vim colorscheme
 colorscheme ir_black
 
@@ -83,9 +92,11 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 let g:indentLine_color_term = 40
 "let g:indent_guides_enable_on_vim_startup = 1
 
-"" Handle nginx configs
+"" Nginx configs
 autocmd BufNewFile,BufRead,BufReadPost *.conf set syntax=nginx
 autocmd BufNewFile,BufRead,BufReadPost *.tmpl set syntax=nginx
+"" Spellcheck for markdown
+autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
 
 "" Highlight lines over 80 characters
 set textwidth=80
@@ -99,6 +110,9 @@ set showcmd
 
 "" Syntax highlighting
 syntax on
+
+"" Spelling
+" set spell spelllang=en_us
 
 "" Searching
 set ignorecase
@@ -115,6 +129,7 @@ set tabstop=4
 set smarttab
 set softtabstop=4
 set shiftwidth=4
+set shiftround
 set expandtab
 set autoindent
 set nowrap
@@ -149,7 +164,7 @@ let g:vim_markdown_auto_extension_ext = 'txt'
 
 " Terraform
 let g:terraform_align=1
-" Terraform 0.11 has formatting issues so we disable for now
+" Terraform 0.11 has formatting issues on save so we disable for now
 "let g:terraform_fmt_on_save = 1
 
 " Turn on rainbow parentheses
@@ -158,25 +173,29 @@ let g:rainbow_active = 1
 " jsonnet formatting
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
-" ALE settings
-let g:ale_linters = {'python': ['pycodestyle', 'pylint']}
+" ALE linters
+let g:ale_linters = {'python': ['flake8', 'pylint']} "pydocstyle
+let g:ale_python_flake8_options = '--ignore=E501'
+
+" ALE fixers
+let b:ale_fixers = {'python': ['black', 'isort']}
+let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+
+let g:ale_fix_on_save = 1
 
 " Automatically format Python files on save
-autocmd BufWritePre *.py execute ':Black'
+" autocmd BufWritePre *.py execute ':Black'
 
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
 nnoremap <silent> <C-p> :FZF<CR>
 
-" Quick escape
-inoremap jj <Esc>
-
 " Newline shortcut
 nnoremap <C-j> o<Esc>
 
 " Insert a single character
-nnoremap <C-i> i_<Esc>r
+"nnoremap <C-i> i_<Esc>r
 
 " Tab navigation shortcuts
 nnoremap <C-Left> gT
