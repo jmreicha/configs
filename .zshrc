@@ -31,6 +31,7 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
+# TODO OSX vs Linux
 get_password () {
   pass show "$1"
 }
@@ -46,7 +47,9 @@ alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias ip="ip -c"
 alias ccat="bat --paging=never"
-alias diff="colordiff"
+alias diff="colordiff -u"
+alias live="cd ~/github.com/healthline/infrastructure-live"
+alias fd="fdfind"
 # Debian/Ubuntu Python
 alias python="python3"
 alias pip="pip3"
@@ -58,6 +61,7 @@ alias dp="docker ps"
 alias di="docker images"
 
 # Kubernetes
+alias kw="watch kubectl get pods"
 alias kgpa="kgp --all-namespaces"
 alias kgpaw="kgp -o wide --all-namespaces"
 alias kgn="kubectl get nodes -o wide"
@@ -73,6 +77,9 @@ alias ktop="k9s -n all"
 
 # Terraform
 alias tf="terraform"
+
+# Set the terragrunt cache in one place
+export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
 
 # AWS
 alias av="aws-vault"
@@ -127,9 +134,9 @@ export NVM_DIR="$HOME/.nvm"
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
-# Export secrets
-export NPM_TOKEN="$(get_password npm)"
-export PAGERDUTY="$(get_password pagerduty)"
+# Export secrets from password manager
+export NPM_TOKEN="$(get_password tokens/npm)"
+export PAGERDUTY_TOKEN="$(get_password tokens/pagerduty)"
 
 # You may need to manually set your language environment
 #export LANG=en_US.UTF-8
@@ -145,7 +152,7 @@ export PAGERDUTY="$(get_password pagerduty)"
 ##############################
 
 # Pyenv pip
-#export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 # Pyenv
 #export PATH="$HOME/.pyenv/bin:$PATH"
 #eval "$(pyenv init -)"
@@ -208,8 +215,8 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible aws git docker vagrant go common-aliases jsontools virtualenv pip
-        python osx kubectl helm zsh-autosuggestions)
+plugins=(ansible aws git docker vagrant go jsontools virtualenv pip
+        python osx kubectl helm zsh-autosuggestions kube-ps1 fd)
 
 # Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
@@ -224,11 +231,16 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HIST_STAMPS="mm/dd/yyyy"
 
-# Load extra configurations
+# This needs to load here to be able to source exra plugins and configurations
 source $ZSH/oh-my-zsh.sh
 
+# kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
+PROMPT=$PROMPT'$(kube_ps1) '
+KUBE_PS1_ENABLED=false
+
 # FZF (assume ripgrep is installed)
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+# export FZF_DEFAULT_OPTS='--ansi'
+# export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # add Pulumi to the PATH
@@ -241,3 +253,10 @@ export PATH=$PATH:$HOME/.pulumi/bin
 fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -U compinit && compinit
 
+# Ondir configuration
+eval_ondir() {
+  eval "`ondir \"$OLDPWD\" \"$PWD\"`"
+}
+
+chpwd_functions=( eval_ondir $chpwd_functions )
+alias joshtest="joshtest"
