@@ -74,15 +74,6 @@ filetype plugin indent on
 "" Put swap files in swapfiles directory
 set directory=$HOME/.vim/
 
-"" Faster escape
-"nnoremap <Tab> <Esc>
-"vnoremap <Tab> <Esc>gV
-"onoremap <Tab> <Esc>
-""cnoremap <Tab> <C-C><Esc>
-"inoremap <Tab> <Esc>`^
-"inoremap <S-Tab> <Tab>
-"inoremap jj <Esc>
-
 "" Vim colorscheme
 colorscheme ir_black
 
@@ -111,7 +102,7 @@ set showcmd
 "" Syntax highlighting
 syntax on
 
-"" Spelling
+"" Spell checking
 " set spell spelllang=en_us
 
 "" Searching
@@ -144,13 +135,6 @@ set t_Co=256
 set wildmenu
 " set wildmode=longest:list,full
 
-"" Airline status settings
-" let g:airline_powerline_fonts = 1
-" if !exists('g:airline_symbols')
-"   let g:airline_symbols = {}
-" endif
-" let g:airline_symbols.space = "\ua0"
-
 " Auto source vimrc on save
 augroup reload_vimrc " {
     autocmd!
@@ -174,30 +158,30 @@ let g:rainbow_active = 1
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
 " ALE linters
-let g:ale_linters = {'python': ['flake8', 'pylint']} "pydocstyle
+let g:ale_linters = {'python': ['flake8', 'pylint']} "pydocstyle for docstrings
 let g:ale_python_flake8_options = '--ignore=E501'
 
 " ALE fixers
 let b:ale_fixers = {'python': ['black', 'isort']}
-let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+" let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
 
+" Switch this setting to 0 to disable fixers
 let g:ale_fix_on_save = 1
-
-" Automatically format Python files on save
-" autocmd BufWritePre *.py execute ':Black'
 
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
+" Shortcuts
+
+" Split lines
+nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
+" FZF
 nnoremap <silent> <C-p> :FZF<CR>
-
-" Newline shortcut
+" Newline
 nnoremap <C-j> o<Esc>
-
-" Insert a single character
-"nnoremap <C-i> i_<Esc>r
-
-" Tab navigation shortcuts
+" Turn off search highlight
+nnoremap <CR> :noh<CR><CR>
+" Tab navigation
 nnoremap <C-Left> gT
 nnoremap <C-Right> gt
 nnoremap 1<cr> 1gt
@@ -210,15 +194,25 @@ nnoremap 7<cr> 7gt
 nnoremap 8<cr> 8gt
 nnoremap 9<cr> 9gt
 nnoremap 0<cr> :tablast<cr>
-
-" Turn off search highlight
-nnoremap <CR> :noh<CR><CR>
-
-" Change comment color
-"hi comment ctermfg=green
+" Insert a single character
+"nnoremap <C-i> i_<Esc>r
 
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Cursorline highlighting and settings
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine guibg=#303000 ctermbg=234
+
+" Gitgutter colors - this seems to be an issue upgrading to vim8?
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=yellow
+highlight GitGutterDelete ctermfg=red
+highlight GitGutterChangeDelete ctermfg=yellow
 
 " Cursorcolumn settings
 "set cursorcolumn
@@ -235,16 +229,18 @@ au BufNewFile,BufReadPost *.md set filetype=markdown
 " convert spaces to tabs after writing file (to show guides again)
 "autocmd! bufwritepost * set noexpandtab | retab! 4
 
-" Cursorline highlighting and settings
-set cursorline
-hi cursorline cterm=none term=none
-autocmd WinEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
-highlight CursorLine guibg=#303000 ctermbg=234
+"" Faster escape
+"nnoremap <Tab> <Esc>
+"vnoremap <Tab> <Esc>gV
+"onoremap <Tab> <Esc>
+""cnoremap <Tab> <C-C><Esc>
+"inoremap <Tab> <Esc>`^
+"inoremap <S-Tab> <Tab>
+"inoremap jj <Esc>
 
-" Gitgutter colors - this seems to be an issue upgrading to vim8?
-highlight clear SignColumn
-highlight GitGutterAdd ctermfg=green
-highlight GitGutterChange ctermfg=yellow
-highlight GitGutterDelete ctermfg=red
-highlight GitGutterChangeDelete ctermfg=yellow
+"" Airline status settings
+" let g:airline_powerline_fonts = 1
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
+" let g:airline_symbols.space = "\ua0"
