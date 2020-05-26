@@ -28,6 +28,32 @@ export HISTFILE=~/.zsh_history
 export HISTSIZE=10000000
 export SAVEHIST=$HISTSIZE
 
+# AWS
+export AWS_SESSION_TTL="12h"
+export AWS_ASSUME_ROLE_TTL="1h"
+
+# hstr
+export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
+bindkey -s "\C-r" "\eqhh\n"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# This causes 'complete:13: command not found: compdef' error
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Export SSH key so it doesn't need to be passed in every time.
+export SSH_KEY_PATH="~/.ssh/id_rsa"
+
+# You may need to manually set your language environment
+#export LANG=en_US.UTF-8
+
+# Compilation flags
+#export ARCHFLAGS="-arch x86_64"
+
+# Owner
+#export USER_NAME="YOUR NAME"
+
 # Set up basic pager colors
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -171,7 +197,6 @@ fi
 
 ### OSX
 if [[ $(uname) == "Darwin" ]]; then
-
     echo "Loading additional OSX configuration"
 
     # plugins=+(osx brew)
@@ -193,11 +218,14 @@ if [[ $(uname) == "Darwin" ]]; then
     get_secret() {
         security find-generic-password -gs "${1}" -w
     }
+
+    # Export secrets as environment variables
+    # export DATADOG_API_KEY="$(get_secret dd_frontend_preprod_api)"
+    # export DATADOG_APP_KEY="$(get_secret dd_frontend_preprod_app)"
 fi
 
 ### Linux
 if [[ $(uname) == "Linux" ]]; then
-
     echo "Loading additional Linux configuration"
 
     alias fd="fdfind"
@@ -212,41 +240,11 @@ if [[ $(uname) == "Linux" ]]; then
     get_secret() {
         pass show "$1"
     }
+
+    # Export secrets as environment variables
+    export NPM_TOKEN="$(get_secret tokens/npm)"
+    export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
 fi
-
-#######################
-# Environment variables
-#######################
-
-# AWS
-export AWS_SESSION_TTL="12h"
-export AWS_ASSUME_ROLE_TTL="1h"
-
-# hstr
-export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-bindkey -s "\C-r" "\eqhh\n"
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# This causes 'complete:13: command not found: compdef' error
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Export SSH key so it doesn't need to be passed in every time.
-export SSH_KEY_PATH="~/.ssh/id_rsa"
-
-# Export secrets from password manager
-export NPM_TOKEN="$(get_secret tokens/npm)"
-export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
-
-# You may need to manually set your language environment
-#export LANG=en_US.UTF-8
-
-# Compilation flags
-#export ARCHFLAGS="-arch x86_64"
-
-# Owner
-#export USER_NAME="YOUR NAME"
 
 #####
 # Zsh
@@ -336,4 +334,3 @@ eval_ondir() {
 }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
-

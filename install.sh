@@ -33,6 +33,11 @@ elif [[ "$(uname -s)" = "Linux" ]]; then
     for tool in $LINUX_TOOLS; do
         sudo apt install "$tool"
     done
+
+    # TODO i3/wayland configurations
+
+    # TODO kitty configuration
+
 else
     echo "Unkown OS"
     exit 0
