@@ -6,7 +6,6 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/
-#ZSH_THEME="af-magic"
 ZSH_THEME="josh-custom"
 
 # Better terminal colors
@@ -15,11 +14,27 @@ export TERM="xterm-256color"
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
 
-# Not sure if this is working
-setopt HIST_IGNORE_ALL_DUPS
-
 # Set default kubernetes diff
 export KUBECTL_EXTERNAL_DIFF=colordiff
+
+# Options for timer plugin
+export TIMER_FORMAT="# %d"
+export TIMER_PRECISION="3"
+
+# Ignore duplictates in history file
+setopt HIST_IGNORE_ALL_DUPS
+# Unlimited history
+export HISTSIZE=10000000
+export SAVEHIST=$HISTSIZE
+
+# Pager colors
+export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 ##################
 # Custom functions
@@ -31,10 +46,14 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
-# TODO OSX vs Linux
+# TODO OSX and Linux password management
 get_password () {
   pass show "$1"
 }
+
+# Better paging
+# cless() {
+# }
 
 #########
 # Aliases
@@ -86,6 +105,18 @@ export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
 
 # AWS
 alias av="aws-vault"
+
+# Open specific files types automatically
+alias -s tf=$EDITOR
+alias -s tfvars=$EDITOR
+alias -s md=$EDITOR
+alias -s markdown=$EDITOR
+alias -s txt=$EDITOR
+alias -s py=$EDITOR
+alias -s js=$EDITOR
+alias -s css=$EDITOR
+alias -s html=$EDITOR
+alias -s htm=$EDITOR
 
 ##############
 # System paths
@@ -219,8 +250,9 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible aws git docker vagrant go jsontools virtualenv pip zsh-syntax-highlighting
-        python osx kubectl helm zsh-autosuggestions kube-ps1 fd autojump)
+plugins=(ansible aws git docker vagrant go jsontools virtualenv pip terraform
+        python osx kubectl helm zsh-autosuggestions kube-ps1 fd autojump
+        zsh-syntax-highlighting)
 
 # Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
