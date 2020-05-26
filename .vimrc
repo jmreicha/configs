@@ -23,6 +23,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'chr4/nginx.vim'
 "" Yaml
 Plug 'mrk21/yaml-vim'
+"" Colors
+Plug 'lilydjwg/colorizer'
 
 "" Git
 
@@ -63,7 +65,7 @@ Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "" Python code formatting
-Plug 'psf/black'
+" Plug 'psf/black'
 "" Better line highlighting
 "Plug 'miyakogi/conoline.vim'
 call plug#end()
@@ -163,6 +165,8 @@ let g:ale_python_flake8_options = '--ignore=E501'
 
 " ALE fixers
 let b:ale_fixers = {'python': ['black', 'isort']}
+
+" Disable linters/fixers that aren't installed, otherwise none will work
 " let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
 
 " Switch this setting to 0 to disable fixers
