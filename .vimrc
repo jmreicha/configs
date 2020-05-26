@@ -68,6 +68,16 @@ Plug 'junegunn/fzf.vim'
 " Plug 'psf/black'
 "" Better line highlighting
 "Plug 'miyakogi/conoline.vim'
+"" Code completion
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'miyakogi/conoline.vim'
+
+"" Lisp
+
+"" Clojure
+" Plug 'Olical/conjure', { 'tag': 'v2.1.0', 'do': 'bin/compile' }
+"" Slime
+" Plug 'jpalardy/vim-slime'
 call plug#end()
 
 " Filetype based auto indenting
@@ -81,6 +91,7 @@ colorscheme ir_black
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
 "" Green indent
 let g:indentLine_color_term = 40
 "let g:indent_guides_enable_on_vim_startup = 1
@@ -160,8 +171,11 @@ let g:rainbow_active = 1
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
 " ALE linters
+" let g:ale_linters = {'python': ['pycodestyle', 'pylint']}
 let g:ale_linters = {'python': ['flake8', 'pylint']} "pydocstyle for docstrings
 let g:ale_python_flake8_options = '--ignore=E501'
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_enter = 0
 
 " ALE fixers
 let b:ale_fixers = {'python': ['black', 'isort']}
