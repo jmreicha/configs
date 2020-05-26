@@ -24,10 +24,11 @@ export TIMER_PRECISION="3"
 # Ignore duplictates in history file
 setopt HIST_IGNORE_ALL_DUPS
 # Unlimited history
+export HISTFILE=~/.zsh_history
 export HISTSIZE=10000000
 export SAVEHIST=$HISTSIZE
 
-# Pager colors
+# Set up basic pager colors
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
 export LESS_TERMCAP_me=$'\E[0m'           # end mode
@@ -46,7 +47,7 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
-# Better paging
+# TODO Better paging using highlight
 # cless() {
 # }
 
@@ -101,6 +102,8 @@ export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
 alias av="aws-vault"
 
 # Open specific files types automatically
+alias -s bash=$EDITOR
+alias -s sh=$EDITOR
 alias -s tf=$EDITOR
 alias -s tfvars=$EDITOR
 alias -s md=$EDITOR
@@ -136,41 +139,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #export PATH=$PATH:$GOPATH/bin
 #export PATH=$PATH:$GOROOT/bin
 
-#######################
-# Environment variables
-#######################
-
-# AWS
-export AWS_SESSION_TTL="12h"
-export AWS_ASSUME_ROLE_TTL="1h"
-
-# hstr
-export HISTFILE=~/.zsh_history
-export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-bindkey -s "\C-r" "\eqhh\n"
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# This causes 'complete:13: command not found: compdef' error
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Export SSH key so it doesn't need to be passed in every time.
-export SSH_KEY_PATH="~/.ssh/id_rsa"
-
-# Export secrets from password manager
-export NPM_TOKEN="$(get_password tokens/npm)"
-export PAGERDUTY_TOKEN="$(get_password tokens/pagerduty)"
-
-# You may need to manually set your language environment
-#export LANG=en_US.UTF-8
-
-# Compilation flags
-#export ARCHFLAGS="-arch x86_64"
-
-# Owner
-#export USER_NAME="YOUR NAME"
-
 ##############################
 # Virtual environment settings
 ##############################
@@ -196,6 +164,88 @@ export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
+#############
+# OS Specific
+#############
+
+### OSX
+if [[ $(uname) == "Darwin" ]]; then
+
+    echo "Loading additional OSX configuration"
+
+    # plugins=+(osx brew)
+
+    # Python3
+    export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
+
+    # Terraform autocompletion
+    # autoload -U +X bashcompinit && bashcompinit
+    # complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
+
+    # Autojump
+    [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+    # kube-ps1
+    # source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+
+    # Retrieve a secret from osx keychain
+    get_secret() {
+        security find-generic-password -gs "${1}" -w
+    }
+fi
+
+### Linux
+if [[ $(uname) == "Linux" ]]; then
+
+    echo "Loading additional Linux configuration"
+
+    alias fd="fdfind"
+
+    # Credentials are stored in gpg/pass
+    export AWS_VAULT_BACKEND="pass"
+
+    # Python3
+    #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+    # Retrieve a secret from pgp pass backend
+    get_secret() {
+        pass show "$1"
+    }
+fi
+
+#######################
+# Environment variables
+#######################
+
+# AWS
+export AWS_SESSION_TTL="12h"
+export AWS_ASSUME_ROLE_TTL="1h"
+
+# hstr
+export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
+bindkey -s "\C-r" "\eqhh\n"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# This causes 'complete:13: command not found: compdef' error
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Export SSH key so it doesn't need to be passed in every time.
+export SSH_KEY_PATH="~/.ssh/id_rsa"
+
+# Export secrets from password manager
+export NPM_TOKEN="$(get_secret tokens/npm)"
+export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
+
+# You may need to manually set your language environment
+#export LANG=en_US.UTF-8
+
+# Compilation flags
+#export ARCHFLAGS="-arch x86_64"
+
+# Owner
+#export USER_NAME="YOUR NAME"
 
 #####
 # Zsh
@@ -286,44 +336,3 @@ eval_ondir() {
 
 chpwd_functions=( eval_ondir $chpwd_functions )
 
-#############
-# OS Specific
-#############
-
-### OSX
-if [[ $(uname) -eq "Darwin" ]]; then
-
-    # plugins
-    # plugins=+(osx brew)
-
-    # Python3
-    export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
-
-    # Terraform autocompletion
-    autoload -U +X bashcompinit && bashcompinit
-    complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
-
-    # Autojump
-    [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-    # Retrieve a secret from an encrypted secret backend
-    get_secret() {
-        security find-generic-password -gs "${1}" -w
-    }
-fi
-
-### Linux
-if [[ $(uname) -eq "Linux" ]]; then
-
-    # Credentials are stored in gpg/pass
-    export AWS_VAULT_BACKEND="pass"
-
-    alias fd="fdfind"
-
-    # Python3
-    #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
-    get_password () {
-        pass show "$1"
-    }
-fi
