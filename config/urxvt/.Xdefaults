@@ -1,0 +1,83 @@
+! Extensions
+! github.com/simmel/urxvt-resize-font
+urxvt*perl-ext-common: default,clipboard,keyboard-select,matcher,url-select,selection-to-clipboard,resize-font
+
+! Look and feel
+URxvt*cursorBlink: True
+URxvt.scrollBar: False
+!URxvt*font: xft:Bitstream Vera Sans Mono:pixelsize=18
+URxvt*font: xft:Ubuntu Mono:size=12,xft:WenQuanYi Micro Hei Mono:size=12
+URxvt*boldFont: xft:Ubuntu Mono:bold:size=12,xft:WenQuanYi Micro Hei Mono:bold:size=10
+
+! Cursor
+URxvt.cursorBlink: true
+URxvt.cursorColor: #00FF00
+URxvt.cursorUnderline: false
+
+! Shortcuts
+URxvt.keysym.Control-Right: \033[1;5C
+URxvt.keysym.Control-Left: \033[1;5D
+URxvt.keysym.Control-Up: command:\033]720;1\007
+URxvt.keysym.Control-Down: command:\033]721;1\007
+
+! Copy/Paste
+URxvt.clipboard.autocopy: true
+!URxvt.keysym.M-c: perl:clipboard:copy
+!URxvt.keysym.M-v: perl:clipboard:paste
+!URxvt.clipboard.copycmd:  xclip -i -selection clipboard
+!URxvt.clipboard.pastecmd: xclip -o -selection clipboard
+!URxvt.keysym.Shift-Control-V: perl:paste_clipboard
+!URxvt.keysym.Shift-Control-C: perl:selection_to_clipboard
+!URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+
+! Disable ISO 14755 unicode input so we can use Ctrl-Shift bindings
+URxvt.iso14755:        false
+URxvt.iso14755_52:     false
+! Bind Ctrl-Shift-c & Ctrl-Shift-v to copy and paste
+! I dont know why, but I needed to use hex keysym values to get it to work
+!URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+!URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.C-S-0x43: eval:selection_to_clipboard
+URxvt.keysym.C-S-0x56: eval:paste_clipboard
+
+! Adjust font size on the fly (default is 1)
+!URxvt.keysym.C-minus: perl:font-size:decrease
+!URxvt.keysym.C-equal: perl:font-size:increase
+
+! Opacity
+URxvt.transparent: true
+URxvt.shading: 25
+
+! Color scheme
+URxvt*background: #2D2D2D
+URxvt*foreground: #F8F8F2
+
+URxvt*colorUL: #86a2b0
+
+! black
+URxvt*color0  : #2E3436
+URxvt*color8  : #555753
+! red
+URxvt*color1  : #CC0000
+URxvt*color9  : #EF2929
+! green
+URxvt*color2  : #00FF00
+URxvt*color10 : #8AE234
+! gold
+!URxvt*.color3: #b08500
+!URxvt*.color11: #d9a400
+! yellow
+URxvt*color3  : #E6DB74
+URxvt*color11 : #75715E
+! blue
+URxvt*color4  : #3465A4
+URxvt*color12 : #729FCF
+! magenta
+URxvt*color5  : #75507B
+URxvt*color13 : #AD7FA8
+! cyan
+URxvt*color6  : #06989A
+URxvt*color14 : #66D9EF
+! white
+URxvt*color7  : #D3D7CF
+URxvt*color15 : #EEEEEC
