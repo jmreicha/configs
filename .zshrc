@@ -49,12 +49,14 @@ alias ip="ip -c"
 alias ccat="bat --paging=never"
 alias diff="colordiff -u"
 alias live="cd ~/github.com/healthline/infrastructure-live"
+alias github="cd ~/github.com"
 alias fd="fdfind"
 # Debian/Ubuntu Python
 alias python="python3"
 alias pip="pip3"
 
-# Docker Compose
+# Docker
+alias d="docker"
 alias dc="docker-compose"
 alias dm="docker-machine"
 alias dp="docker ps"
@@ -77,6 +79,7 @@ alias ktop="k9s -n all"
 
 # Terraform
 alias tf="terraform"
+alias tg="terragrunt"
 
 # Set the terragrunt cache in one place
 export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
@@ -153,6 +156,7 @@ export PAGERDUTY_TOKEN="$(get_password tokens/pagerduty)"
 
 # Pyenv pip
 export PATH="$HOME/.local/bin:$PATH"
+
 # Pyenv
 #export PATH="$HOME/.pyenv/bin:$PATH"
 #eval "$(pyenv init -)"
@@ -215,8 +219,8 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible aws git docker vagrant go jsontools virtualenv pip
-        python osx kubectl helm zsh-autosuggestions kube-ps1 fd)
+plugins=(ansible aws git docker vagrant go jsontools virtualenv pip zsh-syntax-highlighting
+        python osx kubectl helm zsh-autosuggestions kube-ps1 fd autojump)
 
 # Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
@@ -224,7 +228,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -259,4 +263,3 @@ eval_ondir() {
 }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
-alias joshtest="joshtest"
