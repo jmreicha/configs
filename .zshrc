@@ -46,11 +46,6 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
-# TODO OSX and Linux password management
-get_password () {
-  pass show "$1"
-}
-
 # Better paging
 # cless() {
 # }
@@ -69,8 +64,7 @@ alias ccat="bat --paging=never"
 alias diff="colordiff -u"
 alias live="cd ~/github.com/healthline/infrastructure-live"
 alias github="cd ~/github.com"
-alias fd="fdfind"
-# Debian/Ubuntu Python
+alias diff="colordiff"
 alias python="python3"
 alias pip="pip3"
 
@@ -125,9 +119,6 @@ alias -s htm=$EDITOR
 # Krew k8s package manager
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# Python3 (OSX)
-#export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
 # RVM
 #export PATH="$PATH:$HOME/.rvm/bin"
 
@@ -150,7 +141,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #######################
 
 # AWS
-export AWS_VAULT_BACKEND="pass"
 export AWS_SESSION_TTL="12h"
 export AWS_ASSUME_ROLE_TTL="1h"
 
@@ -250,9 +240,9 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible aws git docker vagrant go jsontools virtualenv pip terraform
-        python osx kubectl helm zsh-autosuggestions kube-ps1 fd autojump
-        zsh-syntax-highlighting)
+plugins=(ansible git docker vagrant go jsontools virtualenv pip autojump osx
+        terraform python kubectl helm zsh-autosuggestions brew aws timer fd
+        kube-ps1 zsh-syntax-highlighting)
 
 # Zsh autosuggestion highlighting - grey
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
@@ -295,3 +285,45 @@ eval_ondir() {
 }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
+
+#############
+# OS Specific
+#############
+
+### OSX
+if [[ $(uname) -eq "Darwin" ]]; then
+
+    # plugins
+    # plugins=+(osx brew)
+
+    # Python3
+    export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
+
+    # Terraform autocompletion
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
+
+    # Autojump
+    [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+    # Retrieve a secret from an encrypted secret backend
+    get_secret() {
+        security find-generic-password -gs "${1}" -w
+    }
+fi
+
+### Linux
+if [[ $(uname) -eq "Linux" ]]; then
+
+    # Credentials are stored in gpg/pass
+    export AWS_VAULT_BACKEND="pass"
+
+    alias fd="fdfind"
+
+    # Python3
+    #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+    get_password () {
+        pass show "$1"
+    }
+fi
