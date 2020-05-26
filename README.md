@@ -1,7 +1,8 @@
 configs
 =======
 
-A repository for all my configs and dotfiles.  I also keep track of my preferred command line produdictivity tools here.
+A repository for all my configs and dotfiles.  I also keep track of my preferred
+command line produdictivity tools here.
 
 The easiest way to use this repo is to clone it and run the `install.sh` script.
 
@@ -15,6 +16,7 @@ The easiest way to use this repo is to clone it and run the `install.sh` script.
 * [hstr](https://github.com/dvorka/hstr) - better `history`
 * [fd](https://github.com/sharkdp/fd) - better `find`
 * [bat](https://github.com/sharkdp/bat) - better `cat`
+* [highlight](http://www.andre-simon.de/doku/highlight/en/highlight.php) - colorize text
 
 ### Linters and code checkers
 
@@ -27,10 +29,14 @@ The easiest way to use this repo is to clone it and run the `install.sh` script.
  * Tfsec
  * Conftest
 
+If you don't want to use the install script you can use below instructions for
+configuring most of the basic configurations. This will not install many of the
+additional tools that I normally use on a day to day basis.
+
 ### Install zsh
 
 ```
-sudo apt-get install zsh
+sudo apt-get install zsh # or brew install zsh on OSX
 chsh -s $(which zsh)
 logout
 ```
@@ -43,14 +49,28 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 ### Configure .zshrc
 
+There are some custom plugins that should be installed first to ensure the
+configuration works correctly.
+
+```
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+```
+
+Then link the `.zshrc` config file.
+
 ```
 rm ~/.zshrc
 ln -s ~/configs/.zshrc ~/.zshrc
 ```
 
-This will link the `.zshrc` defined in this repo to the correct system path in the home directory.  Be sure to use the FULL path to the config repo when linking, otherwise you might run into linking issues.  Here `client` is just cloned to the home directory and referenced there.
+This will link the `.zshrc` defined in this repo to the correct system path in
+the home directory. Be sure to use the FULL path to the config repo when
+linking, otherwise you might run into linking issues. Here `client` is just
+cloned to the home directory and referenced there.
 
-After setting up the link, you can just edit `~/.zshrc` if you want to make adjustments and can more easily keep configs in sync with commits, etc.
+After setting up the link, you can just edit `~/.zshrc` if you want to make
+adjustments and can more easily keep configs in sync with commits, etc.
 
 ### Configure .vimrc
 
@@ -60,7 +80,8 @@ ln -s ~/configs/.vimrc ~/.vimrc
 
 Same as above, this will link the Vim configuration into the correct location.
  
-To install the Vim plugins on a fresh machine, first clone the Vundle project in to the approriate location.
+To install the Vim plugins on a fresh machine, first clone the Vundle project in
+to the approriate location.
 
 ```
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -69,11 +90,11 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 From there, you will also need to add a few lines in your `vimrc` file to get
 it to work.  I already have them added so won't illustrate that step here.
 
-Then you can open up Vim and run `:PluginInstall` to go get additional packages.  There
-might be errors when running Vim the first time, these can be ignored.
+Then you can open up Vim and run `:PluginInstall` to go get additional packages.
+There might be errors when running Vim the first time, these can be ignored.
 
-This `.vimrc` uses the Vundle package manager to download and install some additional
-packages (thse can be found ithe the .vimrc).
+This `.vimrc` uses the Vundle package manager to download and install some
+additional packages (thse can be found ithe the .vimrc).
 
 ```
 "" GO tools
