@@ -164,6 +164,7 @@ export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
+
 #############
 # OS Specific
 #############
@@ -274,7 +275,7 @@ COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then

@@ -3,7 +3,7 @@
 # Simple install script for various tools and configuration
 
 COMMON_TOOLS="jq shellcheck fzf ripgrep hstr fd bat yamllint highlight autojump"
-OSX_TOOLS="hadolint terraform_landscape"
+OSX_TOOLS="hadolint terraform_landscape kube-ps1"
 LINUX_TOOLS=""
 PY_TOOLS="pylint pycodstyle"
 EXTRA_TOOLS="tflint tfsec ondir magic-wormhole"
