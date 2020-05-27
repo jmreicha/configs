@@ -1,49 +1,47 @@
-######
-# Misc
-######
+###############
+# Misc Settings
+###############
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load.  Look in ~/.oh-my-zsh/themes/
+# Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="josh-custom"
-
-# Better terminal colors
-export TERM="xterm-256color"
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
 
-# Set default kubernetes diff
-export KUBECTL_EXTERNAL_DIFF=colordiff
+# Unlimited history
+HIST_STAMPS="mm/dd/yyyy"
+HISTFILE=~/.zsh_history
+HISTSIZE=10000000
+SAVEHIST=$HISTSIZE
+# Ignore duplictates in history file
+setopt HIST_IGNORE_ALL_DUPS
+
+#########
+# Exports
+#########
 
 # Options for timer plugin
 export TIMER_FORMAT="# %d"
 export TIMER_PRECISION="3"
 
-# Ignore duplictates in history file
-setopt HIST_IGNORE_ALL_DUPS
-# Unlimited history
-export HISTFILE=~/.zsh_history
-export HISTSIZE=10000000
-export SAVEHIST=$HISTSIZE
+# Better terminal colors
+export TERM="xterm-256color"
+
+# Set default kubernetes diff
+export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
 export AWS_SESSION_TTL="12h"
 export AWS_ASSUME_ROLE_TTL="1h"
 
-# hstr
-export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-bindkey -s "\C-r" "\eqhh\n"
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# This causes 'complete:13: command not found: compdef' error
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
+
+# Set the terragrunt cache in one place
+export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
 
 # Set up basic pager colors
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
@@ -54,6 +52,13 @@ export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
+
 # You may need to manually set your language environment
 #export LANG=en_US.UTF-8
 
@@ -63,9 +68,9 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 # Owner
 #export USER_NAME="YOUR NAME"
 
-##################
-# Custom functions
-##################
+###########
+# Functions
+###########
 
 dclean() {
     docker rm $(docker ps -aq --filter status=exited)
@@ -122,9 +127,6 @@ alias ktop="k9s -n all"
 alias tf="terraform"
 alias tg="terragrunt"
 
-# Set the terragrunt cache in one place
-export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
-
 # AWS
 alias av="aws-vault"
 
@@ -143,7 +145,7 @@ alias -s html=$EDITOR
 alias -s htm=$EDITOR
 
 ##############
-# System paths
+# Paths
 ##############
 
 # Krew k8s package manager
@@ -169,9 +171,9 @@ export PATH=$PATH:$HOME/.pulumi/bin
 #export PATH=$PATH:$GOPATH/bin
 #export PATH=$PATH:$GOROOT/bin
 
-##############################
-# Virtual environment settings
-##############################
+########
+# Python
+########
 
 # Pyenv pip
 export PATH="$HOME/.local/bin:$PATH"
@@ -195,6 +197,57 @@ if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
 
+#####
+# Zsh
+#####
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="false"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Disable automatic text highlighting
+# https://github.com/zsh-users/zsh-syntax-highlighting/issues/349
+zle_highlight+=(paste:none)
+
+# Plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
+        terraform python kubectl helm zsh-autosuggestions aws timer fd
+        kube-ps1 zsh-syntax-highlighting)
+
+# Zsh autosuggestion highlighting - grey
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Load here to be able to source extra plugins and configurations
+source $ZSH/oh-my-zsh.sh
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
 #############
 # OS Specific
 #############
@@ -207,8 +260,8 @@ if [[ $(uname) == "Darwin" ]]; then
     export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
 
     # Terraform autocompletion
-    # autoload -U +X bashcompinit && bashcompinit
-    # complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
 
     # Autojump
     [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
@@ -238,6 +291,9 @@ if [[ $(uname) == "Linux" ]]; then
     # Python3
     #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
+    # Enable AWS autocompletion on Linux with non standard path
+    source ~/.local/bin/aws_zsh_completer.sh
+
     # Retrieve a secret from pgp pass backend
     get_secret() {
         pass show "$1"
@@ -248,80 +304,29 @@ if [[ $(uname) == "Linux" ]]; then
     export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
 fi
 
-#####
-# Zsh
-#####
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
-fi
-
-# Disable automatic text highlighting
-# https://github.com/zsh-users/zsh-syntax-highlighting/issues/349
-zle_highlight+=(paste:none)
-
-# Plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
-        terraform python kubectl helm zsh-autosuggestions aws timer fd
-        kube-ps1 zsh-syntax-highlighting)
-
-# Zsh autosuggestion highlighting - grey
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="mm/dd/yyyy"
-
-# This needs to load here to be able to source exra plugins and configurations
-source $ZSH/oh-my-zsh.sh
+#####################
+# Misc Configurations
+#####################
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
 PROMPT=$PROMPT'$(kube_ps1) '
+KUBE_PS1_SYMBOL_ENABLE=false
 KUBE_PS1_ENABLED=off
+
+# hstr
+export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
+bindkey -s "\C-r" "\eqhh\n"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# This causes 'complete:13: command not found: compdef' error
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # FZF (assume ripgrep is installed)
 # export FZF_DEFAULT_OPTS='--ansi'
 # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Enable AWS autocompletion on Linux with non standard path
-#source ~/.local/bin/aws_zsh_completer.sh
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
