@@ -1,12 +1,61 @@
-###############
-# Misc Settings
-###############
+##############
+# ZSH Settings
+##############
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="josh-custom"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="false"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Disable automatic text highlighting
+# https://github.com/zsh-users/zsh-syntax-highlighting/issues/349
+zle_highlight+=(paste:none)
+
+# Zsh autosuggestion highlighting - grey
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
+plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
+        terraform python kubectl helm zsh-autosuggestions aws timer fd
+        kube-ps1 zsh-syntax-highlighting)
+
+# Load here to be able to source extra plugins and configurations
+source $ZSH/oh-my-zsh.sh
+
+###############
+# Misc Settings
+###############
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
@@ -144,32 +193,15 @@ alias -s css=$EDITOR
 alias -s html=$EDITOR
 alias -s htm=$EDITOR
 
-##############
+#######
 # Paths
-##############
+#######
 
 # Krew k8s package manager
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Pulumi
 export PATH=$PATH:$HOME/.pulumi/bin
-
-# RVM
-#export PATH="$PATH:$HOME/.rvm/bin"
-
-# MAN
-#export MANPATH="/usr/local/man:$MANPATH"
-
-# GO
-#export GOPATH=$HOME/Go
-#export GOROOT=/usr/lib/go-1.11
-#export GOPATH=/usr/lib/go-1.11/bin
-#export PATH="$PATH:$GOPATH:$GOPATH/bin"
-#export PATH=$PATH:/usr/local/opt/go/libexec/bin
-#export GOPATH=$HOME/Go
-#export GOROOT=/usr/local/opt/go/libexec
-#export PATH=$PATH:$GOPATH/bin
-#export PATH=$PATH:$GOROOT/bin
 
 ########
 # Python
@@ -196,57 +228,6 @@ export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
-
-#####
-# Zsh
-#####
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Disable automatic text highlighting
-# https://github.com/zsh-users/zsh-syntax-highlighting/issues/349
-zle_highlight+=(paste:none)
-
-# Plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
-        terraform python kubectl helm zsh-autosuggestions aws timer fd
-        kube-ps1 zsh-syntax-highlighting)
-
-# Zsh autosuggestion highlighting - grey
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Load here to be able to source extra plugins and configurations
-source $ZSH/oh-my-zsh.sh
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
 
 #############
 # OS Specific
