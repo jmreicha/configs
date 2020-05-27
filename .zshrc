@@ -1,6 +1,6 @@
-##############
-# ZSH Settings
-##############
+#####
+# ZSH
+#####
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -53,9 +53,9 @@ plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
 
-###############
-# Misc Settings
-###############
+######
+# Misc
+######
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
@@ -67,6 +67,68 @@ HISTSIZE=10000000
 SAVEHIST=$HISTSIZE
 # Ignore duplictates in history file
 setopt HIST_IGNORE_ALL_DUPS
+
+#########
+# Aliases
+#########
+
+# Misc
+alias vimrc="vim ~/.vimrc"
+alias zshrc="vim ~/.zshrc"
+alias z="vim ~/.zshrc"
+alias v="vim ~/.vimrc"
+alias ip="ip -c"
+alias ccat="bat --paging=never"
+alias diff="colordiff -u"
+alias github="cd ~/github.com"
+alias live="cd ~/github.com/healthline/infrastructure-live"
+alias live="cd ~/github.com/healthline/infrastructure-modules"
+alias diff="colordiff"
+alias python="python3"
+alias pip="pip3"
+
+# Docker
+alias d="docker"
+alias dc="docker-compose"
+alias dm="docker-machine"
+alias dp="docker ps"
+alias di="docker images"
+
+# Kubernetes
+alias kw="watch kubectl get pods"
+alias kgpa="kgp --all-namespaces"
+alias kgpaw="kgp -o wide --all-namespaces"
+alias kgn="kubectl get nodes -o wide"
+alias kdn="kubectl describe nodes"
+alias ktn="kubectl top nodes"
+alias ktp="kubectl top pods --all-namespaces"
+alias ktpa="k top pods --all-namespaces"
+alias kctx="kubectx"
+alias kns="kubens"
+alias kdump="kubectl get all --all-namespaces"
+alias klft="klf --tail 100"
+alias ktop="k9s -n all"
+
+# Terraform
+alias tf="terraform"
+alias tg="terragrunt"
+
+# AWS
+alias av="aws-vault"
+
+# Open specific files types automatically
+alias -s bash=$EDITOR
+alias -s sh=$EDITOR
+alias -s tf=$EDITOR
+alias -s tfvars=$EDITOR
+alias -s md=$EDITOR
+alias -s markdown=$EDITOR
+alias -s txt=$EDITOR
+alias -s py=$EDITOR
+alias -s js=$EDITOR
+alias -s css=$EDITOR
+alias -s html=$EDITOR
+alias -s htm=$EDITOR
 
 #########
 # Exports
@@ -130,68 +192,6 @@ dclean() {
 # TODO Better paging using highlight
 # cless() {
 # }
-
-#########
-# Aliases
-#########
-
-# Misc
-alias vimrc="vim ~/.vimrc"
-alias zshrc="vim ~/.zshrc"
-alias z="vim ~/.zshrc"
-alias v="vim ~/.vimrc"
-alias ip="ip -c"
-alias ccat="bat --paging=never"
-alias diff="colordiff -u"
-alias github="cd ~/github.com"
-alias live="cd ~/github.com/healthline/infrastructure-live"
-alias live="cd ~/github.com/healthline/infrastructure-modules"
-alias diff="colordiff"
-alias python="python3"
-alias pip="pip3"
-
-# Docker
-alias d="docker"
-alias dc="docker-compose"
-alias dm="docker-machine"
-alias dp="docker ps"
-alias di="docker images"
-
-# Kubernetes
-alias kw="watch kubectl get pods"
-alias kgpa="kgp --all-namespaces"
-alias kgpaw="kgp -o wide --all-namespaces"
-alias kgn="kubectl get nodes -o wide"
-alias kdn="kubectl describe nodes"
-alias ktn="kubectl top nodes"
-alias ktp="kubectl top pods --all-namespaces"
-alias ktpa="k top pods --all-namespaces"
-alias kctx="kubectx"
-alias kns="kubens"
-alias kdump="kubectl get all --all-namespaces"
-alias klft="klf --tail 100"
-alias ktop="k9s -n all"
-
-# Terraform
-alias tf="terraform"
-alias tg="terragrunt"
-
-# AWS
-alias av="aws-vault"
-
-# Open specific files types automatically
-alias -s bash=$EDITOR
-alias -s sh=$EDITOR
-alias -s tf=$EDITOR
-alias -s tfvars=$EDITOR
-alias -s md=$EDITOR
-alias -s markdown=$EDITOR
-alias -s txt=$EDITOR
-alias -s py=$EDITOR
-alias -s js=$EDITOR
-alias -s css=$EDITOR
-alias -s html=$EDITOR
-alias -s htm=$EDITOR
 
 #######
 # Paths
