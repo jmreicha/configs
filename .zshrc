@@ -45,15 +45,6 @@ export NVM_DIR="$HOME/.nvm"
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
-# You may need to manually set your language environment
-#export LANG=en_US.UTF-8
-
-# Compilation flags
-#export ARCHFLAGS="-arch x86_64"
-
-# Owner
-#export USER_NAME="YOUR NAME"
-
 # Set up basic pager colors
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -62,6 +53,15 @@ export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
 export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
+
+# You may need to manually set your language environment
+#export LANG=en_US.UTF-8
+
+# Compilation flags
+#export ARCHFLAGS="-arch x86_64"
+
+# Owner
+#export USER_NAME="YOUR NAME"
 
 ##################
 # Custom functions
@@ -89,8 +89,9 @@ alias v="vim ~/.vimrc"
 alias ip="ip -c"
 alias ccat="bat --paging=never"
 alias diff="colordiff -u"
-alias live="cd ~/github.com/healthline/infrastructure-live"
 alias github="cd ~/github.com"
+alias live="cd ~/github.com/healthline/infrastructure-live"
+alias live="cd ~/github.com/healthline/infrastructure-modules"
 alias diff="colordiff"
 alias python="python3"
 alias pip="pip3"
@@ -148,6 +149,9 @@ alias -s htm=$EDITOR
 # Krew k8s package manager
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+# Pulumi
+export PATH=$PATH:$HOME/.pulumi/bin
+
 # RVM
 #export PATH="$PATH:$HOME/.rvm/bin"
 
@@ -198,8 +202,6 @@ fi
 ### OSX
 if [[ $(uname) == "Darwin" ]]; then
     echo "Loading additional OSX configuration"
-
-    # plugins=+(osx brew)
 
     # Python3
     export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
@@ -289,8 +291,8 @@ zle_highlight+=(paste:none)
 # Plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ansible git docker vagrant go jsontools virtualenv pip autojump osx
-        terraform python kubectl helm zsh-autosuggestions brew aws timer fd
+plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
+        terraform python kubectl helm zsh-autosuggestions aws timer fd
         kube-ps1 zsh-syntax-highlighting)
 
 # Zsh autosuggestion highlighting - grey
@@ -311,15 +313,12 @@ source $ZSH/oh-my-zsh.sh
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
 PROMPT=$PROMPT'$(kube_ps1) '
-KUBE_PS1_ENABLED=false
+KUBE_PS1_ENABLED=off
 
 # FZF (assume ripgrep is installed)
 # export FZF_DEFAULT_OPTS='--ansi'
 # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
 
 # Enable AWS autocompletion on Linux with non standard path
 #source ~/.local/bin/aws_zsh_completer.sh
