@@ -53,13 +53,6 @@ plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
 
-######
-# Misc
-######
-
-# Bash hotkey for end of line kill
-bindkey \^U backward-kill-line
-
 # Unlimited history
 HIST_STAMPS="mm/dd/yyyy"
 HISTFILE=~/.zsh_history
@@ -77,7 +70,6 @@ alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
-alias ip="ip -c"
 alias ccat="bat --paging=never"
 alias diff="colordiff -u"
 alias github="cd ~/github.com"
@@ -264,6 +256,7 @@ fi
 if [[ $(uname) == "Linux" ]]; then
     echo "Loading additional Linux configuration"
 
+    alias ip="ip -c"
     alias fd="fdfind"
 
     # Credentials are stored in gpg/pass
@@ -288,6 +281,9 @@ fi
 #####################
 # Misc Configurations
 #####################
+
+# Bash hotkey for end of line kill
+bindkey \^U backward-kill-line
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
 PROMPT=$PROMPT'$(kube_ps1) '
