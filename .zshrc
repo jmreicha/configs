@@ -17,10 +17,6 @@ ENABLE_CORRECTION="false"
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
 # Disable automatic text highlighting
 # https://github.com/zsh-users/zsh-syntax-highlighting/issues/349
 zle_highlight+=(paste:none)
@@ -34,9 +30,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
-plugins=(ansible git docker vagrant golang jsontools virtualenv pip autojump osx
-        terraform python kubectl helm zsh-autosuggestions aws timer fd
-        kube-ps1 zsh-syntax-highlighting)
+plugins=(ansible aws git docker docker-compose vagrant golang jsontools
+        virtualenv pip autojump osx kube-ps1 zsh-syntax-highlighting terraform
+        python kubectl helm zsh-autosuggestions timer fd fzf)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -58,8 +54,9 @@ setopt HIST_IGNORE_ALL_DUPS
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
 #########
 # Aliases
@@ -70,7 +67,6 @@ alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
-alias ccat="bat --paging=never"
 alias diff="colordiff -u"
 alias github="cd ~/github.com"
 alias live="cd ~/github.com/healthline/infrastructure-live"
@@ -78,6 +74,10 @@ alias live="cd ~/github.com/healthline/infrastructure-modules"
 alias diff="colordiff"
 alias python="python3"
 alias pip="pip3"
+# Better cat
+# alias ccat="bat --paging=never"
+alias ccat="highlight $1 --out-format xterm256 -l --force -s bluegreen --no-trailing-nl"
+alias e="exit"
 
 # Docker
 alias d="docker"
@@ -162,8 +162,8 @@ else
   export EDITOR='vim'
 fi
 
-# You may need to manually set your language environment
-#export LANG=en_US.UTF-8
+# Force the language environment to utf-8
+export LANG=en_US.UTF-8
 
 # Compilation flags
 #export ARCHFLAGS="-arch x86_64"
@@ -181,10 +181,6 @@ dclean() {
     docker volume rm $(docker volume ls -qf dangling=true)
 }
 
-# TODO Better paging using highlight
-# cless() {
-# }
-
 #######
 # Paths
 #######
@@ -193,7 +189,10 @@ dclean() {
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Pulumi
-export PATH=$PATH:$HOME/.pulumi/bin
+export PATH="$HOME/.pulumi/bin:$PATH"
+
+# Home user bin directory
+export PATH="$HOME/bin:$PATH"
 
 ########
 # Python
@@ -284,6 +283,20 @@ fi
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
+
+# Use vim keys in tab complete menu
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+# Use highlight for better less/more colors
+LESS_COLOR="bluegreen"
+export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s $LESS_COLOR --no-trailing-nl"
+export LESS=" -R"
+alias less='less -m -N -g -i -J --line-numbers --underline-special'
+alias more='less'
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
 PROMPT=$PROMPT'$(kube_ps1) '
