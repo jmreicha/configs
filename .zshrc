@@ -238,9 +238,6 @@ if [[ $(uname) == "Darwin" ]]; then
     # Autojump
     [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
-    # kube-ps1
-    # source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
-
     # Retrieve a secret from osx keychain
     get_secret() {
         security find-generic-password -gs "${1}" -w
