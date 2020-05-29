@@ -76,7 +76,7 @@ alias python="python3"
 alias pip="pip3"
 # Better cat
 # alias ccat="bat --paging=never"
-alias ccat="highlight $1 --out-format xterm256 -l --force -s bluegreen --no-trailing-nl"
+alias ccat="highlight $1 --out-format xterm256 -l --force -s moria --no-trailing-nl"
 alias e="exit"
 
 # Docker
@@ -289,8 +289,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 
 # Use highlight for better less/more colors
-LESS_COLOR="bluegreen"
-export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s $LESS_COLOR --no-trailing-nl"
+export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
 export LESS=" -R"
 alias less='less -m -N -g -i -J --line-numbers --underline-special'
 alias more='less'
