@@ -3,10 +3,10 @@
 # Simple install script for various tools and configuration
 
 COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump"
-OSX_TOOLS="hadolint terraform_landscape kube-ps1 fd"
+OSX_TOOLS="hadolint terraform_landscape kube-ps1 fd findutils"
 LINUX_TOOLS="fd-find"
-PY_TOOLS="pylint flake8 pycodstyle"
-EXTRA_TOOLS="tflint tfsec ondir magic-wormhole"
+PY_TOOLS="pylint flake8 pycodstyle bashate pre-commit"
+EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta"
 
 # Common across OS
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
@@ -21,7 +21,11 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
     done
 
     for tool in $OSX_TOOLS; do
-        sudo apt install "$tool"
+        brew install "$tool"
+    done
+
+    for tool in $PY_TOOLS; do
+        pip install --user "$tool"
     done
 
 # Linux specific
@@ -32,6 +36,10 @@ elif [[ "$(uname -s)" = "Linux" ]]; then
 
     for tool in $LINUX_TOOLS; do
         sudo apt install "$tool"
+    done
+
+    for tool in $PY_TOOLS; do
+        pip install "$tool"
     done
 
     # TODO i3/wayland configurations
