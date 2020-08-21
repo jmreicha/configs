@@ -31,8 +31,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-        virtualenv pip autojump osx kube-ps1 zsh-syntax-highlighting terraform
-        python kubectl helm zsh-autosuggestions timer fd fzf)
+    virtualenv pip autojump osx kube-ps1 zsh-syntax-highlighting terraform python
+    kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -69,14 +69,15 @@ alias z="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias github="cd ~/github.com"
+alias healthline="cd ~/github.com/healthline"
 alias live="cd ~/github.com/healthline/infrastructure-live"
-alias live="cd ~/github.com/healthline/infrastructure-modules"
+alias modules="cd ~/github.com/healthline/infrastructure-modules"
 alias diff="colordiff"
 alias python="python3"
 alias pip="pip3"
 # Better cat
 # alias ccat="bat --paging=never"
-alias ccat="highlight $1 --out-format xterm256 -l --force -s moria --no-trailing-nl"
+alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
 
 # Docker
@@ -107,6 +108,13 @@ alias tg="terragrunt"
 
 # AWS
 alias av="aws-vault"
+
+# Exa
+alias ls='exa -a'
+alias l='exa -lbFa --git --header'
+alias ll='exa -lbGF --git'
+alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
+alias lt='exa --tree --level=2
 
 # Open specific files types automatically
 alias -s bash=$EDITOR
@@ -282,11 +290,11 @@ fi
 bindkey \^U backward-kill-line
 
 # Use vim keys in tab complete menu
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
+# bindkey -M menuselect 'h' vi-backward-char
+# bindkey -M menuselect 'k' vi-up-line-or-history
+# bindkey -M menuselect 'l' vi-forward-char
+# bindkey -M menuselect 'j' vi-down-line-or-history
+# bindkey -v '^?' backward-delete-char
 
 # Use highlight for better less/more colors
 export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
