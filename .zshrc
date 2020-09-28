@@ -32,7 +32,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
     virtualenv pip autojump osx kube-ps1 zsh-syntax-highlighting terraform python
-    kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z)
+    kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z extract)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -108,11 +108,12 @@ alias tg="terragrunt"
 
 # AWS
 alias av="aws-vault"
+alias ao="aws-okta"
 
 # Exa
 alias ls='exa -a'
-alias l='exa -lbFa --git --header'
-alias ll='exa -lbGF --git'
+alias ll='exa -lbFa --git --header'
+alias l='exa -lbGF --git'
 alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
 alias lt='exa --tree --level=2
 
@@ -145,8 +146,8 @@ export TERM="xterm-256color"
 export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
-export AWS_SESSION_TTL="12h"
-export AWS_ASSUME_ROLE_TTL="1h"
+# export AWS_SESSION_TTL="12h"
+# export AWS_ASSUME_ROLE_TTL="1h"
 
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
@@ -216,12 +217,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Virtualenvwrapper
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/projects
-#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-#export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-# This seems to break with custom path for Python3
-#source /usr/local/bin/virtualenvwrapper.sh
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/projects
 
 # virtualenv-burrito
 if [ -f $HOME/.venvburrito/startup.sh ]; then
@@ -268,6 +265,9 @@ if [[ $(uname) == "Linux" ]]; then
 
     # Python3
     #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
+    source ~/.local/bin/virtualenvwrapper.sh
 
     # Enable AWS autocompletion on Linux with non standard path
     source ~/.local/bin/aws_zsh_completer.sh
