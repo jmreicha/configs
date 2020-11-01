@@ -6,7 +6,8 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="josh-custom"
+# ZSH_THEME="josh-custom"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -31,8 +32,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip autojump osx kube-ps1 zsh-syntax-highlighting terraform python
-    kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z extract)
+	virtualenv virtualenvwrapper pip autojump osx kube-ps1 zsh-syntax-highlighting
+	terraform python kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z
+	extract)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -225,6 +227,17 @@ if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
 
+###############
+# Powerlevel10k
+###############
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 #############
 # OS Specific
 #############
@@ -332,3 +345,6 @@ eval_ondir() {
 }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
+
+# To customize our prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

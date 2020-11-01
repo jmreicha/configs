@@ -5,12 +5,16 @@
 COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump"
 OSX_TOOLS="hadolint terraform_landscape kube-ps1 fd findutils"
 LINUX_TOOLS="fd-find"
-PY_TOOLS="pylint flake8 pycodstyle bashate pre-commit"
+PY_TOOLS="pylint flake8 pycodstyle bashate pre-commit pygments thefuck"
 EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta"
 
 # Common across OS
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+# powerlevel fonts
+curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
 
 # TODO Make this DRY
 
