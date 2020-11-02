@@ -94,11 +94,11 @@
     vi_mode                 # vi mode (you don't need this if you've enabled prompt_char)
     background_jobs         # presence of background jobs
     # vpn_ip                # virtual private network indicator
-    # battery                 # internal battery
-    # load                    # CPU load
-    disk_usage            # disk usage
+    battery                 # internal battery
+    # load                  # CPU load
+    disk_usage              # disk usage
     ram                     # free RAM
-    # os_icon                 # os identifier
+    os_icon                 # os identifier
     # swap                  # used swap
     # todo                  # todo items (https://github.com/todotxt/todo.txt-cli)
     # timewarrior           # timewarrior tracking status (https://timewarrior.net/)
@@ -222,6 +222,7 @@
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
+  # typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
@@ -382,13 +383,14 @@
 
     local res
 
-    if [[ -n $VCS_STATUS_REMOTE_URL ]]; then
-      local repo=${VCS_STATUS_REMOTE_URL}
-      repo=${repo/.git/}
-      repo=${repo/*github.com:/}
-      repo=${repo/*github.com\//}
-      res+="${clean}${repo} "
-    fi
+    # Uncomment to enable remote url in prompt, e.g. 'jmreicha/configs'
+    # if [[ -n $VCS_STATUS_REMOTE_URL ]]; then
+    #   local repo=${VCS_STATUS_REMOTE_URL}
+    #   repo=${repo/.git/}
+    #   repo=${repo/*github.com:/}
+    #   repo=${repo/*github.com\//}
+    #   res+="${clean}${repo} "
+    # fi
 
     local where  # branch or tag
     if [[ -n $VCS_STATUS_LOCAL_BRANCH ]]; then
