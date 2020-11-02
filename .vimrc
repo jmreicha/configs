@@ -164,6 +164,9 @@ let g:terraform_align=1
 " Terraform 0.11 has formatting issues on save so we disable for now
 "let g:terraform_fmt_on_save = 1
 
+" Terragrunt
+au! BufNewFile,BufRead terragrunt.hcl set filetype=terraform syntax=terraform
+
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
 
@@ -171,14 +174,19 @@ let g:rainbow_active = 1
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
 " ALE linters
-" let g:ale_linters = {'python': ['pycodestyle', 'pylint']}
-let g:ale_linters = {'python': ['flake8', 'pylint']} "pydocstyle for docstrings
+" let g:ale_linters = {'python': ['black', 'flake8', 'pycodestyle', 'pylint']}
+let g:ale_linters = {'python': ['flake8', 'pylint']}
+
+" Ignore lines over 80 chars
 let g:ale_python_flake8_options = '--ignore=E501'
+let g:ale_sh_bashate_options = '-i E006'
+
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_lint_on_enter = 0
 
 " ALE fixers
-let b:ale_fixers = {'python': ['black', 'isort']}
+" let b:ale_fixers = {'python': ['black', 'isort']}
+let b:ale_fixers = {'python': ['isort']}
 
 " Disable linters/fixers that aren't installed, otherwise none will work
 " let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
@@ -257,8 +265,8 @@ highlight GitGutterChangeDelete ctermfg=yellow
 "inoremap jj <Esc>
 
 "" Airline status settings
-" let g:airline_powerline_fonts = 1
-" if !exists('g:airline_symbols')
-"   let g:airline_symbols = {}
-" endif
-" let g:airline_symbols.space = "\ua0"
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
