@@ -53,7 +53,7 @@
     # =========================[ Line #1 ]=========================
     status                  # exit code of the last command
     command_execution_time  # duration of the last command
-    time                    # current time
+    # time                    # current time
     # direnv                # direnv status (https://direnv.net/)
     # asdf                  # asdf version manager (https://github.com/asdf-vm/asdf)
     # anaconda              # conda environment (https://conda.io/)
@@ -94,11 +94,11 @@
     vi_mode                 # vi mode (you don't need this if you've enabled prompt_char)
     background_jobs         # presence of background jobs
     # vpn_ip                # virtual private network indicator
-    battery                 # internal battery
-    load                    # CPU load
-    # disk_usage            # disk usage
+    # battery                 # internal battery
+    # load                    # CPU load
+    disk_usage            # disk usage
     ram                     # free RAM
-    os_icon                 # os identifier
+    # os_icon                 # os identifier
     # swap                  # used swap
     # todo                  # todo items (https://github.com/todotxt/todo.txt-cli)
     # timewarrior           # timewarrior tracking status (https://timewarrior.net/)
@@ -270,7 +270,7 @@
   # directory will be shortened only when prompt doesn't fit or when other parameters demand it
   # (see POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS and POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT below).
   # If set to `0`, directory will always be shortened to its minimum length.
-  typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=80
+  typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=40
   # When `dir` segment is on the last prompt line, try to shorten it enough to leave at least this
   # many columns for typing commands.
   typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS=40
