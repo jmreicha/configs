@@ -23,8 +23,12 @@ Plug 'leafgarland/typescript-vim'
 Plug 'chr4/nginx.vim'
 "" Yaml
 Plug 'mrk21/yaml-vim'
+Plug 'Einenlum/yaml-revealer'
+Plug 'pedrohdz/vim-yaml-folds'
 "" Colors
 Plug 'lilydjwg/colorizer'
+"" PowerShell
+Plug 'PProvost/vim-ps1'
 
 "" Git
 
@@ -55,6 +59,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'tpope/vim-surround'
 "" Comment tools
 Plug 'tpope/vim-commentary'
+"" Repeat with plugins
+Plug 'tpope/vim-repeat'
 "" Search highlighting
 Plug 'romainl/vim-cool'
 "" Readline (bash) key bindings
@@ -102,9 +108,6 @@ autocmd BufNewFile,BufRead,BufReadPost *.tmpl set syntax=nginx
 "" Spellcheck for markdown
 autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
 
-"" Highlight lines over 80 characters
-set textwidth=80
-set colorcolumn=+1
 "" No automatic line wrapping
 set formatoptions-=t
 
@@ -114,6 +117,11 @@ set showcmd
 
 "" Syntax highlighting
 syntax on
+
+"" Highlight lines over 80 characters
+set textwidth=80
+set colorcolumn=+1
+hi ColorColumn ctermbg=34
 
 "" Spell checking
 " set spell spelllang=en_us
@@ -173,7 +181,19 @@ let g:rainbow_active = 1
 " jsonnet formatting
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
-" ALE linters
+" Default fold settings
+set foldlevelstart=20
+
+" ALE
+
+" Look and feel
+let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+
+" Linters
 " let g:ale_linters = {'python': ['black', 'flake8', 'pycodestyle', 'pylint']}
 let g:ale_linters = {'python': ['flake8', 'pylint']}
 
@@ -184,7 +204,7 @@ let g:ale_sh_bashate_options = '-i E006'
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_lint_on_enter = 0
 
-" ALE fixers
+" Fixers
 " let b:ale_fixers = {'python': ['black', 'isort']}
 let b:ale_fixers = {'python': ['isort']}
 
