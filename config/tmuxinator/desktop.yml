@@ -1,0 +1,44 @@
+# /home/jmreicha/.config/tmuxinator/desktop.yml
+
+name: desktop
+root: ~
+
+# Runs on project start, always
+on_project_start: sleep 5
+
+# Project hooks
+# Runs on project start, always
+# on_project_start: sleep 5
+# Run on project start, the first time
+# on_project_first_start: command
+# Run on project start, after the first time
+# on_project_restart: command
+# Run on project exit ( detaching from tmux session )
+# on_project_exit: command
+# Run on project stop
+# on_project_stop: command
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
+startup_window: home
+
+# Specifies (by index) which pane of the specified window will be selected on project startup. If not set, the first pane is used.
+# startup_pane: 1
+
+# Controls whether the tmux session should be attached to automatically. Defaults to true.
+# attach: false
+
+# Runs after everything. Use it to attach to tmux with custom options etc.
+# post: tmux -CC attach -t desktop
+
+windows:
+  - live:
+      panes:
+        - cd github.com/healthline/infrastructure-live
+  - modules:
+      panes:
+        - cd github.com/healthline/infrastructure-modules
+  - home:
+  - scratch:
