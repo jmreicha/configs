@@ -5,7 +5,7 @@
 COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump"
 OSX_TOOLS="hadolint terraform_landscape kube-ps1 fd findutils"
 LINUX_TOOLS="fd-find"
-PY_TOOLS="pylint flake8 pycodstyle bashate pre-commit pygments thefuck"
+PY_TOOLS="ansible ansible-lint pylint flake8 pycodstyle bashate pre-commit pygments thefuck"
 EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta"
 
 # Common across OS
