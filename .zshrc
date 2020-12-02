@@ -32,9 +32,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-	virtualenv virtualenvwrapper pip autojump osx kube-ps1 zsh-syntax-highlighting
-	terraform python kubectl helm zsh-autosuggestions timer fd fzf fancy-ctrl-z
-	extract)
+        virtualenv virtualenvwrapper pip autojump osx kube-ps1
+        zsh-syntax-highlighting terraform python kubectl helm
+        zsh-autosuggestions fd fzf fancy-ctrl-z extract)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -117,29 +117,22 @@ alias ls='exa -a'
 alias ll='exa -lbFa --git --header'
 alias l='exa -lbGF --git'
 alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
-alias lt='exa --tree --level=2
+alias lt='exa --tree --level=2'
 
 # Open specific files types automatically
-alias -s bash=$EDITOR
-alias -s sh=$EDITOR
 alias -s tf=$EDITOR
 alias -s tfvars=$EDITOR
+alias -s hcl=$EDITOR
 alias -s md=$EDITOR
 alias -s markdown=$EDITOR
 alias -s txt=$EDITOR
-alias -s py=$EDITOR
-alias -s js=$EDITOR
-alias -s css=$EDITOR
-alias -s html=$EDITOR
-alias -s htm=$EDITOR
 
 #########
 # Exports
 #########
 
-# Options for timer plugin
-export TIMER_FORMAT="# %d"
-export TIMER_PRECISION="3"
+# SOPS gpg key
+# export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
 
 # Better terminal colors
 export TERM="xterm-256color"
@@ -185,6 +178,14 @@ export LANG=en_US.UTF-8
 ###########
 # Functions
 ###########
+
+aws-ssh() {
+    aws-vault exec $1 -- aws ssm start-session --target $2
+}
+
+describe-instances() {
+    aws-vault exec $1 -- aws ec2 describe-instances | jq -r ".Reservations[].Instances[] | [.InstanceId, .NetworkInterfaces[].PrivateIpAddress, (.Tags[]?|select(.Key==\"Name\")|.Value)]"
+}
 
 dclean() {
     docker rm $(docker ps -aq --filter status=exited)
@@ -293,6 +294,7 @@ if [[ $(uname) == "Linux" ]]; then
     # Export secrets as environment variables
     export NPM_TOKEN="$(get_secret tokens/npm)"
     export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
+    # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
 #####################
@@ -316,9 +318,9 @@ alias less='less -m -N -g -i -J --line-numbers --underline-special'
 alias more='less'
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
-PROMPT=$PROMPT'$(kube_ps1) '
-KUBE_PS1_SYMBOL_ENABLE=false
-KUBE_PS1_ENABLED=off
+# PROMPT=$PROMPT'$(kube_ps1) '
+# KUBE_PS1_SYMBOL_ENABLE=false
+# KUBE_PS1_ENABLED=off
 
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
@@ -338,6 +340,12 @@ export NVM_DIR="$HOME/.nvm"
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -U compinit && compinit
+
+###############
+# Shell startup
+###############
+
+eval $(thefuck --alias)
 
 # Ondir configuration
 eval_ondir() {
