@@ -3,10 +3,10 @@
 # Simple install script for various tools and configuration
 
 COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump"
-OSX_TOOLS="hadolint terraform_landscape kube-ps1 fd findutils"
+OSX_TOOLS="hadolint terraform_landscape fd findutils"
 LINUX_TOOLS="fd-find"
 PY_TOOLS="ansible ansible-lint pylint flake8 pycodstyle bashate pre-commit pygments thefuck"
-EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta"
+EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta k9s"
 
 # Common across OS
 git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
