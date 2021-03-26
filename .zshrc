@@ -34,7 +34,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
         virtualenv virtualenvwrapper pip autojump osx kube-ps1
         zsh-syntax-highlighting terraform python kubectl helm
-        zsh-autosuggestions fd fzf fancy-ctrl-z extract)
+        zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -67,11 +67,12 @@ setopt HIST_IGNORE_ALL_DUPS
 # Misc
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
-alias z="vim ~/.zshrc"
+alias zz="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias github="cd ~/github.com"
 alias healthline="cd ~/github.com/healthline"
+alias redventures="cd ~/github.com/redventures"
 alias live="cd ~/github.com/healthline/infrastructure-live"
 alias modules="cd ~/github.com/healthline/infrastructure-modules"
 alias diff="colordiff"
@@ -149,6 +150,7 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Set the terragrunt cache in one place
 export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
+export TERRAGRUNT_LOCAL="true"
 
 # Set up basic pager colors
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
