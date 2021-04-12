@@ -65,6 +65,7 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Misc
+alias cdr=$(git rev-parse --show-toplevel)
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias zz="vim ~/.zshrc"
@@ -134,6 +135,10 @@ alias -s txt=$EDITOR
 
 # SOPS gpg key
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
+
+# GO
+export GOPATH=$HOME/go/bin
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 # Better terminal colors
 export TERM="xterm-256color"
