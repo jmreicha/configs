@@ -32,7 +32,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-        virtualenv virtualenvwrapper pip autojump osx kube-ps1
+        virtualenv pip autojump osx kube-ps1
         zsh-syntax-highlighting terraform python kubectl helm
         zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z)
 
@@ -76,6 +76,7 @@ alias healthline="cd ~/github.com/healthline"
 alias redventures="cd ~/github.com/redventures"
 alias live="cd ~/github.com/healthline/infrastructure-live"
 alias modules="cd ~/github.com/healthline/infrastructure-modules"
+alias sandbox="cd ~/github.com/healthline/infrastructure-live-sandbox"
 alias diff="colordiff"
 alias python="python3"
 alias pip="pip3"
@@ -148,13 +149,18 @@ export TERM="xterm-256color"
 export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
+export AWS_PAGER=""
 # export AWS_SESSION_TTL="12h"
 # export AWS_ASSUME_ROLE_TTL="1h"
+# export AWS_SESSION_TTL="12h" # healthline default session duration
+
+# Okta
+# AWS_OKTA_SESSION_CACHE_SINGLE_ITEM=true
 
 # Export SSH key so it doesn't need to be passed in every time.
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
-# Set the terragrunt cache in one place
+# Set the terraform/terragrunt cache in one place
 export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
 export TERRAGRUNT_LOCAL="true"
 
@@ -262,11 +268,11 @@ if [[ $(uname) == "Darwin" ]]; then
     echo "Loading additional OSX configuration"
 
     # Python3
-    export PATH=$PATH:/$HOME/Library/Python/3.7/bin/
+    export PATH=$PATH:/$HOME/Library/Python/3.9/bin/
 
     # Terraform autocompletion
     autoload -U +X bashcompinit && bashcompinit
-    complete -o nospace -C /usr/local/Cellar/terraform/0.11.13/bin/terraform terraform
+    complete -o nospace -C /Users/jreichardt/.tfenv/versions/0.12.29/terraform terraform
 
     # Autojump
     [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
@@ -276,9 +282,16 @@ if [[ $(uname) == "Darwin" ]]; then
         security find-generic-password -gs "${1}" -w
     }
 
+    # virtualenvwrapper
+    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+    export VIRTUALENVWRAPPER_VIRTUALENV=/Users/jreichardt/Library/Python/3.9/bin/virtualenv
+    source /Users/jreichardt/Library/Python/3.9/bin/virtualenvwrapper.sh
+
     # Export secrets as environment variables
     # export DATADOG_API_KEY="$(get_secret dd_frontend_preprod_api)"
     # export DATADOG_APP_KEY="$(get_secret dd_frontend_preprod_app)"
+    export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
+    export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
 fi
 
 ### Linux
@@ -311,6 +324,8 @@ if [[ $(uname) == "Linux" ]]; then
     # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
+plugins+=(virtualenvwrapper)
+
 #####################
 # Misc Configurations
 #####################
@@ -328,7 +343,7 @@ bindkey \^U backward-kill-line
 # Use highlight for better less/more colors
 export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
 export LESS=" -R"
-alias less='less -m -N -g -i -J --line-numbers --underline-special'
+alias less='less -m -N -g -i -J --underline-special'
 alias more='less'
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
@@ -371,3 +386,8 @@ chpwd_functions=( eval_ondir $chpwd_functions )
 
 # To customize our prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+### Autocomplete
+
+# aws-okta
+source <(aws-okta completion zsh)
