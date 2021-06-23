@@ -65,7 +65,7 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Misc
-alias cdr=$(git rev-parse --show-toplevel)
+# alias cdr=$(git rev-parse --show-toplevel)
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias zz="vim ~/.zshrc"
@@ -83,6 +83,7 @@ alias pip="pip3"
 # alias ccat="bat --paging=never"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
+alias env=list_env
 
 # Docker
 alias d="docker"
@@ -198,6 +199,12 @@ dclean() {
     docker rm $(docker ps -aq --filter status=exited)
     docker rmi $(docker images -q --filter dangling=true)
     docker volume rm $(docker volume ls -qf dangling=true)
+}
+
+# list environment variables
+list_env() {
+  local var
+  var=$(printenv | cut -d= -f1 | fzf) && echo "$var=${(P)var}"
 }
 
 #######
@@ -339,18 +346,19 @@ export NVM_DIR="$HOME/.nvm"
 # This causes 'complete:13: command not found: compdef' error
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+###############
+# Shell startup
+###############
+
 # FZF (assume ripgrep is installed)
 # export FZF_DEFAULT_OPTS='--ansi'
-# export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
+export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
 autoload -U compinit && compinit
-
-###############
-# Shell startup
-###############
 
 eval $(thefuck --alias)
 
