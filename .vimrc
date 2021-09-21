@@ -5,6 +5,7 @@ call plug#begin('~/.vim/plugged')
 
 "" Terraform
 Plug 'hashivim/vim-terraform'
+" Plug 'jvirtanen/vim-hcl'
 "" JSON
 Plug 'elzr/vim-json'
 "" Ansible (Jinja templates)
@@ -27,8 +28,10 @@ Plug 'Einenlum/yaml-revealer'
 Plug 'pedrohdz/vim-yaml-folds'
 "" Colors
 Plug 'lilydjwg/colorizer'
-"" PowerShell
+" PowerShell
 Plug 'PProvost/vim-ps1'
+" Rego
+Plug 'tsandall/vim-rego'
 
 "" Git
 
@@ -72,11 +75,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "" Python code formatting
 " Plug 'psf/black'
-"" Better line highlighting
-"Plug 'miyakogi/conoline.vim'
 "" Code completion
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'miyakogi/conoline.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "" Lisp
 
@@ -117,6 +117,9 @@ set showcmd
 
 "" Syntax highlighting
 syntax on
+
+"" Mouse support
+set mouse=a
 
 "" Highlight lines over 80 characters
 set textwidth=80
@@ -162,6 +165,11 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
+"" Automatically trim whitespace
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0
+
 " Markdown
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_auto_extension_ext = 'txt'
@@ -169,11 +177,11 @@ let g:vim_markdown_auto_extension_ext = 'txt'
 
 " Terraform
 let g:terraform_align=1
-" Terraform 0.11 has formatting issues on save so we disable for now
-"let g:terraform_fmt_on_save = 1
-
-" Terragrunt
-au! BufNewFile,BufRead terragrunt.hcl set filetype=terraform syntax=terraform
+" let g:terraform_fmt_on_save = 1
+" HCL formatting/highlighting
+autocmd BufRead,BufNewFile *.hcl set filetype=terraform
+autocmd BufWritePre *.hcl call terraform#fmt()
+" au! BufNewFile,BufRead *.hcl set filetype=terraform syntax=terraform
 
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
@@ -205,8 +213,8 @@ let g:ale_sh_bashate_options = '-i E006'
 " let g:ale_lint_on_enter = 0
 
 " Fixers
-" let b:ale_fixers = {'python': ['black', 'isort']}
-let b:ale_fixers = {'python': ['isort']}
+let b:ale_fixers = {'python': ['black', 'isort']}
+" let b:ale_fixers = {'python': ['isort']}
 
 " Disable linters/fixers that aren't installed, otherwise none will work
 " let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
@@ -261,28 +269,8 @@ highlight GitGutterDelete ctermfg=red
 highlight GitGutterChangeDelete ctermfg=yellow
 
 " Cursorcolumn settings
-"set cursorcolumn
-"highlight CursorColumn guibg=#303000 ctermbg=234
-
-" Highlight empty spaces with dots and tabs with dashes
-"set list listchars=tab:»-,trail:·,extends:»,precedes:«
-"set list listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
-
-" Convert spaces to tabs when reading file
-"autocmd! bufreadpost * set noexpandtab | retab! 4
-" convert tabs to spaces before writing file
-"autocmd! bufwritepre * set expandtab | retab! 4
-" convert spaces to tabs after writing file (to show guides again)
-"autocmd! bufwritepost * set noexpandtab | retab! 4
-
-"" Faster escape
-"nnoremap <Tab> <Esc>
-"vnoremap <Tab> <Esc>gV
-"onoremap <Tab> <Esc>
-""cnoremap <Tab> <C-C><Esc>
-"inoremap <Tab> <Esc>`^
-"inoremap <S-Tab> <Tab>
-"inoremap jj <Esc>
+" set cursorcolumn
+" highlight CursorColumn guibg=#303000 ctermbg=234
 
 "" Airline status settings
 let g:airline_powerline_fonts = 1
