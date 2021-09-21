@@ -1,0 +1,30 @@
+{
+  "languageserver": {
+    "bash": {
+        "command": "bash-language-server",
+        "args": ["start"],
+        "filetypes": ["sh", "bash"]
+    },
+    "golang": {
+        "command": "gopls",
+        "rootPatterns": ["go.mod"],
+        "filetypes": ["go"]
+    },
+    "terraform": {
+        "command": "terraform-ls",
+        "args": ["serve"],
+        "filetypes": [
+            "terraform",
+            "tf"
+        ],
+        "initializationOptions": {},
+        "settings": {}
+    }
+  },
+
+  "yaml.schemas": {
+      "kubernetes": "/*.yaml"
+  },
+
+  "diagnostic.displayByAle": true
+}
