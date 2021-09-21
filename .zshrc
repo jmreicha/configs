@@ -34,7 +34,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
         virtualenv pip autojump osx kube-ps1
         zsh-syntax-highlighting terraform python kubectl helm
-        zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z)
+        zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z nvm)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -79,12 +79,13 @@ alias modules="cd ~/github.com/healthline/infrastructure-modules"
 alias sandbox="cd ~/github.com/healthline/infrastructure-live-sandbox"
 alias diff="colordiff"
 alias python="python3"
-alias pip="pip3"
+# alias pip="pip3"
 # Better cat
 # alias ccat="bat --paging=never"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
 alias env=list_env
+alias rg="rg --hidden -g '!.git/'"
 
 # Docker
 alias d="docker"
@@ -139,8 +140,8 @@ alias -s txt=$EDITOR
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
 
 # GO
-export GOPATH=$HOME/go/bin
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # Better terminal colors
 export TERM="xterm-256color"
@@ -356,10 +357,8 @@ export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
 bindkey -s "\C-r" "\eqhh\n"
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# This causes 'complete:13: command not found: compdef' error
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
@@ -373,8 +372,6 @@ autoload -U compinit && compinit
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
 export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-eval $(thefuck --alias)
 
 # Ondir configuration
 eval_ondir() {
