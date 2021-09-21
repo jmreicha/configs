@@ -20,12 +20,8 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'google/vim-jsonnet'
 "" Typescript
 Plug 'leafgarland/typescript-vim'
-"" Nginx
-Plug 'chr4/nginx.vim'
 "" Yaml
 Plug 'mrk21/yaml-vim'
-Plug 'Einenlum/yaml-revealer'
-Plug 'pedrohdz/vim-yaml-folds'
 "" Colors
 Plug 'lilydjwg/colorizer'
 " PowerShell
@@ -46,6 +42,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'fatih/vim-go'
 "" Color schemes
 Plug 'flazz/vim-colorschemes'
+Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
 "" Keep track of parenths
 Plug 'luochen1990/rainbow'
@@ -74,17 +71,8 @@ Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 "" Fuzzy file searching and FZF integration
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"" Python code formatting
-" Plug 'psf/black'
 "" Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-"" Lisp
-
-"" Clojure
-" Plug 'Olical/conjure', { 'tag': 'v2.1.0', 'do': 'bin/compile' }
-"" Slime
-" Plug 'jpalardy/vim-slime'
 call plug#end()
 
 " Filetype based auto indenting
@@ -98,6 +86,7 @@ set directory=$HOME/.vim/
 " colorscheme afterglow
 " colorscheme iceberg
 colorscheme gruvbox
+set bg=dark
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
