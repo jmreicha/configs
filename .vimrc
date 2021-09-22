@@ -83,10 +83,9 @@ set directory=$HOME/.vim/
 
 "" Vim colorscheme
 " colorscheme ir_black
-" colorscheme afterglow
+colorscheme afterglow
 " colorscheme iceberg
-colorscheme gruvbox
-set bg=dark
+" colorscheme gruvbox
 
 "" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
@@ -126,8 +125,8 @@ hi ColorColumn ctermbg=34
 set ignorecase
 set hlsearch
 set incsearch
-hi Search ctermbg=LightGreen
-hi Search ctermfg=Red
+" hi Search ctermbg=LightGreen
+" hi Search ctermfg=Red
 
 "" Yank to system clipboard
 set clipboard=unnamed
@@ -176,6 +175,10 @@ autocmd BufRead,BufNewFile *.hcl set filetype=terraform
 autocmd BufWritePre *.hcl call terraform#fmt()
 " au! BufNewFile,BufRead *.hcl set filetype=terraform syntax=terraform
 
+" GO
+" run go imports on file save
+let g:go_fmt_command = "goimports"
+
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
 
@@ -199,7 +202,10 @@ highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " Linters
 " let g:ale_linters = {'python': ['black', 'flake8', 'pycodestyle', 'pylint']}
-let g:ale_linters = {'python': ['flake8', 'pylint']}
+let g:ale_linters = {
+    \ 'python': ['flake8', 'pylint'],
+    \ 'go': ['golangci-lint']
+    \ }
 
 " Ignore lines over 80 chars
 let g:ale_python_flake8_options = '--ignore=E501'
@@ -301,8 +307,6 @@ set shortmess+=c
 " diagnostics appear/become resolved.
 if has("nvim-0.5.0") || has("patch-8.1.1564")
   " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
   set signcolumn=yes
 endif
 
