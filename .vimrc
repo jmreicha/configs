@@ -1,137 +1,127 @@
-"" Vim Plugins
+"" Plugins
+
 call plug#begin('~/.vim/plugged')
 
-"" Highlighting
-
-"" Terraform
+" Terraform
 Plug 'hashivim/vim-terraform'
-" Plug 'jvirtanen/vim-hcl'
-"" JSON
+" JSON
 Plug 'elzr/vim-json'
-"" Ansible (Jinja templates)
+" Ansible (Jinja templates)
 Plug 'lepture/vim-jinja'
-"" Whitespace
+" Whitespace
 Plug 'ntpeters/vim-better-whitespace'
-"" Syntax and linting
+" Syntax and linting
 Plug 'dense-analysis/ale'
-"" Dockerfile
+" Dockerfile
 Plug 'ekalinin/Dockerfile.vim'
-"" Jsonnet
+" Jsonnet
 Plug 'google/vim-jsonnet'
-"" Typescript
+" Typescript
 Plug 'leafgarland/typescript-vim'
-"" Yaml
+" Yaml
 Plug 'mrk21/yaml-vim'
-"" Colors
+" Colors
 Plug 'lilydjwg/colorizer'
 " PowerShell
 Plug 'PProvost/vim-ps1'
 " Rego
 Plug 'tsandall/vim-rego'
-
-"" Git
-
-"" Git integration
+" Git integration
 Plug 'tpope/vim-fugitive'
-"" Show Git file changes
+" Show Git file changes
 Plug 'airblade/vim-gitgutter'
-
-"" Productivity
-
-"" GO tools
+" GO tools
 Plug 'fatih/vim-go'
-"" Color schemes
+" Color schemes
 Plug 'flazz/vim-colorschemes'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'morhetz/gruvbox'
-"" Keep track of parenths
+Plug 'jacoborus/tender.vim'
+" Keep track of parenths
 Plug 'luochen1990/rainbow'
-"" Better status line
+" Better status line
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"" Javascript tools
+" Javascript tools
 Plug 'othree/yajs.vim'
-"" Hanldle more text objects
+" Hanldle more text objects
 Plug 'wellle/targets.vim'
-"" Markdown tools
+" Markdown tools
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-"" Surround tools
+" Surround tools
 Plug 'tpope/vim-surround'
-"" Comment tools
+" Comment tools
 Plug 'tpope/vim-commentary'
-"" Repeat with plugins
+" Repeat with plugins
 Plug 'tpope/vim-repeat'
-"" Search highlighting
+" Search highlighting
 Plug 'romainl/vim-cool'
-"" Readline (bash) key bindings
+" Readline (bash) key bindings
 Plug 'tpope/vim-rsi'
-"" Indent highlighting (Only for cetain filetypes, e.g. yaml)
+" Indent highlighting (Only for cetain filetypes, e.g. yaml)
 Plug 'Yggdroot/indentLine', {'for': 'yaml'}
-"" Fuzzy file searching and FZF integration
+" Fuzzy file searching and FZF integration
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"" Code completion
+" Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 " Filetype based auto indenting
 filetype plugin indent on
 
-"" Put swap files in swapfiles directory
+" Put swap files in swapfiles directory
 set directory=$HOME/.vim/
 
-"" Vim colorscheme
+"" Colorscheme
+
 " colorscheme ir_black
-colorscheme afterglow
+" colorscheme afterglow
 " colorscheme iceberg
 " colorscheme gruvbox
+colorscheme tender
 
-"" Correctly handle yml
+" Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-"" Green indent
+" Green indent
 let g:indentLine_color_term = 40
 "let g:indent_guides_enable_on_vim_startup = 1
 
-"" Nginx configs
-autocmd BufNewFile,BufRead,BufReadPost *.conf set syntax=nginx
-autocmd BufNewFile,BufRead,BufReadPost *.tmpl set syntax=nginx
-"" Spellcheck for markdown
-autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
-
-"" No automatic line wrapping
+" No automatic line wrapping
 set formatoptions-=t
 
-"" Basics
+" Misc settings
 set number
 set showcmd
+set laststatus=2
+set t_Co=256
+set wildmenu
+" set wildmode=longest:list,full
 
-"" Syntax highlighting
+" Syntax highlighting
 syntax on
 
-"" Mouse support
+" Mouse support
 set mouse=a
 
-"" Highlight lines over 80 characters
+" Highlight lines over 80 characters
 set textwidth=80
 set colorcolumn=+1
 hi ColorColumn ctermbg=34
 
-"" Spell checking
-" set spell spelllang=en_us
-
-"" Searching
+" Searching
 set ignorecase
 set hlsearch
 set incsearch
 " hi Search ctermbg=LightGreen
 " hi Search ctermfg=Red
 
-"" Yank to system clipboard
+" Yank to system clipboard
 set clipboard=unnamed
 
-"" Editing behavior
+" Editing behavior
 set tabstop=4
 set smarttab
 set softtabstop=4
@@ -145,27 +135,14 @@ set visualbell
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 
-"" Misc settings
-set laststatus=2
-set t_Co=256
-set wildmenu
-" set wildmode=longest:list,full
-
 " Auto source vimrc on save
 augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
-"" Automatically trim whitespace
+" Highlight whitespace
 let g:better_whitespace_enabled=1
-let g:strip_whitespace_on_save=1
-let g:strip_whitespace_confirm=0
-
-" Markdown
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_auto_extension_ext = 'txt'
-"let g:vim_markdown_folding_level = 3
 
 " Terraform
 let g:terraform_align=1
@@ -175,8 +152,7 @@ autocmd BufRead,BufNewFile *.hcl set filetype=terraform
 autocmd BufWritePre *.hcl call terraform#fmt()
 " au! BufNewFile,BufRead *.hcl set filetype=terraform syntax=terraform
 
-" GO
-" run go imports on file save
+" run GO imports on file save
 let g:go_fmt_command = "goimports"
 
 " Turn on rainbow parentheses
@@ -185,10 +161,7 @@ let g:rainbow_active = 1
 " jsonnet formatting
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
 
-" Default fold settings
-set foldlevelstart=20
-
-" ALE
+"" ALE
 
 " Don't use ale lsps
 let g:ale_disable_lsp = 1
@@ -207,19 +180,20 @@ let g:ale_linters = {
     \ 'go': ['golangci-lint']
     \ }
 
-" Ignore lines over 80 chars
-let g:ale_python_flake8_options = '--ignore=E501'
-let g:ale_sh_bashate_options = '-i E006'
-
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_lint_on_enter = 0
 
 " Fixers
-let b:ale_fixers = {'python': ['black', 'isort']}
+let b:ale_fixers = {
+    \ 'json': ['fixjson'],
+    \ 'python': ['black', 'isort'],
+    \ '*': ['remove_trailing_lines', 'trim_whitespace']
+    \ }
 " let b:ale_fixers = {'python': ['isort']}
 
-" Disable linters/fixers that aren't installed, otherwise none will work
-" let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+" Ignore lines over 80 chars
+let g:ale_python_flake8_options = '--ignore=E501'
+let g:ale_sh_bashate_options = '-i E006'
 
 " Switch this setting to 0 to disable fixers
 let g:ale_fix_on_save = 1
@@ -227,7 +201,7 @@ let g:ale_fix_on_save = 1
 " Automatically close location-list on quit
 autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
-" Shortcuts
+"" Shortcuts
 
 " Split lines
 nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
@@ -253,8 +227,14 @@ nnoremap 0<cr> :tablast<cr>
 " Insert a single character
 "nnoremap <C-i> i_<Esc>r
 
+"" Markdown
+
+" Spellcheck for markdown
+autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_auto_extension_ext = 'txt'
 
 " Cursorline highlighting and settings
 set cursorline
@@ -274,7 +254,7 @@ highlight GitGutterChangeDelete ctermfg=yellow
 " set cursorcolumn
 " highlight CursorColumn guibg=#303000 ctermbg=234
 
-"" Airline status settings
+" Airline status settings
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -282,6 +262,7 @@ endif
 let g:airline_symbols.space = "\ua0"
 
 "" COC settings
+
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
 set encoding=utf-8
