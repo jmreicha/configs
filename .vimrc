@@ -176,8 +176,10 @@ highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 " Linters
 " let g:ale_linters = {'python': ['black', 'flake8', 'pycodestyle', 'pylint']}
 let g:ale_linters = {
+    \ 'docker': ['hadolint'],
+    \ 'go': ['golangci-lint'],
     \ 'python': ['flake8', 'pylint'],
-    \ 'go': ['golangci-lint']
+    \ 'yaml': ['yamllint']
     \ }
 
 " let g:ale_lint_on_text_changed = 'never'
