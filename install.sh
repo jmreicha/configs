@@ -2,11 +2,12 @@
 
 # Simple install script for various tools and configuration
 
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump"
-OSX_TOOLS="hadolint terraform_landscape fd findutils"
+COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump terraform-ls"
+OSX_TOOLS="hadolint fd findutils"
 LINUX_TOOLS="fd-find"
-PY_TOOLS="ansible ansible-lint pylint flake8 pycodstyle bashate pre-commit pygments thefuck"
-EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta k9s"
+PY_TOOLS="ansible ansible-lint pylint flake8 pycodstyle bashate pre-commit pygments thefuck isort"
+# EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta k9s"
+# NODE_TOOLS="bash-language-server fixjson"
 
 # Common across OS
 git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
@@ -16,7 +17,16 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 # powerlevel fonts
 curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
 
-# TODO Make this DRY
+# NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+nvm install -lts
+nvm alias default stable
+
+# TODO Install GO
+
+# TODO Vim 8.2+ tools/plugins + coc plugins
+
+# TODO Make the installation below DRY
 
 # OSX specific
 if [[ "$(uname -s)" = "Darwin" ]]; then
@@ -62,4 +72,3 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
 ln -s ~/github.com/configs/.zshrc ~/.zshrc
 ln -s ~/github.com/configs/.vimrc ~/.vimrc
-
