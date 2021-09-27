@@ -109,7 +109,7 @@ set mouse=a
 " Highlight lines over 80 characters
 set textwidth=80
 set colorcolumn=+1
-hi ColorColumn ctermbg=34
+hi ColorColumn ctermbg=76
 
 " Searching
 set ignorecase
@@ -238,12 +238,12 @@ au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_auto_extension_ext = 'txt'
 
-" Cursorline highlighting and settings
+" Turn on cursorline highlighting
 set cursorline
-hi cursorline cterm=none term=none
-autocmd WinEnter * setlocal cursorline
-autocmd WinLeave * setlocal nocursorline
-highlight CursorLine guibg=#303000 ctermbg=234
+" hi cursorline cterm=none term=none
+" autocmd WinEnter * setlocal cursorline
+" autocmd WinLeave * setlocal nocursorline
+" highlight CursorLine guibg=#303000 ctermbg=234
 
 " Gitgutter colors - this seems to be an issue upgrading to vim8?
 highlight clear SignColumn
@@ -251,10 +251,6 @@ highlight GitGutterAdd ctermfg=green
 highlight GitGutterChange ctermfg=yellow
 highlight GitGutterDelete ctermfg=red
 highlight GitGutterChangeDelete ctermfg=yellow
-
-" Cursorcolumn settings
-" set cursorcolumn
-" highlight CursorColumn guibg=#303000 ctermbg=234
 
 " Airline status settings
 let g:airline_powerline_fonts = 1
