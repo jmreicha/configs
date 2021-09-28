@@ -152,8 +152,14 @@ autocmd BufRead,BufNewFile *.hcl set filetype=terraform
 autocmd BufWritePre *.hcl call terraform#fmt()
 " au! BufNewFile,BufRead *.hcl set filetype=terraform syntax=terraform
 
-" run GO imports on file save
+" Run GO imports on file save
 let g:go_fmt_command = "goimports"
+" Disable double completion with vim-go/coc
+let g:go_code_completion_enabled = 0
+" Disable vim-go :GoDef short cut (gd). This is handled by LanguageClient [LC]
+let g:go_def_mapping_enabled = 0
+" Show type info in statusbar
+" let g:go_auto_type_info = 1
 
 " Turn on rainbow parentheses
 let g:rainbow_active = 1
@@ -182,9 +188,6 @@ let g:ale_linters = {
     \ 'yaml': ['yamllint']
     \ }
 
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_enter = 0
-
 " Fixers
 let b:ale_fixers = {
     \ 'json': ['fixjson'],
@@ -192,6 +195,9 @@ let b:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace']
     \ }
 " let b:ale_fixers = {'python': ['isort']}
+
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_enter = 0
 
 " Ignore lines over 80 chars
 let g:ale_python_flake8_options = '--ignore=E501'
@@ -232,7 +238,7 @@ nnoremap 0<cr> :tablast<cr>
 "" Markdown
 
 " Spellcheck for markdown
-autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
+" autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:vim_markdown_folding_disabled = 1
