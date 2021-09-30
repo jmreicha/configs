@@ -66,6 +66,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Better motions
+Plug 'unblevable/quick-scope'
+Plug 'justinmk/vim-sneak'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 " Filetype based auto indenting
@@ -75,6 +79,10 @@ filetype plugin indent on
 set directory=$HOME/.vim/
 
 "" Colorscheme
+
+if has("termguicolors")
+    set termguicolors
+endif
 
 " colorscheme ir_black
 " colorscheme afterglow
@@ -109,7 +117,7 @@ set mouse=a
 " Highlight lines over 80 characters
 set textwidth=80
 set colorcolumn=+1
-hi ColorColumn ctermbg=76
+hi ColorColumn ctermbg=76 guibg=#f43753
 
 " Searching
 set ignorecase
@@ -237,12 +245,20 @@ nnoremap 0<cr> :tablast<cr>
 
 "" Markdown
 
+" set list
 " Spellcheck for markdown
 " autocmd BufNewFile,BufRead,BufReadPost *.md setlocal spell
 " Markdown higlighting
 au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_auto_extension_ext = 'txt'
+
+"" Folding
+set foldmethod=indent
+set nofoldenable
+set foldlevel=2
+
+"" Misc
 
 " Turn on cursorline highlighting
 set cursorline
