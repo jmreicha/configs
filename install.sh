@@ -2,73 +2,107 @@
 
 # Simple install script for various tools and configuration
 
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr bat yamllint highlight autojump terraform-ls"
-OSX_TOOLS="hadolint fd findutils"
-LINUX_TOOLS="fd-find"
-PY_TOOLS="ansible ansible-lint pylint flake8 pycodstyle bashate pre-commit pygments thefuck isort"
-# EXTRA_TOOLS="tflint tfsec ondir magic-wormhole exa delta k9s"
-# NODE_TOOLS="bash-language-server fixjson"
+COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight autojump terraform-ls"
+OSX_TOOLS="hadolint fd findutils golang"
+DEBIAN_TOOLS="fd-find"
+ARCH_TOOLS="python-pip fd exa go"
+LINUX_TOOLS="pass tmux zsh"
+PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
+NODE_TOOLS="bash-language-server fixjson"
+# EXTRA_TOOLS="tflint tfsec ondir magic-wormhole delta k9s"
 
-# Common across OS
-git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+install_packages() {
+    if cat /etc/os-release | grep ID=arch; then
+        install_cmd="sudo pacman -S --noconfirm"
+    elif cat /etc/os-release | grep ID=debian; then
+        install_cmd="sudo apt install -y"
+    fi
 
-# powerlevel fonts
-curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
+    # OSX specific
+    if [[ "$(uname -s)" = "Darwin" ]]; then
+        for tool in $COMMON_TOOLS; do
+            brew install "$tool"
+        done
 
-# NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-nvm install -lts
-nvm alias default stable
+        for tool in $OSX_TOOLS; do
+            brew install "$tool"
+        done
 
-# TODO Install GO
+        for tool in $PY_TOOLS; do
+            pip install --user "$tool"
+        done
 
-# TODO Vim 8.2+ tools/plugins + coc plugins
+    # Linux specific
+    elif [[ "$(uname -s)" = "Linux" ]]; then
+        for tool in $COMMON_TOOLS; do
+            $install_cmd "$tool"
+        done
 
-# TODO Make the installation below DRY
+        echo "Installing Linux tools"
+        for tool in $LINUX_TOOLS; do
+            $install_cmd "$tool"
+        done
 
-# OSX specific
-if [[ "$(uname -s)" = "Darwin" ]]; then
-    for tool in $COMMON_TOOLS; do
-        brew install "$tool"
-    done
+        echo "Installing Arch tools"
+        for tool in $ARCH_TOOLS; do
+            $install_cmd "$tool"
+        done
 
-    for tool in $OSX_TOOLS; do
-        brew install "$tool"
-    done
+        echo "Installing Python tools"
+        for tool in $PY_TOOLS; do
+            pip install "$tool"
+        done
 
-    for tool in $PY_TOOLS; do
-        pip install --user "$tool"
-    done
+        # TODO i3/wayland configurations
 
-# Linux specific
-elif [[ "$(uname -s)" = "Linux" ]]; then
-    for tool in $COMMON_TOOLS; do
-        sudo apt install "$tool"
-    done
+        # TODO kitty configuration
 
-    for tool in $LINUX_TOOLS; do
-        sudo apt install "$tool"
-    done
+    else
+        echo "Unkown OS"
+        exit 0
+    fi
 
-    for tool in $PY_TOOLS; do
-        pip install "$tool"
-    done
+    echo "Finished installing packages"
+}
 
-    # TODO i3/wayland configurations
+install_nvm() {
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    . ~/.nvm/nvm.sh
+    nvm install --lts
+    nvm alias default stable
+    npm install -g "$NODE_TOOLS"
+}
 
-    # TODO kitty configuration
+configure() {
+    echo "Configuring environment"
 
-else
-    echo "Unkown OS"
-    exit 0
-fi
+    # powerlevel fonts
+    curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
 
-# Set up our base configs
-rm -rf ~/.zshrc || true
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
-ln -s ~/github.com/configs/.zshrc ~/.zshrc
-ln -s ~/github.com/configs/.vimrc ~/.vimrc
+    # oh-my-zsh plugins
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
+    git clone --depth=1 https://github.com/agkozak/zsh-z "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-z
+
+    # Link configs
+    rm -rf ~/.oh-my-zsh/themese/josh-custom.zsh-theme ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
+    rm -rf ~/.zshrc && ln -s ~/github.com/configs/.zshrc ~/.zshrc
+    rm -rf ~/.vimrc && ln -s ~/github.com/configs/.vimrc ~/.vimrc
+    rm -rf ~/.p10k.zsh && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
+
+    echo "Configuring Vim"
+
+    # Vim 8.2+ tools/plugins + coc plugins
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    vim +PlugInstall +qall
+    vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+}
+
+install_packages
+install_nvm
+configure
+# Change the shell as the last step because it is interactive
+chsh -s $(which zsh)
