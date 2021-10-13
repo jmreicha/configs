@@ -83,7 +83,6 @@ alias python="python3"
 # alias ccat="bat --paging=never"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
-alias env=list_env
 alias rg="rg --hidden -g '!.git/'"
 
 # Docker
@@ -306,6 +305,8 @@ if [[ $(uname) == "Linux" ]]; then
     # OS specific configs
     if cat /etc/os-release | grep ID=debian; then
         alias fd="fdfind"
+        # Enable AWS autocompletion on Linux with non standard path
+        source ~/.local/bin/aws_zsh_completer.sh
     fi
 
     # Credentials are stored in gpg/pass
@@ -316,9 +317,6 @@ if [[ $(uname) == "Linux" ]]; then
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
     export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
     source ~/.local/bin/virtualenvwrapper.sh
-
-    # Enable AWS autocompletion on Linux with non standard path
-    source ~/.local/bin/aws_zsh_completer.sh
 
     # Retrieve a secret from pgp pass backend
     get_secret() {
@@ -368,7 +366,6 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
-autoload -U compinit && compinit
 
 ###############
 # Shell startup
@@ -390,6 +387,9 @@ chpwd_functions=( eval_ondir $chpwd_functions )
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ### Autocomplete
+autoload -U compinit && compinit
 
 # aws-okta
 # source <(aws-okta completion zsh)
+# aws-cli
+complete -C 'aws_completer' aws

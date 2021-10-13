@@ -2,20 +2,23 @@
 
 # Simple install script for various tools and configuration
 
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight autojump terraform-ls pandoc"
+COMMON_TOOLS="git jq yq shellcheck fzf ripgrep hstr yamllint highlight terraform-ls pandoc zip"
 OSX_TOOLS="hadolint fd findutils golang"
 DEBIAN_TOOLS="fd-find"
-ARCH_TOOLS="python-pip fd exa go"
+ARCH_TOOLS="python-pip fd exa go unzip"
+ALPINE_TOOLS=""
 LINUX_TOOLS="pass tmux zsh"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 NODE_TOOLS="bash-language-server fixjson"
 # EXTRA_TOOLS="tflint tfsec ondir magic-wormhole delta k9s"
 
 install_packages() {
-    if cat /etc/os-release | grep ID=arch; then
+    if grep ID=arch /etc/os-release; then
         install_cmd="sudo pacman -S --needed --noconfirm"
-    elif cat /etc/os-release | grep ID=debian; then
+    elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
+    elif grep ID=alpine /etc/os-release; then
+        install_cmd="sudo apk add"
     fi
 
     # OSX specific
@@ -65,6 +68,14 @@ install_packages() {
     echo "Finished installing packages"
 }
 
+install_awscli() {
+    # Grab the newest version by default
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    rm -rf aws*
+}
+
 install_nvm() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
     . ~/.nvm/nvm.sh
@@ -93,6 +104,7 @@ configure() {
     rm -rf ~/.zshrc && ln -s ~/github.com/configs/.zshrc ~/.zshrc
     rm -rf ~/.vimrc && ln -s ~/github.com/configs/.vimrc ~/.vimrc
     rm -rf ~/.p10k.zsh && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
+    rm -rf ~/.tmux.conf && ln -s ~/github.com/configs/.tmux.conf ~/.tmux.conf
 
     echo "Configuring Vim"
 
@@ -107,14 +119,21 @@ configure() {
 switch_shell() {
     if [[ $SHELL != "/usr/bin/zsh" ]]; then
         echo "Switching to zsh"
-        chsh -s $(which zsh)
+        chsh -s "$(which zsh)"
     fi
+}
+
+cleanup() {
+    echo "Cleaning up"
+    rm -rf "MesloLGS NF Regular.ttf"
 }
 
 install_packages
 install_nvm
+install_awscli
 configure
+cleanup
 # Change the shell as the last step because it is interactive
 switch_shell
 
-echo "Finished bootstrapping"
+echo "Finished bootstrapping environment, reload/restart shell"
