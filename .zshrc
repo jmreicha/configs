@@ -32,9 +32,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-        virtualenv pip osx kube-ps1
-        zsh-syntax-highlighting terraform python kubectl helm
-        zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z nvm)
+    virtualenv pip osx kube-ps1 zsh-syntax-highlighting terraform python kubectl
+    helm zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z nvm)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
