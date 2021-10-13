@@ -141,7 +141,7 @@ alias -s txt=$EDITOR
 
 # GO
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin:$PATH:$GOROOT/bin:$GOPATH/bin
 
 # Better terminal colors
 export TERM="xterm-256color"
@@ -226,6 +226,9 @@ export PATH="$HOME/.pulumi/bin:$PATH"
 
 # Home user bin directory
 export PATH="$HOME/bin:$PATH"
+
+# Bin
+export PATH="/usr/local/bin:$PATH"
 
 ########
 # Python
@@ -386,4 +389,4 @@ chpwd_functions=( eval_ondir $chpwd_functions )
 ### Autocomplete
 
 # aws-okta
-source <(aws-okta completion zsh)
+# source <(aws-okta completion zsh)
