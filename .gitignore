@@ -1,0 +1,6 @@
+**/.terraform/*
+*.terraform.lock.hcl
+*.tfstate.backup
+
+cloud_init_debian.yaml
+cloud_init_arch.yaml
