@@ -70,6 +70,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'unblevable/quick-scope'
 Plug 'justinmk/vim-sneak'
 Plug 'easymotion/vim-easymotion'
+Plug 'bkad/CamelCaseMotion'
 call plug#end()
 
 " Filetype based auto indenting
