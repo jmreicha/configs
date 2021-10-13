@@ -32,7 +32,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-        virtualenv pip autojump osx kube-ps1
+        virtualenv pip osx kube-ps1
         zsh-syntax-highlighting terraform python kubectl helm
         zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z nvm)
 
@@ -303,7 +303,11 @@ if [[ $(uname) == "Linux" ]]; then
     echo "Loading additional Linux configuration"
 
     alias ip="ip -c"
-    alias fd="fdfind"
+
+    # OS specific configs
+    if cat /etc/os-release | grep ID=debian; then
+        alias fd="fdfind"
+    fi
 
     # Credentials are stored in gpg/pass
     export AWS_VAULT_BACKEND="pass"
