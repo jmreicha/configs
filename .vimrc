@@ -67,7 +67,7 @@ Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Better motions
-Plug 'unblevable/quick-scope'
+" Plug 'unblevable/quick-scope'
 Plug 'justinmk/vim-sneak'
 Plug 'easymotion/vim-easymotion'
 call plug#end()
@@ -88,7 +88,7 @@ endif
 " colorscheme afterglow
 " colorscheme iceberg
 " colorscheme gruvbox
-colorscheme tender
+silent! colorscheme tender
 
 " Correctly handle yml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

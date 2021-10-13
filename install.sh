@@ -2,7 +2,7 @@
 
 # Simple install script for various tools and configuration
 
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight autojump terraform-ls"
+COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight autojump terraform-ls pandoc"
 OSX_TOOLS="hadolint fd findutils golang"
 DEBIAN_TOOLS="fd-find"
 ARCH_TOOLS="python-pip fd exa go"
@@ -13,7 +13,7 @@ NODE_TOOLS="bash-language-server fixjson"
 
 install_packages() {
     if cat /etc/os-release | grep ID=arch; then
-        install_cmd="sudo pacman -S --noconfirm"
+        install_cmd="sudo pacman -S --needed --noconfirm"
     elif cat /etc/os-release | grep ID=debian; then
         install_cmd="sudo apt install -y"
     fi
