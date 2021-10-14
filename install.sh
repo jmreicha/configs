@@ -1,71 +1,68 @@
 #!/usr/bin/env bash
 
-# Simple install script for various tools and configuration
+# Simple cross platform installation script for basic setup including tools and
+# other configurations.
 
-COMMON_TOOLS="git jq yq shellcheck fzf ripgrep hstr yamllint highlight terraform-ls pandoc zip"
-OSX_TOOLS="hadolint fd findutils golang"
-DEBIAN_TOOLS="fd-find"
-ARCH_TOOLS="python-pip fd exa go unzip"
+set -eu
+
+# TODO Better oraganization of tools
+
 ALPINE_TOOLS=""
+ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff"
+ARCH_TOOLS="python-pip fd exa go unzip base-devel"
+COMMON_TOOLS="jq yq shellcheck fzf ripgrep hstr yamllint highlight terraform-ls pandoc zip kubectx"
+DEBIAN_TOOLS="fd-find colordiff"
 LINUX_TOOLS="pass tmux zsh"
-PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 NODE_TOOLS="bash-language-server fixjson"
-# EXTRA_TOOLS="tflint tfsec ondir magic-wormhole delta k9s"
+OSX_TOOLS="hadolint fd findutils golang kubectl"
+PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 
-install_packages() {
+install() {
     if grep ID=arch /etc/os-release; then
-        install_cmd="sudo pacman -S --needed --noconfirm"
+        install_cmd="yay -S --needed --noconfirm"
+        if ! yay -V &> /dev/null; then install_yay; fi
+        # Update package list
+        yay
     elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
     elif grep ID=alpine /etc/os-release; then
-        install_cmd="sudo apk add"
+        install_cmd="apk add"
     fi
 
-    # OSX specific
+    # OSX
     if [[ "$(uname -s)" = "Darwin" ]]; then
-        for tool in $COMMON_TOOLS; do
-            brew install "$tool"
-        done
+        echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
+        $install_cmd $COMMON_TOOLS $OSX_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install --user $PY_TOOLS
 
-        for tool in $OSX_TOOLS; do
-            brew install "$tool"
-        done
-
-        for tool in $PY_TOOLS; do
-            pip install --user "$tool"
-        done
-
-    # Linux specific
+    # Linux
     elif [[ "$(uname -s)" = "Linux" ]]; then
-        for tool in $COMMON_TOOLS; do
-            $install_cmd "$tool"
-        done
-
-        echo "Installing Linux tools"
-        for tool in $LINUX_TOOLS; do
-            $install_cmd "$tool"
-        done
-
-        echo "Installing Arch tools"
-        for tool in $ARCH_TOOLS; do
-            $install_cmd "$tool"
-        done
-
-        echo "Installing Python tools"
-        for tool in $PY_TOOLS; do
-            pip install "$tool"
-        done
-
-        # TODO i3/wayland configurations
-
-        # TODO kitty configuration
-
+        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS"
+        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install $PY_TOOLS
     else
         echo "Unkown OS"
         exit 0
     fi
 
-    echo "Finished installing packages"
+    echo "Installing NVM"
+    if [[ ! -f $HOME/.nvm/nvm.sh ]]; then install_nvm; fi
+    echo "Installing AWS CLI"
+    if ! aws --version &> /dev/null; then install_awscli; fi
+
+    echo "Finished installing packages and tools"
+}
+
+### Non-packaged tools
+
+install_yay() {
+    git clone https://aur.archlinux.org/yay-bin.git
+    pushd yay-bin
+    makepkg -si
+    popd
+    rm -rf yay-bin
 }
 
 install_awscli() {
@@ -82,6 +79,13 @@ install_nvm() {
     nvm install --lts
     nvm alias default stable
     npm install -g $NODE_TOOLS
+}
+
+install_docker_compose() {
+    # https://docs.docker.com/compose/cli-command/#installing-compose-v2
+    mkdir -p ~/.docker/cli-plugins/
+    curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+    chmod +x ~/.docker/cli-plugins/docker-compose
 }
 
 configure() {
@@ -105,15 +109,20 @@ configure() {
     rm -rf ~/.vimrc && ln -s ~/github.com/configs/.vimrc ~/.vimrc
     rm -rf ~/.p10k.zsh && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
     rm -rf ~/.tmux.conf && ln -s ~/github.com/configs/.tmux.conf ~/.tmux.conf
+    # i3/wayland configurations
+    # kitty configuration
 
     echo "Configuring Vim"
 
-    rm -rf ~/.vim/plugged/*
-    # Vim 8.2+ tools/plugins + coc plugins
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    vim +PlugInstall +qall
-    vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+    if [[ ! -d $HOME/.vim/plugged ]]; then
+        # Vim 8.2+ tools/plugins + coc plugins
+        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        vim +PlugInstall +qall
+        vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+    else
+        vim +PlugUpdate +qall
+    fi
 }
 
 switch_shell() {
@@ -128,12 +137,25 @@ cleanup() {
     rm -rf "MesloLGS NF Regular.ttf"
 }
 
-install_packages
-install_nvm
-install_awscli
-configure
-cleanup
-# Change the shell as the last step because it is interactive
-switch_shell
+main() {
+    option=$1
 
+    case $option in
+        --install)
+            install
+            ;;
+        --configure)
+            configure
+            ;;
+        *)
+            install
+            configure
+            cleanup
+            # Change the shell as the last step because it is interactive
+            # switch_shell
+            ;;
+    esac
+}
+
+main "$@"
 echo "Finished bootstrapping environment, reload/restart shell"
