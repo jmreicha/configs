@@ -138,7 +138,9 @@ cleanup() {
 }
 
 main() {
+    set +u
     option=$1
+    set -u
 
     case $option in
         --install)
