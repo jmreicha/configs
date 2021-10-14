@@ -141,7 +141,7 @@ switch_shell() {
 
 cleanup() {
     echo "Cleaning up"
-    rm -rf "MesloLGS NF Regular.ttf"
+    rm -rf "MesloLGS NF Regular.ttf" || true
 }
 
 main() {
@@ -155,6 +155,7 @@ main() {
             ;;
         --configure)
             configure
+            cleanup
             ;;
         *)
             install
