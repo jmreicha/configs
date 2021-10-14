@@ -102,11 +102,12 @@ configure() {
     curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
 
     # oh-my-zsh
-    if [[ ! -d $HOME/.oh-my-zsh ]]; then sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; fi
-    if [[ ! -d $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ]]; then git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting; fi
-    if [[ ! -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions; fi
-    if [[ ! -d $ZSH_CUSTOM/themes/powerlevel10k ]]; then git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k; fi
-    if [[ ! -d $ZSH_CUSTOM/plugins/zsh-z ]]; then git clone --depth=1 https://github.com/agkozak/zsh-z "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-z; fi
+    zsh_dir="$HOME/.oh-my-zsh"
+    [[ ! -d $zsh_dir ]] && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    [[ ! -d $zsh_dir/plugins/zsh-syntax-highlighting ]] && git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+    [[ ! -d $zsh_dir/plugins/zsh-autosuggestions ]] && git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
+    [[ ! -d $zsh_dir/themes/powerlevel10k ]] && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
+    [[ ! -d $zsh_dir/plugins/zsh-z ]] && git clone --depth=1 https://github.com/agkozak/zsh-z "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-z
 
     # Link configs
     rm -rf ~/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
