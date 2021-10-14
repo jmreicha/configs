@@ -305,6 +305,7 @@ if [[ $(uname) == "Linux" ]]; then
     # OS specific configs
     if cat /etc/os-release | grep ID=debian; then
         alias fd="fdfind"
+        export PATH=$PATH:/$HOME/.local/bin
         # Enable AWS autocompletion on Linux with non standard path
         source ~/.local/bin/aws_zsh_completer.sh
     fi
@@ -346,10 +347,10 @@ bindkey \^U backward-kill-line
 # bindkey -v '^?' backward-delete-char
 
 # Use highlight for better less/more colors
-export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
-export LESS=" -R"
-alias less='less -m -N -g -i -J --underline-special'
-alias more='less'
+# export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
+# export LESS=" -R"
+# alias less='less -m -N -g -i -J --underline-special'
+# alias more='less'
 
 # kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
 # PROMPT=$PROMPT'$(kube_ps1) '
