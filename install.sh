@@ -23,25 +23,28 @@ install() {
         if ! yay -V &> /dev/null; then install_yay; fi
         # Update package list
         yay
-    elif grep ID=debian /etc/os-release; then
-        install_cmd="sudo apt install -y"
-    elif grep ID=alpine /etc/os-release; then
-        install_cmd="apk add"
-    fi
-
-    # OSX
-    if [[ "$(uname -s)" = "Darwin" ]]; then
-        echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
-        $install_cmd $COMMON_TOOLS $OSX_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install --user $PY_TOOLS
-
-    # Linux
-    elif [[ "$(uname -s)" = "Linux" ]]; then
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS"
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
+    elif grep ID=debian /etc/os-release; then
+        install_cmd="sudo apt install -y"
+        # Update package list
+        sudo apt update -y
+        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
+        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install $PY_TOOLS
+    elif grep ID=alpine /etc/os-release; then
+        install_cmd="apk add"
+        # Update package list
+        apk update
+    # OSX
+    elif  [[ "$(uname -s)" = "Darwin" ]]; then
+        echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
+        $install_cmd $COMMON_TOOLS $OSX_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install --user $PY_TOOLS
     else
         echo "Unkown OS"
         exit 0
