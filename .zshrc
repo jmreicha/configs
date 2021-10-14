@@ -306,8 +306,6 @@ if [[ $(uname) == "Linux" ]]; then
     if cat /etc/os-release | grep ID=debian; then
         alias fd="fdfind"
         export PATH=$PATH:/$HOME/.local/bin
-        # Enable AWS autocompletion on Linux with non standard path
-        source ~/.local/bin/aws_zsh_completer.sh
     fi
 
     # Credentials are stored in gpg/pass
