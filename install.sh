@@ -7,10 +7,10 @@ set -eu
 
 # TODO Better oraganization of tools
 
-ALPINE_TOOLS="yq docker python3 py3-pip fd"
-ARCH_TOOLS="python-pip fd exa go unzip base-devel"
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight pandoc zip"
-DEBIAN_TOOLS="fd-find colordiff python3-pip ondir"
+ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
+ARCH_TOOLS="python-pip fd go unzip base-devel"
+COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight pandoc zip exa"
+DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
 OSX_TOOLS="hadolint fd findutils golang kubectl yq"
@@ -31,6 +31,8 @@ install() {
         pip install $PY_TOOLS
     elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
+        # Set the default locale
+        sudo locale-gen "en_US.UTF-8"
         # Update package list
         sudo apt update -y
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
@@ -102,18 +104,18 @@ configure() {
     # oh-my-zsh
     if [[ ! -d $HOME/.oh-my-zsh ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
-        git clone --depth=1 https://github.com/agkozak/zsh-z "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-z
     fi
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
+    git clone --depth=1 https://github.com/agkozak/zsh-z "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-z
 
     # Link configs
-    rm -rf ~/.oh-my-zsh/themes/josh-custom.zsh-theme && ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
-    rm -rf ~/.zshrc && ln -s ~/github.com/configs/.zshrc ~/.zshrc
-    rm -rf ~/.vimrc && ln -s ~/github.com/configs/.vimrc ~/.vimrc
-    rm -rf ~/.p10k.zsh && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
-    rm -rf ~/.tmux.conf && ln -s ~/github.com/configs/.tmux.conf ~/.tmux.conf
+    rm -rf ~/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
+    rm -rf ~/.zshrc || true && ln -s ~/github.com/configs/.zshrc ~/.zshrc
+    rm -rf ~/.vimrc || true && ln -s ~/github.com/configs/.vimrc ~/.vimrc
+    rm -rf ~/.p10k.zsh || true && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
+    rm -rf ~/.tmux.conf || true && ln -s ~/github.com/configs/.tmux.conf ~/.tmux.conf
     # i3/wayland configurations
     # kitty configuration
 
@@ -159,7 +161,7 @@ main() {
             configure
             cleanup
             # Change the shell as the last step because it is interactive
-            # switch_shell
+            switch_shell
             ;;
     esac
 }
