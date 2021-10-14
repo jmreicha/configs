@@ -7,15 +7,17 @@ set -eu
 
 # TODO Better oraganization of tools
 
-ALPINE_TOOLS=""
-ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff"
+ALPINE_TOOLS="yq docker python3 py3-pip fd"
 ARCH_TOOLS="python-pip fd exa go unzip base-devel"
-COMMON_TOOLS="jq yq shellcheck fzf ripgrep hstr yamllint highlight terraform-ls pandoc zip kubectx"
-DEBIAN_TOOLS="fd-find colordiff"
+COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight pandoc zip"
+DEBIAN_TOOLS="fd-find colordiff python3-pip ondir"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
-OSX_TOOLS="hadolint fd findutils golang kubectl"
+OSX_TOOLS="hadolint fd findutils golang kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
+
+ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
+DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
 install() {
     if grep ID=arch /etc/os-release; then
