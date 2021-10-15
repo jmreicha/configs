@@ -31,14 +31,15 @@ install() {
         pip install $PY_TOOLS
     elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
-        # Set the default locale
-        sudo locale-gen "en_US.UTF-8"
         # Update package list
         sudo apt update -y
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
+        # Set the default locale
+        sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
+        sudo locale-gen
     elif grep ID=alpine /etc/os-release; then
         install_cmd="apk add"
         # Update package list
@@ -98,9 +99,6 @@ install_docker_compose() {
 configure() {
     echo "Configuring environment"
 
-    # powerlevel fonts
-    curl https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > "MesloLGS NF Regular.ttf"
-
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -139,11 +137,6 @@ switch_shell() {
     fi
 }
 
-cleanup() {
-    echo "Cleaning up"
-    rm -rf "MesloLGS NF Regular.ttf" || true
-}
-
 main() {
     set +u
     option=$1
@@ -155,12 +148,10 @@ main() {
             ;;
         --configure)
             configure
-            cleanup
             ;;
         *)
             install
             configure
-            cleanup
             # Change the shell as the last step because it is interactive
             switch_shell
             ;;
@@ -168,4 +159,6 @@ main() {
 }
 
 main "$@"
-echo "Finished bootstrapping environment, reload/restart shell"
+echo "Finished bootstrapping environment, reloading shell"
+exec zsh
+echo "Done"
