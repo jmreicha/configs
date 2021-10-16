@@ -12,7 +12,7 @@ jobs:
       - name: Run installer
         run: |
           cd github.com/configs
-          ./install.sh
+          ./install.sh --ci
 
   macos:
     runs-on: macos-latest
@@ -24,7 +24,7 @@ jobs:
       - name: Run installer
         run: |
           cd github.com/configs
-          ./install.sh
+          ./install.sh --ci
 
   ###  Some installations need to be run in containers
 
