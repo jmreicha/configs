@@ -13,7 +13,7 @@ COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight pandoc zip exa"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
-OSX_TOOLS="hadolint fd findutils golang kubectl yq"
+OSX_TOOLS="hadolint fd findutils kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
@@ -29,7 +29,7 @@ install() {
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
-    elif grep ID=debian /etc/os-release || gre ID=ubuntu; then
+    elif grep ID=debian /etc/os-release || grep ID=ubuntu; then
         install_cmd="sudo apt install -y"
         # Update package list
         sudo apt update -y
