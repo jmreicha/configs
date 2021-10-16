@@ -7,17 +7,21 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
+        path: github.com/configs
       - name: Run installer
         run: |
           cat /etc/os-release
-          cd configs
-          ./install.sh
+          pwd
+          ls github.com/configs
+          # cd configs
+          # ./install.sh
 
   macos:
     runs-on: macos-latest
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
+        path: github.com/configs
       - name: Run installer
         run: |
           cat /etc/os-release
@@ -34,6 +38,7 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
+        path: github.com/configs
       - name: Run installer
         run: |
           cat /ect/os-release
@@ -46,6 +51,7 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
+        path: github.com/configs
       - name: Run installer
         run: |
           cat /ect/os-release
@@ -58,6 +64,7 @@ jobs:
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
+        path: github.com/configs
       - name: Run installer
         run: |
           cat /ect/os-release
