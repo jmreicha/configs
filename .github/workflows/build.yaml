@@ -11,11 +11,8 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /etc/os-release
-          pwd
-          ls github.com/configs
-          # cd configs
-          # ./install.sh
+          cd github.com/configs
+          ./install.sh
 
   macos:
     runs-on: macos-latest
@@ -26,9 +23,8 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /etc/os-release
-          # cd configs
-          # ./install.sh
+          cd github.com/configs
+          ./install.sh
 
   ###  Some installations need to be run in containers
 
@@ -44,7 +40,7 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /ect/os-release
+          cat /etc/os-release
 
   archlinux:
     runs-on: ubuntu-latest
@@ -58,7 +54,7 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /ect/os-release
+          cat /etc/os-release
 
   debian:
     runs-on: ubuntu-latest
@@ -72,4 +68,4 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /ect/os-release
+          cat /etc/os-release
