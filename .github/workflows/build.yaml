@@ -1,0 +1,63 @@
+---
+name: Install platforms
+on: push
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Run installer
+        run: |
+          cat /etc/os-release
+          cd configs
+          ./install.sh
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Run installer
+        run: |
+          cat /etc/os-release
+          # cd configs
+          # ./install.sh
+
+  ###  Some installations need to be run in containers
+
+  alpine:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3.14
+    # TODO Mount repo into container
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Run installer
+        run: |
+          cat /ect/os-release
+
+  archlinux:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base
+    # TODO Mount repo into container
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Run installer
+        run: |
+          cat /ect/os-release
+
+  debian:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bullseye
+    # TODO Mount repo into container
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+      - name: Run installer
+        run: |
+          cat /ect/os-release
