@@ -29,7 +29,7 @@ install() {
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
-    elif grep ID=debian /etc/os-release; then
+    elif grep ID=debian /etc/os-release || gre ID=ubuntu; then
         install_cmd="sudo apt install -y"
         # Update package list
         sudo apt update -y
@@ -46,6 +46,7 @@ install() {
         apk update
     # OSX
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
+        install_cmd="brew install"
         echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
         $install_cmd $COMMON_TOOLS $OSX_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
