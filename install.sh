@@ -5,11 +5,10 @@
 
 set -eu
 
-# TODO Better oraganization of tools
-
 ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
-COMMON_TOOLS="jq shellcheck fzf ripgrep hstr yamllint highlight pandoc zip exa vim"
+# TODO exa doesn't exist in Ubuntu package repos, find a way around this
+COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
@@ -29,7 +28,7 @@ install() {
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
-    elif grep ID=debian /etc/os-release || grep ID=ubuntu /etc/os-release; then
+    elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
         # Update package list
         sudo apt update -y
@@ -40,6 +39,14 @@ install() {
         # Set the default locale
         sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
         sudo locale-gen
+    elif grep ID=ubuntu /etc/os-release; then
+        install_cmd="sudo apt install -y --ignore-missing"
+        # Update package list
+        sudo apt update -y
+        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
+        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install $PY_TOOLS
     elif grep ID=alpine /etc/os-release; then
         install_cmd="apk add"
         # Update package list
