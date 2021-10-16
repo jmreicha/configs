@@ -7,7 +7,6 @@ set -eu
 
 ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
-# TODO exa doesn't exist in Ubuntu package repos, find a way around this
 COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential"
 LINUX_TOOLS="pass tmux zsh"
@@ -43,8 +42,8 @@ install() {
         install_cmd="sudo apt install -y --ignore-missing"
         # Update package list
         sudo apt update -y
-        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
-        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
+        echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
+        $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
     elif grep ID=alpine /etc/os-release; then
