@@ -107,7 +107,8 @@ install_nvm() {
         . ~/.nvm/nvm.sh
         nvm install --lts
         nvm alias default stable
-        npm install -g "$NODE_TOOLS"
+        # shellcheck disable=SC2086
+        npm install -g $NODE_TOOLS
     fi
 }
 
@@ -150,7 +151,7 @@ configure() {
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         vim --not-a-term +PlugInstall +qall
         mkdir -p $HOME/.config/coc
-        vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+        vim --not-a-term +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
         vim -T dumb +'PlugInstall --sync' +qall
     fi
