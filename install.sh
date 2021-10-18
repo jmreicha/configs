@@ -30,7 +30,7 @@ install() {
     elif grep ID=debian /etc/os-release; then
         install_cmd="sudo apt install -y"
         # Update package list
-        sudo apt update -y
+        apt update -y
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
@@ -116,11 +116,11 @@ configure() {
     fi
 
     # Link configs
-    rm -rf ~/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s ~/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
-    rm -rf ~/.zshrc || true && ln -s ~/github.com/configs/.zshrc ~/.zshrc
-    rm -rf ~/.vimrc || true && ln -s ~/github.com/configs/.vimrc ~/.vimrc
-    rm -rf ~/.p10k.zsh || true && ln -s ~/github.com/configs/.p10k.zsh ~/.p10k.zsh
-    rm -rf ~/.tmux.conf || true && ln -s ~/github.com/configs/.tmux.conf ~/.tmux.conf
+    rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
+    rm -rf $HOME/.zshrc || true && ln -s $HOME/github.com/configs/.zshrc ~/.zshrc
+    rm -rf $HOME/.vimrc || true && ln -s $HOME/github.com/configs/.vimrc ~/.vimrc
+    rm -rf $HOME/.p10k.zsh || true && ln -s $HOME/github.com/configs/.p10k.zsh ~/.p10k.zsh
+    rm -rf $HOME/.tmux.conf || true && ln -s $HOME/github.com/configs/.tmux.conf ~/.tmux.conf
     # i3/wayland configurations
     # kitty configuration
 
@@ -130,10 +130,11 @@ configure() {
         # Vim 8.2+ tools/plugins + coc plugins
         curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        vim +PlugInstall +qall
+        vim -T dumb +PlugInstall +qall
+        mkdir -p $HOME/.config/coc
         vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
-        vim +PlugUpdate +qall
+        vim -T dumb +'PlugInstall --sync' +qall
     fi
 }
 
