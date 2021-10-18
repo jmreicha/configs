@@ -22,7 +22,7 @@ set_env() {
         # No sudo in containers
         sudo=""
         # github runner path
-        HOME="/home/runner/work/configs/configs"
+        # HOME="/home/runner/work/configs/configs"
     else
         sudo="sudo"
     fi
