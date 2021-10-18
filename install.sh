@@ -15,14 +15,14 @@ OSX_TOOLS="hadolint fd findutils kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
-DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
+# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
 set_env() {
     if [[ $1 == "--ci" ]]; then
         # No sudo in containers
         sudo=""
         # github runner path
-        CI_HOME="/home/runner/work/configs/configs"
+        RUNNER_PATH="$HOME/work/configs/configs"
     else
         sudo="sudo"
     fi
@@ -123,7 +123,7 @@ configure() {
     echo "Configuring environment"
 
     # Set the home dir to custom path if we're running in CI
-    HOME="${CI_HOME:-$HOME}"
+    INTSTALLER_PATH="${RUNNER_PATH:-$HOME}"
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
@@ -136,10 +136,10 @@ configure() {
 
     # Link configs
     # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
-    rm -rf $HOME/.zshrc || true && ln -s $HOME/github.com/configs/.zshrc $HOME/.zshrc
-    rm -rf $HOME/.vimrc || true && ln -s $HOME/github.com/configs/.vimrc $HOME/.vimrc
-    rm -rf $HOME/.p10k.zsh || true && ln -s $HOME/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-    rm -rf $HOME/.tmux.conf || true && ln -s $HOME/github.com/configs/.tmux.conf $HOME/.tmux.conf
+    rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
+    rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
+    rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
+    rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
     # i3/wayland configurations
     # kitty configuration
 
