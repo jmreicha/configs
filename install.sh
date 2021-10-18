@@ -7,7 +7,7 @@ set -eu
 
 ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
-COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim"
+COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
@@ -67,7 +67,7 @@ install() {
         echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
         $install_cmd $COMMON_TOOLS $OSX_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
-        pip3 install --user $PY_TOOLS
+        pip3 install --user --no-warn-script-location $PY_TOOLS
     else
         echo "Unkown OS"
         exit 0
@@ -160,6 +160,7 @@ switch_shell() {
         echo "Switching to zsh"
         chsh -s "$(which zsh)"
     fi
+    exec zsh
 }
 
 main() {
@@ -191,5 +192,4 @@ main() {
 
 main "$@"
 echo "Finished bootstrapping environment, reloading shell"
-exec zsh
 echo "Done"

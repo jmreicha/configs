@@ -25,8 +25,9 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cd github.com/configs
-          ./install.sh --ci
+          pwd
+          # cd github.com/configs
+          # ./install.sh --ci
 
   ###  Some OS installations need to be run in containers
 
