@@ -5,14 +5,14 @@
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
+ALPINE_TOOLS="yq docker python3 py3-pip fd build-base colordiff"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
 OSX_TOOLS="hadolint fd findutils kubectl yq"
-PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
+PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper commitizen"
 
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
@@ -28,7 +28,9 @@ set_env() {
     fi
 }
 
+# TODO Make this function more DRY
 install() {
+    # Arch
     if grep ID=arch /etc/os-release; then
         install_cmd="yay -S --needed --noconfirm"
         if ! yay -V &> /dev/null; then install_yay; fi
@@ -38,6 +40,7 @@ install() {
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
+    # Debian
     elif grep ID=debian /etc/os-release; then
         install_cmd="$sudo apt install -y"
         # Update package list
@@ -49,6 +52,7 @@ install() {
         # Set the default locale
         $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
         $sudo locale-gen
+    # Ubuntu
     elif grep ID=ubuntu /etc/os-release; then
         install_cmd="sudo apt install -y --ignore-missing"
         # Update package list
@@ -57,10 +61,15 @@ install() {
         $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
+    # Alpine
     elif grep ID=alpine /etc/os-release; then
         install_cmd="apk add"
         # Update package list
         apk update
+        echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
+        $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install $PY_TOOLS
     # OSX
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
         install_cmd="brew install"
@@ -147,10 +156,10 @@ configure() {
 
     if [[ ! -d $HOME/.vim/plugged ]]; then
         # Vim 8.2+ tools/plugins + coc plugins
-        curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
+        curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         vim --not-a-term +PlugInstall +qall
-        mkdir -p $HOME/.config/coc
+        mkdir -p "$HOME/.config/coc"
         vim --not-a-term +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
         vim -T dumb +'PlugInstall --sync' +qall
@@ -162,6 +171,7 @@ switch_shell() {
         echo "Switching to zsh"
         chsh -s "$(which zsh)"
     fi
+    echo "Non CI environment detected, reloading shell"
     exec zsh
 }
 
@@ -193,5 +203,5 @@ main() {
 }
 
 main "$@"
-echo "Finished bootstrapping environment, reloading shell"
-echo "Done"
+echo
+echo "Finished bootstrapping environment"
