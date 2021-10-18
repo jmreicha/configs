@@ -8,10 +8,10 @@ jobs:
       - name: Checking out our code
         uses: actions/checkout@master
         with:
-          path: $HOME/github.com/configs
+          path: github.com/configs
       - name: Run installer
         run: |
-          cd $HOME/github.com/configs
+          cd github.com/configs
           ./install.sh --ci
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
