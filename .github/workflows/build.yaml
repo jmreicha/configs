@@ -13,6 +13,8 @@ jobs:
         run: |
           cd github.com/configs
           ./install.sh --ci
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
   macos:
     runs-on: macos-latest
@@ -26,7 +28,7 @@ jobs:
           cd github.com/configs
           ./install.sh --ci
 
-  ###  Some installations need to be run in containers
+  ###  Some OS installations need to be run in containers
 
   alpine:
     runs-on: ubuntu-latest
@@ -68,4 +70,5 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cat /etc/os-release
+          cd github.com/configs
+          ./install.sh --ci
