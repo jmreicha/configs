@@ -8,7 +8,7 @@ set -eu
 ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
 COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim"
-DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential"
+DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locale-gen"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
 OSX_TOOLS="python3 hadolint fd findutils kubectl yq"
@@ -17,7 +17,7 @@ PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort v
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
 DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
-set_ci_env() {
+set_env() {
     if [[ $1 == "--ci" ]]; then
         # No sudo in containers
         sudo=""
@@ -25,6 +25,11 @@ set_ci_env() {
         HOME="/home/runner/work/configs/configs"
     else
         sudo="sudo"
+        # TODO Figure out why these aren't being installed in CI
+        echo "Installing NVM"
+        if [[ ! -f $HOME/.nvm/nvm.sh ]]; then install_nvm; fi
+        echo "Installing AWS CLI"
+        if ! aws --version &> /dev/null; then install_awscli; fi
     fi
 }
 
@@ -73,13 +78,7 @@ install() {
         exit 0
     fi
 
-    # TODO Figure out why these aren't being installed in CI
-    echo "Installing NVM"
-    if [[ ! -f $HOME/.nvm/nvm.sh ]]; then install_nvm; fi
-    echo "Installing AWS CLI"
-    if ! aws --version &> /dev/null; then install_awscli; fi
-
-    echo "Finished installing packages and tools"
+        echo "Finished installing packages and tools"
 }
 
 ### Non-packaged tools
@@ -102,7 +101,7 @@ install_awscli() {
 
 install_nvm() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    . ~/.nvm/nvm.sh
+    . ~/.nvm/nvm.sh || . /home/runner/.nvm
     nvm install --lts
     nvm alias default stable
     npm install -g $NODE_TOOLS
@@ -162,7 +161,7 @@ main() {
     option=$1
     set -u
 
-    set_ci_env "$option"
+    set_env "$option"
 
     case $option in
         --install)
