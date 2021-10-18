@@ -12,7 +12,7 @@ jobs:
       - name: Run installer
         run: |
           cd github.com/configs
-          ./install.sh --ci
+          # ./install.sh --ci
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
 
