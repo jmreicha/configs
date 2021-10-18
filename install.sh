@@ -93,7 +93,7 @@ install_awscli() {
         echo "Installing AWS CLI"
         # Grab the newest version by default
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
+        unzip -qq awscliv2.zip
         $sudo ./aws/install
         rm -rf aws*
     fi
@@ -103,7 +103,7 @@ install_nvm() {
     if [[ ! -f $HOME/.nvm/nvm.sh ]]; then
         echo "Installing NVM"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-        . ~/.nvm/nvm.sh || . /home/runner/.nvm
+        . ~/.nvm/nvm.sh
         nvm install --lts
         nvm alias default stable
         npm install -g $NODE_TOOLS
@@ -118,6 +118,8 @@ install_docker_compose() {
 }
 
 configure() {
+    set -x
+
     echo "Configuring environment"
 
     # Set the home dir to custom path if we're running in CI
@@ -147,12 +149,13 @@ configure() {
         # Vim 8.2+ tools/plugins + coc plugins
         curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        vim -T dumb +PlugInstall +qall
+        vim -T dumb -es +PlugInstall +qall
         mkdir -p $HOME/.config/coc
         vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
         vim -T dumb +'PlugInstall --sync' +qall
     fi
+    set +x
 }
 
 switch_shell() {
