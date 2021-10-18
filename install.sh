@@ -17,6 +17,17 @@ PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort v
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
 DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
+set_ci_env() {
+    if [[ $1 == "--ci" ]]; then
+        # No sudo in containers
+        sudo=""
+        # github runner path
+        HOME="/home/runner/work/configs/configs"
+    else
+        sudo="sudo"
+    fi
+}
+
 install() {
     if grep ID=arch /etc/os-release; then
         install_cmd="yay -S --needed --noconfirm"
@@ -28,16 +39,16 @@ install() {
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
     elif grep ID=debian /etc/os-release; then
-        install_cmd="sudo apt install -y"
+        install_cmd="$sudo apt install -y"
         # Update package list
-        apt update -y
+        $sudo apt update -y
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
         $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
         # Set the default locale
-        sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
-        sudo locale-gen
+        $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
+        $sudo locale-gen
     elif grep ID=ubuntu /etc/os-release; then
         install_cmd="sudo apt install -y --ignore-missing"
         # Update package list
@@ -62,6 +73,7 @@ install() {
         exit 0
     fi
 
+    # TODO Figure out why these aren't being installed in CI
     echo "Installing NVM"
     if [[ ! -f $HOME/.nvm/nvm.sh ]]; then install_nvm; fi
     echo "Installing AWS CLI"
@@ -84,7 +96,7 @@ install_awscli() {
     # Grab the newest version by default
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
-    sudo ./aws/install
+    $sudo ./aws/install
     rm -rf aws*
 }
 
@@ -149,6 +161,8 @@ main() {
     set +u
     option=$1
     set -u
+
+    set_env
 
     case $option in
         --install)
