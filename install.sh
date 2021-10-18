@@ -22,7 +22,7 @@ set_env() {
         # No sudo in containers
         sudo=""
         # github runner path
-        # HOME="/home/runner/work/configs/configs"
+        CI_HOME="/home/runner/work/configs/configs"
     else
         sudo="sudo"
     fi
@@ -119,6 +119,9 @@ install_docker_compose() {
 
 configure() {
     echo "Configuring environment"
+
+    # Set the home dir to custom path if we're running in CI
+    HOME="${CI_HOME:-$HOME}"
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
