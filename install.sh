@@ -7,7 +7,7 @@ set -eu
 
 ALPINE_TOOLS="yq docker python3 py3-pip fd build-base"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
-COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
+COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
@@ -147,7 +147,7 @@ configure() {
 
     if [[ ! -d $HOME/.vim/plugged ]]; then
         # Vim 8.2+ tools/plugins + coc plugins
-        curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         vim -T dumb -es +PlugInstall +qall
         mkdir -p $HOME/.config/coc
