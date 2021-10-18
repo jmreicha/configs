@@ -162,7 +162,7 @@ main() {
     option=$1
     set -u
 
-    set_env
+    set_ci_env "$option"
 
     case $option in
         --install)
