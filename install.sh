@@ -11,7 +11,7 @@ COMMON_TOOLS="jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
-OSX_TOOLS="python3 hadolint fd findutils kubectl yq"
+OSX_TOOLS="hadolint fd findutils kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit pygments isort virtualenvwrapper"
 
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
@@ -25,11 +25,6 @@ set_env() {
         HOME="/home/runner/work/configs/configs"
     else
         sudo="sudo"
-        # TODO Figure out why these aren't being installed in CI
-        echo "Installing NVM"
-        if [[ ! -f $HOME/.nvm/nvm.sh ]]; then install_nvm; fi
-        echo "Installing AWS CLI"
-        if ! aws --version &> /dev/null; then install_awscli; fi
     fi
 }
 
@@ -78,7 +73,9 @@ install() {
         exit 0
     fi
 
-        echo "Finished installing packages and tools"
+    install_nvm
+    install_awscli
+    echo "Finished installing packages and tools"
 }
 
 ### Non-packaged tools
@@ -92,19 +89,25 @@ install_yay() {
 }
 
 install_awscli() {
-    # Grab the newest version by default
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    $sudo ./aws/install
-    rm -rf aws*
+    if ! aws --version &> /dev/null; then
+        echo "Installing AWS CLI"
+        # Grab the newest version by default
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        $sudo ./aws/install
+        rm -rf aws*
+    fi
 }
 
 install_nvm() {
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    . ~/.nvm/nvm.sh || . /home/runner/.nvm
-    nvm install --lts
-    nvm alias default stable
-    npm install -g $NODE_TOOLS
+    if [[ ! -f $HOME/.nvm/nvm.sh ]]; then
+        echo "Installing NVM"
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        . ~/.nvm/nvm.sh || . /home/runner/.nvm
+        nvm install --lts
+        nvm alias default stable
+        npm install -g $NODE_TOOLS
+    fi
 }
 
 install_docker_compose() {
@@ -127,11 +130,11 @@ configure() {
     fi
 
     # Link configs
-    rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme ~/.oh-my-zsh/themes/josh-custom.zsh-theme
-    rm -rf $HOME/.zshrc || true && ln -s $HOME/github.com/configs/.zshrc ~/.zshrc
-    rm -rf $HOME/.vimrc || true && ln -s $HOME/github.com/configs/.vimrc ~/.vimrc
-    rm -rf $HOME/.p10k.zsh || true && ln -s $HOME/github.com/configs/.p10k.zsh ~/.p10k.zsh
-    rm -rf $HOME/.tmux.conf || true && ln -s $HOME/github.com/configs/.tmux.conf ~/.tmux.conf
+    # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
+    rm -rf $HOME/.zshrc || true && ln -s $HOME/github.com/configs/.zshrc $HOME/.zshrc
+    rm -rf $HOME/.vimrc || true && ln -s $HOME/github.com/configs/.vimrc $HOME/.vimrc
+    rm -rf $HOME/.p10k.zsh || true && ln -s $HOME/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
+    rm -rf $HOME/.tmux.conf || true && ln -s $HOME/github.com/configs/.tmux.conf $HOME/.tmux.conf
     # i3/wayland configurations
     # kitty configuration
 
