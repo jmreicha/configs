@@ -150,7 +150,7 @@ configure() {
         curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         exit 0
-        vim -T dumb -e +PlugInstall +qall
+        vim --not-a-term +PlugInstall +qall
         mkdir -p $HOME/.config/coc
         vim +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
