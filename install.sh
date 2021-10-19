@@ -4,12 +4,12 @@
 # other configurations.
 
 # TODO
- # Make a runner user for Arch
+ # Make a runner user for Arch - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
  # Make the install() function more DRY
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust"
 ARCH_TOOLS="python-pip fd go unzip base-devel sudo fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -177,6 +177,7 @@ configure() {
     fi
 
     ls -lah "$HOME"
+    ls -lah "$HOME/.vim/plugged"
 }
 
 switch_shell() {
