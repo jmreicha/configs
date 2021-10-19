@@ -68,6 +68,8 @@ jobs:
     container:
       image: debian:bullseye
       options: --interactive --tty
+      volumes:
+        - ${HOME}/work/configs/configs:${HOME}/work/configs/configs
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -75,7 +77,7 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
-          cd github.com/configs
+          cd ${HOME}/work/configs/configs/github.com/configs
           ./install.sh --ci
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
