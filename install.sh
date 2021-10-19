@@ -6,7 +6,7 @@
 set -eu
 
 ALPINE_TOOLS="yq docker python3 py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils"
-ARCH_TOOLS="python-pip fd go unzip base-devel"
+ARCH_TOOLS="python-pip fd go unzip base-devel sudo fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
@@ -23,6 +23,8 @@ set_env() {
         sudo=""
         # github runner path
         RUNNER_PATH="$HOME/work/configs/configs"
+        # Turn off arch extras in CI because there are problems running as root
+        ARCH_EXTRAS=""
     else
         sudo="sudo"
     fi
@@ -33,6 +35,7 @@ install() {
     # Arch
     if grep ID=arch /etc/os-release; then
         $sudo pacman -Syu
+        # Install git first to avoid package conflicts
         $sudo pacman -S --needed --noconfirm git
         echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
         $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
@@ -70,8 +73,8 @@ install() {
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-        # echo "Installing Python tools: $PY_TOOLS"
-        # pip install $PY_TOOLS
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install $PY_TOOLS
     # OSX
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
         install_cmd="brew install"
@@ -92,6 +95,10 @@ install() {
 ### Non-packaged tools
 
 install_yay() {
+    # Skip yay install for now if we are running as the root user (CI)
+    if [[ $EUID == 0 ]]; then
+        return
+    fi
     git clone https://aur.archlinux.org/yay-bin.git
     pushd yay-bin
     makepkg -si
