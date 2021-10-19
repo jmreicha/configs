@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'install.sh'
+      - '.github/workflows/build.yaml'
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
