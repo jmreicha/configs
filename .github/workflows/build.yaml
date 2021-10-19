@@ -67,9 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: debian:bullseye
-      options:
-        - --interactive
-        - --tty
+      options: --interactive --tty
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
