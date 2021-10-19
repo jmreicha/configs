@@ -33,7 +33,7 @@ install() {
     # Arch
     if grep ID=arch /etc/os-release; then
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
-        $sudo pacman -Syu
+        $sudo pacman -Syu --needed --noconfirm
         $sudo pacman -S $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
         echo "Installing extras: $ARCH_EXTRAS"
         yay_cmd="yay -S --needed --noconfirm"
@@ -66,9 +66,7 @@ install() {
         pip install $PY_TOOLS
     # Alpine
     elif grep ID=alpine /etc/os-release; then
-        install_cmd="apk add"
-        # Update package list
-        apk update
+        install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
