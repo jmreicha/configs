@@ -32,12 +32,15 @@ set_env() {
 install() {
     # Arch
     if grep ID=arch /etc/os-release; then
-        install_cmd="yay -S --needed --noconfirm"
+        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
+        $sudo pacman -Syu
+        $sudo pacman -S $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
+        echo "Installing extras: $ARCH_EXTRAS"
+        yay_cmd="yay -S --needed --noconfirm"
         if ! yay -V &> /dev/null; then install_yay; fi
         # Update package list
         yay
-        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS"
-        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS $ARCH_EXTRAS
+        $sudo $yay_cmd $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
     # Debian
@@ -90,6 +93,7 @@ install() {
 ### Non-packaged tools
 
 install_yay() {
+    pacman -S git
     git clone https://aur.archlinux.org/yay-bin.git
     pushd yay-bin
     makepkg -si
