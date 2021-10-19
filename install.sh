@@ -11,7 +11,7 @@ set -eu
 
 ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo"
 ARCH_TOOLS="python-pip fd go unzip base-devel sudo fakeroot"
-COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
+COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
@@ -169,11 +169,10 @@ configure() {
         curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         mkdir -p "$HOME/.config/coc"
-        exit 0
-        vim --not-a-term -e +PlugInstall +qall
-        vim --not-a-term -e +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+        vim --not-a-term +PlugInstall +qall
+        vim --not-a-term +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
-        vim --not-a-term -e +'PlugInstall --sync' +qall
+        vim --not-a-term +'PlugInstall --sync' +qall
     fi
     set +x
 
