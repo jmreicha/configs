@@ -56,8 +56,6 @@ jobs:
           apk add --no-cache bash
           cd ${CONTAINER_HOME}/github.com/configs
           ./install.sh --all
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
   archlinux:
     runs-on: ubuntu-latest

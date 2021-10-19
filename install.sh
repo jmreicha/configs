@@ -84,6 +84,7 @@ install() {
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
         echo "Installing Python tools: $PY_TOOLS"
+        pip install wheel
         pip install $PY_TOOLS
     # OSX
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
@@ -128,7 +129,6 @@ install_nvm() {
         echo "Installing NVM"
         NODE_VERSION="v0.39.0"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NODE_VERSION}/install.sh | bash
-        exit 0
         . "$HOME/.nvm/nvm.sh"
         nvm install --lts
         nvm alias default stable
