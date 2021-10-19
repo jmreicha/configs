@@ -42,6 +42,7 @@ jobs:
           path: github.com/configs
       - name: Run installer
         run: |
+          apk add --no-cache bash
           cd github.com/configs
           ./install.sh --ci
 
