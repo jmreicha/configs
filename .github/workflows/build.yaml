@@ -38,6 +38,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: alpine:3.14
+      volumes:
+        # mount our configs into the correct path in the container
+        - /home/runner/work/configs/configs/:/github/home/work/configs/configs
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -46,28 +49,13 @@ jobs:
       - name: Run installer
         run: |
           apk add --no-cache bash
-          cd github.com/configs
+          cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --ci
 
   archlinux:
     runs-on: ubuntu-latest
     container:
       image: archlinux:base
-    steps:
-      - name: Checking out our code
-        uses: actions/checkout@master
-        with:
-          path: github.com/configs
-      - name: Run installer
-        run: |
-          cd github.com/configs
-          ./install.sh --ci
-
-  debian:
-    runs-on: ubuntu-latest
-    container:
-      image: debian:bullseye
-      options: --interactive --tty
       volumes:
         # mount our configs into the correct path in the container
         - /home/runner/work/configs/configs/:/github/home/work/configs/configs
@@ -80,5 +68,22 @@ jobs:
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --ci
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+
+  debian:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bullseye
+      volumes:
+        # mount our configs into the correct path in the container
+        - /home/runner/work/configs/configs/:/github/home/work/configs/configs
+    steps:
+      - name: Checking out our code
+        uses: actions/checkout@master
+        with:
+          path: github.com/configs
+      - name: Run installer
+        run: |
+          cd /github/home/work/configs/configs/github.com/configs
+          ./install.sh --ci
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
