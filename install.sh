@@ -9,7 +9,7 @@
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -22,7 +22,8 @@ ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terr
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
 set_env() {
-    if [[ $1 == "--ci" ]]; then
+    # Set options for running in CI
+    if [[ $CI ]]; then
         # No sudo in containers
         sudo=""
         # github runner path
@@ -33,6 +34,7 @@ set_env() {
 }
 
 install() {
+    set_env
     # Arch
     if grep ID=arch /etc/os-release; then
         $sudo pacman -Syu
@@ -74,6 +76,10 @@ install() {
         pip install $PY_TOOLS
     # Alpine
     elif grep ID=alpine /etc/os-release; then
+        # We need to create a bashrc for nvm to update
+        touch "$HOME/.bashrc"
+        # echo "export NVM_DIR=\"$HOME/.nvm\"" >> "$HOME/.bashrc"
+        # echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> "$HOME/.bashrc"
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
@@ -179,21 +185,28 @@ configure() {
     ls -lah "$HOME/.vim/plugged"
 }
 
+update() {
+    echo "Updating packages and configs"
+    # OS specific packages
+    # Configs
+    # vim --not-a-term +'PlugInstall --sync' +qall
+}
+
 switch_shell() {
-    if [[ $SHELL != "/usr/bin/zsh" ]]; then
-        echo "Switching to zsh"
-        chsh -s "$(which zsh)"
+    if [[ ! $CI ]]; then
+        if [[ $SHELL != "/usr/bin/zsh" ]]; then
+            echo "Switching to zsh"
+            chsh -s "$(which zsh)"
+        fi
+        echo "Non CI environment detected, reloading shell"
+        exec zsh
     fi
-    echo "Non CI environment detected, reloading shell"
-    exec zsh
 }
 
 main() {
     set +u
     option=$1
     set -u
-
-    set_env "$option"
 
     case $option in
         --install)
@@ -202,16 +215,17 @@ main() {
         --configure)
             configure
             ;;
-        --ci)
-            install
-            configure
+        --update)
+            update
             ;;
-        *)
+        --all)
             install
             configure
             # Change the shell as the last step because it is interactive
             switch_shell
             ;;
+        *)
+            echo "$option not a recognized flag"
     esac
 }
 

@@ -21,7 +21,7 @@ jobs:
       - name: Run installer
         run: |
           cd github.com/configs
-          ./install.sh --ci
+          ./install.sh --all
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
 
@@ -35,7 +35,7 @@ jobs:
       - name: Run installer
         run: |
           cd github.com/configs
-          ./install.sh --ci
+          ./install.sh --all
 
   ###  Some OS installations need to be run in containers
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           apk add --no-cache bash
           cd ${CONTAINER_HOME}/github.com/configs
-          ./install.sh --ci
+          ./install.sh --all
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
 
@@ -74,7 +74,7 @@ jobs:
       - name: Run installer
         run: |
           cd /github/home/work/configs/configs/github.com/configs
-          ./install.sh --ci
+          ./install.sh --all
 
   debian:
     runs-on: ubuntu-latest
@@ -91,4 +91,4 @@ jobs:
       - name: Run installer
         run: |
           cd /github/home/work/configs/configs/github.com/configs
-          ./install.sh --ci
+          ./install.sh --all
