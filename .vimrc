@@ -62,7 +62,8 @@ Plug 'tpope/vim-rsi'
 " Indent highlighting (Only for cetain filetypes, e.g. yaml)
 Plug 'Yggdroot/indentLine', {'for': 'yaml'}
 " Fuzzy file searching and FZF integration
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
