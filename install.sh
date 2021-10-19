@@ -27,8 +27,6 @@ set_env() {
         sudo=""
         # github runner path
         RUNNER_PATH="$HOME/work/configs/configs"
-        # Turn off arch extras in CI because there are problems running as root
-        ARCH_EXTRAS=""
     else
         sudo="sudo"
     fi
@@ -38,7 +36,7 @@ install() {
     # Arch
     if grep ID=arch /etc/os-release; then
         $sudo pacman -Syu
-        # Install git first to avoid package conflicts
+        # Install git first to avoid package conflicts later
         $sudo pacman -S --needed --noconfirm git
         echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
         $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
@@ -124,7 +122,7 @@ install_nvm() {
         echo "Installing NVM"
         NODE_VERSION="v0.39.0"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NODE_VERSION}/install.sh | bash
-        . ~/.nvm/nvm.sh
+        . "$HOME/.nvm/nvm.sh"
         nvm install --lts
         nvm alias default stable
         # shellcheck disable=SC2086
@@ -169,11 +167,11 @@ configure() {
         # Vim 8.2+ tools/plugins + coc plugins
         curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        vim --not-a-term +PlugInstall +qall
         mkdir -p "$HOME/.config/coc"
-        vim --not-a-term +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+        vim --not-a-term -e +PlugInstall +qall
+        vim --not-a-term -e +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
-        vim -T dumb +'PlugInstall --sync' +qall
+        vim --not-a-term -e +'PlugInstall --sync' +qall
     fi
 
     ls -lah "$HOME"
