@@ -1,10 +1,15 @@
 ---
 name: Install platforms
+
 on:
   push:
     paths:
       - 'install.sh'
       - '.github/workflows/build.yaml'
+
+env:
+  CONTAINER_HOME: '/github/home/work/configs/configs'
+
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
@@ -40,7 +45,7 @@ jobs:
       image: alpine:3.14
       volumes:
         # mount our configs into the correct path in the container
-        - /home/runner/work/configs/configs/:/github/home/work/configs/configs
+        - /home/runner/work/configs/configs/:${{ env.CONTAINER_HOME }}
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -49,8 +54,10 @@ jobs:
       - name: Run installer
         run: |
           apk add --no-cache bash
-          cd /github/home/work/configs/configs/github.com/configs
+          cd ${{ env.CONTAINER_HOME }}/github.com/configs
           ./install.sh --ci
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
   archlinux:
     runs-on: ubuntu-latest
@@ -85,5 +92,3 @@ jobs:
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --ci
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3

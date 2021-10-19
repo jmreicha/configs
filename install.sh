@@ -122,6 +122,7 @@ install_nvm() {
         echo "Installing NVM"
         NODE_VERSION="v0.39.0"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NODE_VERSION}/install.sh | bash
+        exit 0
         . "$HOME/.nvm/nvm.sh"
         nvm install --lts
         nvm alias default stable
