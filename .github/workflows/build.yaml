@@ -69,7 +69,7 @@ jobs:
       image: debian:bullseye
       options: --interactive --tty
       volumes:
-        - ${HOME}/work/configs/configs/:${HOME}/work/configs/configs
+        - /home/runner/work/configs/configs/:/home/runner/work/configs/configs
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
