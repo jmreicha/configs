@@ -69,8 +69,8 @@ install() {
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install $PY_TOOLS
+        # echo "Installing Python tools: $PY_TOOLS"
+        # pip install $PY_TOOLS
     # OSX
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
         install_cmd="brew install"
@@ -91,7 +91,6 @@ install() {
 ### Non-packaged tools
 
 install_yay() {
-    pacman -S git
     git clone https://aur.archlinux.org/yay-bin.git
     pushd yay-bin
     makepkg -si
