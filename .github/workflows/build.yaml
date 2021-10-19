@@ -45,7 +45,7 @@ jobs:
       image: alpine:3.14
       volumes:
         # mount our configs into the correct path in the container
-        - /home/runner/work/configs/configs/:${{ env.CONTAINER_HOME }}
+        - '/home/runner/work/configs/configs/:${{ env.CONTAINER_HOME }}'
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -54,7 +54,7 @@ jobs:
       - name: Run installer
         run: |
           apk add --no-cache bash
-          cd ${{ env.CONTAINER_HOME }}/github.com/configs
+          cd ${CONTAINER_HOME}/github.com/configs
           ./install.sh --ci
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
