@@ -5,7 +5,7 @@
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3 py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils"
+ALPINE_TOOLS="yq docker python3 py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libffi-dev"
 ARCH_TOOLS="python-pip fd go unzip base-devel sudo fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -39,12 +39,15 @@ install() {
         $sudo pacman -S --needed --noconfirm git
         echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
         $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
-        echo "Installing extras: $ARCH_EXTRAS"
-        yay_cmd="yay -S --needed --noconfirm"
-        if ! yay -V &> /dev/null; then install_yay; fi
-        # Update package list
-        yay
-        $yay_cmd $ARCH_EXTRAS
+        # Skip yay install for now if we are running as the root user (CI)
+        if [[ $EUID != 0 ]]; then
+            echo "Installing extras: $ARCH_EXTRAS"
+            yay_cmd="yay -S --needed --noconfirm"
+            if ! yay -V &> /dev/null; then install_yay; fi
+            # Update package list
+            yay
+            $yay_cmd $ARCH_EXTRAS
+        fi
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
     # Debian
@@ -95,10 +98,6 @@ install() {
 ### Non-packaged tools
 
 install_yay() {
-    # Skip yay install for now if we are running as the root user (CI)
-    if [[ $EUID == 0 ]]; then
-        return
-    fi
     git clone https://aur.archlinux.org/yay-bin.git
     pushd yay-bin
     makepkg -si
