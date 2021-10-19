@@ -33,8 +33,8 @@ install() {
     # Arch
     if grep ID=arch /etc/os-release; then
         echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
-        $sudo pacman -Syu --needed --noconfirm
-        $sudo pacman -S $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
+        $sudo pacman -Syu
+        $sudo pacman -S --needed --noconfirm $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
         echo "Installing extras: $ARCH_EXTRAS"
         yay_cmd="yay -S --needed --noconfirm"
         if ! yay -V &> /dev/null; then install_yay; fi
