@@ -45,7 +45,7 @@ jobs:
       image: alpine:3.14
       volumes:
         # mount our configs into the correct path in the container
-        - '/home/runner/work/configs/configs/:${{ env.CONTAINER_HOME }}'
+        - /home/runner/work/configs/configs/:/github/home/work/configs/configs
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
