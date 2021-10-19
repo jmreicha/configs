@@ -3,9 +3,13 @@
 # Simple cross platform installation script for basic setup including tools and
 # other configurations.
 
+# TODO
+ # Make a runner user for Arch
+ # Make the install() function more DRY
+
 set -eu
 
-ALPINE_TOOLS="yq docker python3 py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libffi-dev"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev"
 ARCH_TOOLS="python-pip fd go unzip base-devel sudo fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -30,7 +34,6 @@ set_env() {
     fi
 }
 
-# TODO Make this function more DRY
 install() {
     # Arch
     if grep ID=arch /etc/os-release; then
@@ -172,6 +175,8 @@ configure() {
     else
         vim -T dumb +'PlugInstall --sync' +qall
     fi
+
+    ls -lah "$HOME"
 }
 
 switch_shell() {
