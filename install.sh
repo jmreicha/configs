@@ -5,7 +5,7 @@
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3 py3-pip fd build-base colordiff"
+ALPINE_TOOLS="yq docker python3 py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils"
 ARCH_TOOLS="python-pip fd go unzip base-devel"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -32,15 +32,16 @@ set_env() {
 install() {
     # Arch
     if grep ID=arch /etc/os-release; then
-        echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
         $sudo pacman -Syu
+        $sudo pacman -S --needed --noconfirm git
+        echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
         $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
         echo "Installing extras: $ARCH_EXTRAS"
-        yay_cmd="$sudo yay -S --needed --noconfirm"
+        yay_cmd="yay -S --needed --noconfirm"
         if ! yay -V &> /dev/null; then install_yay; fi
         # Update package list
         yay
-        $sudo $yay_cmd $ARCH_EXTRAS
+        $yay_cmd $ARCH_EXTRAS
         echo "Installing Python tools: $PY_TOOLS"
         pip install $PY_TOOLS
     # Debian
@@ -112,7 +113,7 @@ install_awscli() {
 install_nvm() {
     if [[ ! -f $HOME/.nvm/nvm.sh ]]; then
         echo "Installing NVM"
-        NODE_VERSION="v0.38.0"
+        NODE_VERSION="v0.39.0"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NODE_VERSION}/install.sh | bash
         . ~/.nvm/nvm.sh
         nvm install --lts
