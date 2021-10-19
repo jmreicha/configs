@@ -163,18 +163,16 @@ configure() {
 
     echo "Configuring Vim"
 
-    set -x
     if [[ ! -d $HOME/.vim/plugged ]]; then
         # Vim 8.2+ tools/plugins + coc plugins
         curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         mkdir -p "$HOME/.config/coc"
-        vim -T dumb +PlugInstall +qall
-        vim -T dumb +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
+        vim --not-a-term +PlugInstall +qall
+        vim --not-a-term +'CocInstall coc-json coc-sh coc-yaml coc-go coc-pyright coc-go coc-docker coc-markdownlint' +qall
     else
-        vim -T dumb +'PlugInstall --sync' +qall
+        vim --not-a-term +'PlugInstall --sync' +qall
     fi
-    set +x
 
     ls -lah "$HOME"
     ls -lah "$HOME/.vim/plugged"
