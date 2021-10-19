@@ -2,7 +2,8 @@
 name: Install platforms
 on:
   push:
-    - 'install.sh'
+    paths:
+      - 'install.sh'
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
