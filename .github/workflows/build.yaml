@@ -1,6 +1,8 @@
 ---
 name: Install platforms
-on: push
+on:
+  push:
+    - 'install.sh'
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
@@ -34,7 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: alpine:3.14
-    # TODO Mount repo into container
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -50,7 +51,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:base
-    # TODO Mount repo into container
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -65,7 +65,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: debian:bullseye
-    # TODO Mount repo into container
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
