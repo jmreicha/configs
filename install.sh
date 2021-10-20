@@ -6,10 +6,11 @@
 # TODO
  # Make a runner user for Arch - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
  # Make the install() function more DRY
+ # Caching for packages
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -23,7 +24,7 @@ ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terr
 
 set_env() {
     # Set options for running in CI
-    if [[ $CI ]]; then
+    if [[ -n $CI ]]; then
         # No sudo in containers
         sudo=""
         # github runner path
@@ -31,6 +32,26 @@ set_env() {
     else
         sudo="sudo"
     fi
+}
+
+_alpin() {
+    echo
+}
+
+_arch() {
+    echo
+}
+
+debian() {
+    echo
+}
+
+_macos() {
+    echo
+}
+
+_ubuntu() {
+    echo
 }
 
 install() {
@@ -76,10 +97,13 @@ install() {
         pip install $PY_TOOLS
     # Alpine
     elif grep ID=alpine /etc/os-release; then
-        # We need to create a bashrc for nvm to update
+        # We need to create a bashrc and do some shenanigans to point to a musl
+        # version of nodejs for nvm to update
         touch "$HOME/.bashrc"
-        # echo "export NVM_DIR=\"$HOME/.nvm\"" >> "$HOME/.bashrc"
-        # echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> "$HOME/.bashrc"
+        echo "export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release" >> "$HOME/.bashrc"
+        echo "nvm_get_arch() { nvm_echo \"x64-musl\"; }" >> "$HOME/.bashrc"
+        . "$HOME/.bashrc"
+
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
@@ -225,7 +249,8 @@ main() {
             switch_shell
             ;;
         *)
-            echo "$option not a recognized flag"
+            echo "Not a recognized option"
+            exit 1
     esac
 }
 
