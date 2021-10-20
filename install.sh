@@ -5,14 +5,14 @@
 
 # TODO
  # Make a runner user for Arch - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
- # Make the install() function more DRY - reusable approach to passing different OSes
+ # Make the install() function more DRY - reusable approach to passing different options for OSes
  # Caching for packages
 
 set -eu
 
 ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot"
-COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat"
+COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
@@ -20,7 +20,7 @@ OSX_TOOLS="hadolint fd findutils kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
 
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
-# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
+# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat"
 
 NVM_VERSION="v0.39.0"
 COMPOSE_VERSION="v2.0.1"
@@ -102,12 +102,6 @@ install() {
     # Alpine
     elif grep ID=alpine /etc/os-release; then
         touch "$HOME/.bashrc"
-        # echo "export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release" >> "$HOME/.bashrc"
-        # echo "nvm_get_arch() { nvm_echo \"x64-musl\"; }" >> "$HOME/.bashrc"
-        # . "$HOME/.bashrc"
-        # echo "export NVM_DIR=\"$HOME/.nvm\"" >> "$HOME/.bashrc"
-        # echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> "$HOME/.bashrc"
-
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
         $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
@@ -201,6 +195,7 @@ configure() {
     rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
     # i3/wayland configurations
     # kitty configuration
+    # pylint configuration
 
     echo "Configuring Vim"
 
