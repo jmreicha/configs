@@ -51,10 +51,8 @@ _alpine() {
 
 _arch() {
     $sudo pacman -Syu --noconfirm
-    # Install git first to avoid package conflicts later
-    $sudo pacman -S --needed --noconfirm git
-    echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
-    $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
+    echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
+    $sudo pacman -S --needed --noconfirm $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
     # Skip yay install for now if we are running as the root user (CI)
     if [[ $EUID != 0 ]]; then
         echo "Installing extras: $ARCH_EXTRAS"
