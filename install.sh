@@ -5,7 +5,7 @@
 
 # TODO
  # Make a runner user for Arch - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
- # Make the install() function more DRY
+ # Make the install() function more DRY - reusable approach to passing different OSes
  # Caching for packages
 
 set -eu
@@ -22,9 +22,13 @@ PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenv
 ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint"
 
+NVM_VERSION="v0.39.0"
+COMPOSE_VERSION="v2.0.1"
+
 set_env() {
+    CI=${CI:-false}
     # Set options for running in CI
-    if [[ -n $CI ]]; then
+    if [[ $CI ]]; then
         # No sudo in containers
         sudo=""
         # github runner path
@@ -34,7 +38,7 @@ set_env() {
     fi
 }
 
-_alpin() {
+_alpine() {
     echo
 }
 
@@ -97,12 +101,12 @@ install() {
         pip install $PY_TOOLS
     # Alpine
     elif grep ID=alpine /etc/os-release; then
-        # We need to create a bashrc and do some shenanigans to point to a musl
-        # version of nodejs for nvm to update
         touch "$HOME/.bashrc"
-        echo "export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release" >> "$HOME/.bashrc"
-        echo "nvm_get_arch() { nvm_echo \"x64-musl\"; }" >> "$HOME/.bashrc"
-        . "$HOME/.bashrc"
+        # echo "export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release" >> "$HOME/.bashrc"
+        # echo "nvm_get_arch() { nvm_echo \"x64-musl\"; }" >> "$HOME/.bashrc"
+        # . "$HOME/.bashrc"
+        # echo "export NVM_DIR=\"$HOME/.nvm\"" >> "$HOME/.bashrc"
+        # echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> "$HOME/.bashrc"
 
         install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
         echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
@@ -151,9 +155,15 @@ install_awscli() {
 install_nvm() {
     if [[ ! -f $HOME/.nvm/nvm.sh ]]; then
         echo "Installing NVM"
-        NODE_VERSION="v0.39.0"
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NODE_VERSION}/install.sh | bash
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
         . "$HOME/.nvm/nvm.sh"
+        # We need to do some shenanigans to override the function to retrieve
+        # the correct architecture and point to a musl version of the nodejs
+        # binary when we are using Alpine
+        if grep ID=alpine /etc/os-release; then
+            nvm_get_arch() { nvm_echo "x64-musl"; }
+            export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release
+        fi
         nvm install --lts
         nvm alias default stable
         # shellcheck disable=SC2086
@@ -164,7 +174,7 @@ install_nvm() {
 install_docker_compose() {
     # https://docs.docker.com/compose/cli-command/#installing-compose-v2
     mkdir -p ~/.docker/cli-plugins/
-    curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+    curl -SL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
     chmod +x ~/.docker/cli-plugins/docker-compose
 }
 
