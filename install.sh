@@ -12,7 +12,7 @@
 set -eu
 
 ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++"
-ARCH_TOOLS="python-pip fd go unzip base-devel"
+ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
@@ -63,7 +63,7 @@ install() {
     set_env
     # Arch
     if grep ID=arch /etc/os-release; then
-        $sudo pacman -Syu
+        $sudo pacman -Syu --noconfirm
         # Install git first to avoid package conflicts later
         $sudo pacman -S --needed --noconfirm git
         echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
@@ -217,8 +217,17 @@ configure() {
 
 update() {
     echo "Updating packages and configs"
-    # OS specific packages
+
+    # OS specific
+    # $sudo apt upgrade
+    # $sudo pacman -Syu
+    # yay
+    # apk upgrade --available
+    # brew upgrade
+
     # Configs
+    # cd "$HOME/github.com/configs"
+    # git pull
     # vim --not-a-term +'PlugInstall --sync' +qall
 }
 
