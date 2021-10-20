@@ -40,82 +40,77 @@ set_env() {
 }
 
 _alpine() {
-    echo
+    touch "$HOME/.bashrc"
+    install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
+    echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
+    $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
+    echo "Installing Python tools: $PY_TOOLS"
+    pip install wheel
+    pip install $PY_TOOLS
 }
 
 _arch() {
-    echo
+    $sudo pacman -Syu --noconfirm
+    # Install git first to avoid package conflicts later
+    $sudo pacman -S --needed --noconfirm git
+    echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
+    $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
+    # Skip yay install for now if we are running as the root user (CI)
+    if [[ $EUID != 0 ]]; then
+        echo "Installing extras: $ARCH_EXTRAS"
+        yay_cmd="yay -S --needed --noconfirm"
+        if ! yay -V &> /dev/null; then install_yay; fi
+        # Update package list
+        yay
+        $yay_cmd $ARCH_EXTRAS
+    fi
+    echo "Installing Python tools: $PY_TOOLS"
+    pip install $PY_TOOLS
 }
 
 debian() {
-    echo
+    install_cmd="$sudo apt install -y"
+    # Update package list
+    $sudo apt update -y
+    echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
+    $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
+    echo "Installing Python tools: $PY_TOOLS"
+    pip install $PY_TOOLS
+    # Set the default locale
+    $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
+    $sudo locale-gen
 }
 
 _macos() {
-    echo
+    install_cmd="brew install"
+    echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
+    $install_cmd $COMMON_TOOLS $OSX_TOOLS
+    echo "Installing Python tools: $PY_TOOLS"
+    pip3 install --user --no-warn-script-location $PY_TOOLS
 }
 
 _ubuntu() {
-    echo
+    install_cmd="sudo apt install -y --ignore-missing"
+    # Update package list
+    sudo apt update -y
+    echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
+    $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
+    echo "Installing Python tools: $PY_TOOLS"
+    pip install $PY_TOOLS
 }
 
 install() {
     set_env
-    # Arch
     if grep ID=arch /etc/os-release; then
-        $sudo pacman -Syu --noconfirm
-        # Install git first to avoid package conflicts later
-        $sudo pacman -S --needed --noconfirm git
-        echo "Installing tools: ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS"
-        $sudo pacman -S --needed --noconfirm ${COMMON_TOOLS//git/} $LINUX_TOOLS $ARCH_TOOLS
-        # Skip yay install for now if we are running as the root user (CI)
-        if [[ $EUID != 0 ]]; then
-            echo "Installing extras: $ARCH_EXTRAS"
-            yay_cmd="yay -S --needed --noconfirm"
-            if ! yay -V &> /dev/null; then install_yay; fi
-            # Update package list
-            yay
-            $yay_cmd $ARCH_EXTRAS
-        fi
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install $PY_TOOLS
-    # Debian
+        _arch
     elif grep ID=debian /etc/os-release; then
-        install_cmd="$sudo apt install -y"
-        # Update package list
-        $sudo apt update -y
-        echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
-        $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install $PY_TOOLS
-        # Set the default locale
-        $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
-        $sudo locale-gen
-    # Ubuntu
+        _debian
     elif grep ID=ubuntu /etc/os-release; then
-        install_cmd="sudo apt install -y --ignore-missing"
-        # Update package list
-        sudo apt update -y
-        echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
-        $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install $PY_TOOLS
-    # Alpine
+        _ubuntu
     elif grep ID=alpine /etc/os-release; then
-        touch "$HOME/.bashrc"
-        install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
-        echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
-        $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install wheel
-        pip install $PY_TOOLS
-    # OSX
+        _alpine
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
-        install_cmd="brew install"
-        echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
-        $install_cmd $COMMON_TOOLS $OSX_TOOLS
-        echo "Installing Python tools: $PY_TOOLS"
-        pip3 install --user --no-warn-script-location $PY_TOOLS
+        _macos
     else
         echo "Unkown OS"
         exit 0
