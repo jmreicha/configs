@@ -68,7 +68,7 @@ _arch() {
     pip install $PY_TOOLS
 }
 
-debian() {
+_debian() {
     install_cmd="$sudo apt install -y"
     # Update package list
     $sudo apt update -y
