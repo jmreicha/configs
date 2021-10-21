@@ -7,7 +7,6 @@
  # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
  # Make the install() function more DRY - reusable approach to passing different options for OSes
  # Caching for packages
- # NixOS? Gentoo?
 
 set -eu
 
@@ -20,11 +19,9 @@ NODE_TOOLS="bash-language-server fixjson"
 OSX_TOOLS="hadolint fd findutils kubectl yq direnv bat"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
 
-ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv bat \
-    # Kubernetes tools \
+ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv-bin bat bat-extras \
     kubectl kubectx kube-linter k9s helm krew-bin \
-    # Terraform tools \
-    tfenv tgenv terraform-ls tfsec tflint"
+    tfenv tgenv terraform-ls tfsec-bin tflint-bin"
 
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat direnv"
 
@@ -34,7 +31,7 @@ COMPOSE_VERSION="v2.0.1"
 set_env() {
     CI=${CI:-false}
     # Set options for running in CI
-    if [[ $CI ]]; then
+    if [[ $CI = true ]]; then
         # No sudo in containers
         sudo=""
         # github runner path
@@ -45,6 +42,11 @@ set_env() {
 }
 
 _alpine() {
+    apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+    if [[ $1 == "--update" ]]; then
+        apk upgrade --available --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+        return
+    fi
     touch "$HOME/.bashrc"
     install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
     echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
@@ -55,6 +57,11 @@ _alpine() {
 }
 
 _arch() {
+    # Assume we have yay install if we're trying to update
+    if [[ $1 == "--update" ]]; then
+        yay -Syu --noconfirm
+        return
+    fi
     $sudo pacman -Syu --noconfirm
     echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
     $sudo pacman -S --needed --noconfirm $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
@@ -64,17 +71,23 @@ _arch() {
         yay_cmd="yay -S --needed --noconfirm"
         if ! yay -V &> /dev/null; then install_yay; fi
         # Update package list
-        yay
         $yay_cmd $ARCH_EXTRAS
     fi
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
 }
 
+_bsd() {
+    echo
+}
+
 _debian() {
-    install_cmd="$sudo apt install -y"
-    # Update package list
     $sudo apt update -y
+    if [[ $1 == "--update" ]]; then
+        $sudo apt upgrade
+        return
+    fi
+    install_cmd="$sudo apt install -y"
     echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
     $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
@@ -84,18 +97,33 @@ _debian() {
     $sudo locale-gen
 }
 
+_gentoo() {
+    echo
+}
+
 _macos() {
-    install_cmd="brew install"
+    brew update
+    if [[ $1 == "--update" ]]; then
+        brew upgrade
+        return
+    fi
     echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
-    $install_cmd $COMMON_TOOLS $OSX_TOOLS
+    brew install $COMMON_TOOLS $OSX_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip3 install --user --no-warn-script-location $PY_TOOLS
 }
 
+_nixos() {
+    echo
+}
+
 _ubuntu() {
+    $sudo apt update -y
+    if [[ $1 == "--update" ]]; then
+        $sudo apt upgrade
+        return
+    fi
     install_cmd="sudo apt install -y --ignore-missing"
-    # Update package list
-    sudo apt update -y
     echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
     $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
@@ -105,15 +133,15 @@ _ubuntu() {
 install() {
     set_env
     if grep ID=arch /etc/os-release; then
-        _arch
+        _arch $1
     elif grep ID=debian /etc/os-release; then
-        _debian
+        _debian $1
     elif grep ID=ubuntu /etc/os-release; then
-        _ubuntu
+        _ubuntu $1
     elif grep ID=alpine /etc/os-release; then
-        _alpine
+        _alpine $1
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
-        _macos
+        _macos $1
     else
         echo "Unkown OS"
         exit 0
@@ -172,6 +200,7 @@ install_docker_compose() {
 }
 
 configure() {
+    # git pull
     echo "Configuring environment"
 
     # Set the home dir to custom path if we're running in CI
@@ -213,21 +242,6 @@ configure() {
     ls -lah "$HOME/.vim/plugged"
 }
 
-update() {
-    echo "Updating packages and configs"
-
-    # OS specific
-    # $sudo apt upgrade
-    # yay --noconfirm
-    # apk upgrade --available
-    # brew upgrade
-
-    # Configs
-    # cd "$HOME/github.com/configs"
-    # git pull
-    # configure
-}
-
 switch_shell() {
     if [[ ! $CI ]]; then
         if [[ $SHELL != "/usr/bin/zsh" ]]; then
@@ -252,7 +266,7 @@ main() {
             configure
             ;;
         --update)
-            update
+            install --update
             ;;
         --all)
             install
@@ -267,5 +281,4 @@ main() {
 }
 
 main "$@"
-echo
 echo "Finished bootstrapping environment"
