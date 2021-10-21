@@ -132,16 +132,17 @@ _ubuntu() {
 
 install() {
     set_env
+    default_arg=${1:-""}
     if grep ID=arch /etc/os-release; then
-        _arch $1
+        _arch $default_arg
     elif grep ID=debian /etc/os-release; then
-        _debian $1
+        _debian $default_arg
     elif grep ID=ubuntu /etc/os-release; then
-        _ubuntu $1
+        _ubuntu $default_arg
     elif grep ID=alpine /etc/os-release; then
-        _alpine $1
+        _alpine $default_arg
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
-        _macos $1
+        _macos $default_arg
     else
         echo "Unkown OS"
         exit 0
