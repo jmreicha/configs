@@ -11,22 +11,22 @@
 
 set -eu
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++"
-ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo"
-COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat direnv"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat"
+ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat"
+COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
-OSX_TOOLS="hadolint fd findutils kubectl yq"
+OSX_TOOLS="hadolint fd findutils kubectl yq direnv bat"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
 
-ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq \
+ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv bat \
     # Kubernetes tools \
     kubectl kubectx kube-linter k9s helm krew-bin \
     # Terraform tools \
     tfenv tgenv terraform-ls tfsec tflint"
 
-# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat"
+# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat direnv"
 
 NVM_VERSION="v0.39.0"
 COMPOSE_VERSION="v2.0.1"
