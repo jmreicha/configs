@@ -13,14 +13,19 @@ set -eu
 
 ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo"
-COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget"
+COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget bat direnv"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
 OSX_TOOLS="hadolint fd findutils kubectl yq"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
 
-ARCH_EXTRAS="docker kubectl tfenv tgenv ondir-git hadolint-bin colordiff yq terraform-ls kubectx"
+ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq \
+    # Kubernetes tools \
+    kubectl kubectx kube-linter k9s helm krew-bin \
+    # Terraform tools \
+    tfenv tgenv terraform-ls tfsec tflint"
+
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat"
 
 NVM_VERSION="v0.39.0"
@@ -74,7 +79,7 @@ _debian() {
     $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
-    # Set the default locale
+    # Set the default locale otherwise the installer stops to configure it
     $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
     $sudo locale-gen
 }
@@ -213,15 +218,14 @@ update() {
 
     # OS specific
     # $sudo apt upgrade
-    # $sudo pacman -Syu
-    # yay
+    # yay --noconfirm
     # apk upgrade --available
     # brew upgrade
 
     # Configs
     # cd "$HOME/github.com/configs"
     # git pull
-    # vim --not-a-term +'PlugInstall --sync' +qall
+    # configure
 }
 
 switch_shell() {
