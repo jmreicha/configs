@@ -32,8 +32,13 @@ set_env() {
     CI=${CI:-false}
     # Set options for running in CI
     if [[ $CI = true ]]; then
-        # No sudo in containers
-        sudo=""
+        if grep ID=ubuntu /etc/os-release; then
+            # Ubuntu runs on VM as non root user
+            sudo="sudo"
+        else
+            # No sudo in containers
+            sudo=""
+        fi
         # github runner path
         RUNNER_PATH="$HOME/work/configs/configs"
     else
@@ -123,7 +128,7 @@ _ubuntu() {
         $sudo apt upgrade
         return
     fi
-    install_cmd="sudo apt install -y --ignore-missing"
+    install_cmd="$sudo apt install -y --ignore-missing"
     echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
     $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
