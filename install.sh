@@ -43,7 +43,7 @@ set_env() {
 
 _alpine() {
     apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
-    if [[ $1 == "--update" ]]; then
+    if [[ $UPDATE ]]; then
         apk upgrade --available --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
         return
     fi
@@ -58,7 +58,7 @@ _alpine() {
 
 _arch() {
     # Assume we have yay install if we're trying to update
-    if [[ $1 == "--update" ]]; then
+    if [[ $UPDATE ]]; then
         yay -Syu --noconfirm
         return
     fi
@@ -83,7 +83,7 @@ _bsd() {
 
 _debian() {
     $sudo apt update -y
-    if [[ $1 == "--update" ]]; then
+    if [[ $UPDATE ]]; then
         $sudo apt upgrade
         return
     fi
@@ -103,7 +103,7 @@ _gentoo() {
 
 _macos() {
     brew update
-    if [[ $1 == "--update" ]]; then
+    if [[ $UPDATE ]]; then
         brew upgrade
         return
     fi
@@ -119,7 +119,7 @@ _nixos() {
 
 _ubuntu() {
     $sudo apt update -y
-    if [[ $1 == "--update" ]]; then
+    if [[ $UPDATE ]]; then
         $sudo apt upgrade
         return
     fi
@@ -132,17 +132,16 @@ _ubuntu() {
 
 install() {
     set_env
-    default_arg=${1:-""}
     if grep ID=arch /etc/os-release; then
-        _arch $default_arg
+        _arch
     elif grep ID=debian /etc/os-release; then
-        _debian $default_arg
+        _debian
     elif grep ID=ubuntu /etc/os-release; then
-        _ubuntu $default_arg
+        _ubuntu
     elif grep ID=alpine /etc/os-release; then
-        _alpine $default_arg
+        _alpine
     elif  [[ "$(uname -s)" = "Darwin" ]]; then
-        _macos $default_arg
+        _macos
     else
         echo "Unkown OS"
         exit 0
@@ -259,6 +258,8 @@ main() {
     option=$1
     set -u
 
+    UPDATE=""
+
     case $option in
         --install)
             install
@@ -267,7 +268,8 @@ main() {
             configure
             ;;
         --update)
-            install --update
+            UPDATE=true
+            install
             ;;
         --all)
             install
