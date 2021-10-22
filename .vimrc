@@ -6,8 +6,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'hashivim/vim-terraform'
 " JSON
 Plug 'elzr/vim-json'
-" Ansible (Jinja templates)
-Plug 'lepture/vim-jinja'
+" Ansible
+Plug 'pearofducks/ansible-vim'
 " Whitespace
 Plug 'ntpeters/vim-better-whitespace'
 " Syntax and linting
@@ -26,6 +26,8 @@ Plug 'lilydjwg/colorizer'
 Plug 'PProvost/vim-ps1'
 " Rego
 Plug 'tsandall/vim-rego'
+" Nix
+Plug 'LnL7/vim-nix'
 " Git integration
 Plug 'tpope/vim-fugitive'
 " Show Git file changes
