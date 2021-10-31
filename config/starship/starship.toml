@@ -16,14 +16,6 @@ $kubernetes$terraform$custom$battery$python$aws$nodejs$docker_context$golang$mem
 $character
 """
 
-# Testing - fill doesn't seem to be working correctly on osx
-#format = """
-#$directory \
-#$fill \
-#$time $hostname $shell
-#$character
-#"""
-
 [fill]
 symbol = " "
 
