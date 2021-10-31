@@ -11,8 +11,8 @@
 format = """
 $hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
-$kubernetes$terraform$battery$python$aws$nodejs$docker_context$golang\
-$status$cmd_duration$memory_usage
+$status$cmd_duration\
+$kubernetes$terraform$custom$battery$python$aws$nodejs$docker_context$golang$memory_usage
 $character
 """
 
@@ -30,7 +30,38 @@ symbol = " "
 [character]
 success_symbol = "[❯](green)"
 
-### Configuration
+### Left prompt
+
+[hostname]
+ssh_only = false
+disabled = false
+style = "#d3b987"
+format = "[$hostname]($style) "
+
+[directory]
+read_only = " "
+truncation_length = 2
+truncate_to_repo = false
+fish_style_pwd_dir_length = 2
+style = "#0087d7"
+format = "[  $path]($style)[$read_only]($read_only_style)"
+
+[git_branch]
+symbol = "  "
+style = "green"
+format = '  [$symbol$branch]($style)'
+
+[git_status]
+staged = " +${count}"
+untracked = " ?${count}"
+modified = "!${count}"
+stashed = "$${count}"
+style = "yellow"
+# TODO Add spaces to formatting between change symbols
+#format = ' ([$stashed$modified$staged$untracked $ahead_behind]($style))'
+format = ' ([$all_status $ahead_behind]($style))'
+
+### Right prompt
 
 [status]
 disabled = false
@@ -39,37 +70,15 @@ disabled = false
 style = "white"
 format = " [$duration]($style)  "
 
-[hostname]
-ssh_only = false
-disabled = true
-style = "yellow"
-format = "[$hostname]($style)"
-
-[time]
-disabled = false
-
-[directory]
-read_only = " "
-truncation_length = 8
-truncate_to_repo = false
-format = "[  $path]($style)[$read_only]($read_only_style)"
-
 [terraform]
-format = " [$version]($style)"
+format = " [tf $version]($style) "
+detect_extensions = ["tf"]
 
-[git_branch]
-symbol = "  "
-style = "green"
-format = '  [$symbol$branch]($style)'
-
-[git_status]
-staged = "+${count}"
-untracked = "?${count}"
-modified = "!${count}"
-stashed = "$${count}"
-style = "yellow"
-# TODO Add spaces to formatting between change symbols
-format = ' ([$all_status $ahead_behind]($style))'
+[custom.terragrunt]
+command = "cat $(pwd)/.terragrunt-version || cat ~/.tgenv/version"
+files = ["terragrunt.hcl"]
+style = "#0bb9f2"
+format = " [tg $output]($style) "
 
 [golang]
 symbol = " "
@@ -96,15 +105,11 @@ symbol = " "
 [docker_context]
 symbol = " "
 
+[nix_shell]
+symbol = " "
+
 [memory_usage]
 disabled = false
 threshold = -1
 symbol = ""
-format = " [$ram]($style) $symbol"
-
-[nix_shell]
-symbol = " "
-
-# TODO Terraform version
-
-# TODO Terragrunt version
+format = " [$ram_pct]($style) $symbol "
