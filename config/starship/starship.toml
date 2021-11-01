@@ -1,20 +1,26 @@
-### Prompt
+### The format of the prompt layout is as follows:
 
-# The format layout for the prompt is as follows:
-
-# left side
+# left side info
 # fill
-# right side tools
-# right side system info
+# right prompt info
+# right prompt tools and versions
 # prompt character
 
 format = """
 $hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
-$status$cmd_duration\
-$kubernetes$terraform$custom$battery$python$aws$nodejs$docker_context$golang$memory_usage
+$jobs$status$cmd_duration\
+$terraform${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang$memory_usage
 $character
 """
+
+# Testing - fill doesn't seem to be working correctly on osx
+#format = """
+#$directory \
+#$fill \
+#$time $hostname $shell
+#$character
+#"""
 
 [fill]
 symbol = " "
@@ -28,56 +34,64 @@ success_symbol = "[❯](green)"
 ssh_only = false
 disabled = false
 style = "#d3b987"
-format = "[$hostname]($style) "
+format = "[$hostname]($style)[ ](#767676)"
 
 [directory]
 read_only = " "
 truncation_length = 2
 truncate_to_repo = false
 fish_style_pwd_dir_length = 2
-style = "#0087d7"
+style = "#00afff"
 format = "[  $path]($style)[$read_only]($read_only_style)"
 
 [git_branch]
 symbol = "  "
 style = "green"
-format = '  [$symbol$branch]($style)'
+format = '[  ](#767676)[$symbol$branch]($style)'
 
 [git_status]
-staged = " +${count}"
-untracked = " ?${count}"
-modified = "!${count}"
-stashed = "$${count}"
-style = "yellow"
-# TODO Add spaces to formatting between change symbols
-#format = ' ([$stashed$modified$staged$untracked $ahead_behind]($style))'
-format = ' ([$all_status $ahead_behind]($style))'
+stashed = "[*${count}](blue) "
+modified = "[!${count}](yellow) "
+staged = "[+${count}](green) "
+untracked = "[?${count}](blue) "
+deleted = "[-${count}](red) "
+#style = "yellow"
+format = ' ([$stashed$modified$staged$untracked $ahead_behind]($style))'
+#format = ' ([$all_status $ahead_behind]($style))'
 
-### Right prompt
+### Right prompt info
+
+[jobs]
+disabled = false
+format = "[$number]($style) "
 
 [status]
 disabled = false
+format = "[$symbol$status]($style)"
 
 [cmd_duration]
 style = "white"
-format = " [$duration]($style)  "
+format = " [ ](#767676)[$duration]($style)  "
+
+### Right prompt tools and versions
 
 [terraform]
-format = " [tf $version]($style) "
+format = "[ ](#767676)[tf $version]($style) "
 detect_extensions = ["tf"]
 
 [custom.terragrunt]
-command = "cat $(pwd)/.terragrunt-version || cat ~/.tgenv/version"
+description = "Shows the currently active Terragrunt version"
+command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
-format = " [tg $output]($style) "
+format = "[ ](#767676)[tg $output]($style) "
+
+[kubernetes]
+format = ' [$symbol$context( \($namespace\))]($style)'
 
 [golang]
 symbol = " "
 format = ' [$symbol($version)]($style)'
-
-[kubernetes]
-format = ' [$symbol$context( \($namespace\))]($style)'
 
 [nodejs]
 format = ' [$symbol($version)]($style)'
@@ -104,4 +118,7 @@ symbol = " "
 disabled = false
 threshold = -1
 symbol = ""
-format = " [$ram_pct]($style) $symbol "
+format = "[ ](#767676)[$ram_pct]($style) $symbol "
+
+[shlvl]
+disabled = true
