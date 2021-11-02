@@ -70,7 +70,7 @@ disabled = false
 format = "[$symbol$status]($style)"
 
 [cmd_duration]
-style = "white"
+style = "#a8a8a8"
 format = " [ ](#767676)[$duration]($style)  "
 
 ### Right prompt tools and versions
@@ -78,9 +78,10 @@ format = " [ ](#767676)[$duration]($style)  "
 [terraform]
 format = "[ ](#767676)[tf $version]($style) "
 detect_extensions = ["tf"]
+detect_files = ["terragrunt.hcl"]
 
 [custom.terragrunt]
-description = "Shows the currently active Terragrunt version"
+description = "Shows the currently active tgenv Terragrunt version"
 command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
