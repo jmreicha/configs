@@ -1,26 +1,20 @@
-### The format of the prompt layout is as follows:
+### Prompt
 
-# left side info
+# The format layout for the prompt is as follows:
+
+# left side
 # fill
 # right prompt info
 # right prompt tools and versions
 # prompt character
 
 format = """
-$hostname$directory$git_branch$git_commit$git_state$git_status\
+$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$terraform${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang$memory_usage
+$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}$memory_usage
 $character
 """
-
-# Testing - fill doesn't seem to be working correctly on osx
-#format = """
-#$directory \
-#$fill \
-#$time $hostname $shell
-#$character
-#"""
 
 [fill]
 symbol = " "
@@ -30,9 +24,15 @@ success_symbol = "[❯](green)"
 
 ### Left prompt
 
+[username]
+# TODO sudo prompt only
+disabled = true
+style_user = "#d3b987"
+format = " [$user@]($style)"
+
 [hostname]
-ssh_only = false
-disabled = false
+ssh_only = true
+disabled = true
 style = "#d3b987"
 format = "[$hostname]($style)[ ](#767676)"
 
@@ -63,22 +63,33 @@ format = ' ([$stashed$modified$staged$untracked $ahead_behind]($style))'
 
 [jobs]
 disabled = false
-format = "[$number]($style) "
+format = "[$number]($style)"
 
 [status]
 disabled = false
-format = "[$symbol$status]($style)"
+map_symbol = false
+format = "[$symbol$status]($style) "
 
 [cmd_duration]
 style = "#a8a8a8"
-format = " [ ](#767676)[$duration]($style)  "
+format = "[ ](#767676)[$duration ]($style) "
 
 ### Right prompt tools and versions
 
 [terraform]
+# We disable the native tf plugin because it is much slower than tfenv
+disabled = true
 format = "[ ](#767676)[tf $version]($style) "
 detect_extensions = ["tf"]
 detect_files = ["terragrunt.hcl"]
+
+[custom.terraform]
+description = "Shows the currently active tfenv Terraform version"
+command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)/.terraform-version || cat ~/.tfenv/version"
+extensions = ["tf"]
+files = ["terragrunt.hcl"]
+style = "#7b42bc"
+format = "[ ](#767676)[tf $output]($style) "
 
 [custom.terragrunt]
 description = "Shows the currently active tgenv Terragrunt version"
@@ -88,22 +99,22 @@ style = "#0bb9f2"
 format = "[ ](#767676)[tg $output]($style) "
 
 [kubernetes]
-format = ' [$symbol$context( \($namespace\))]($style)'
+format = '[$symbol$context( \($namespace\))]($style) '
 
 [golang]
 symbol = " "
-format = ' [$symbol($version)]($style)'
+format = '[$symbol($version)]($style) '
 
 [nodejs]
-format = ' [$symbol($version)]($style)'
+format = '[$symbol($version)]($style) '
 
 [python]
 symbol = " "
-format = ' [${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)'
+format = '[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style) '
 
 [aws]
 symbol = " "
-format = ' [$symbol($profile)(\[$duration\])]($style)'
+format = '[$symbol($profile)(\[$duration\])]($style) '
 disabled = true
 
 [conda]
@@ -115,11 +126,19 @@ symbol = " "
 [nix_shell]
 symbol = " "
 
+[custom.loadavg]
+description = "Show load average"
+command = "cat /proc/loadavg | cut -d' ' -f 2"
+style = "#5f8787"
+format = "[ ](#767676)[$output ]($style) "
+when = "true"
+
 [memory_usage]
 disabled = false
 threshold = -1
 symbol = ""
-format = "[ ](#767676)[$ram_pct]($style) $symbol "
+style = "#5f8787"
+format = "[ ](#767676)[$ram_pct $symbol]($style) "
 
 [shlvl]
 disabled = true
