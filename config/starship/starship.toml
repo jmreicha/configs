@@ -25,14 +25,14 @@ success_symbol = "[❯](green)"
 ### Left prompt
 
 [username]
-# TODO sudo prompt only
+# TODO username - sudo prompt only
 disabled = true
 style_user = "#d3b987"
 format = " [$user@]($style)"
 
 [hostname]
-ssh_only = true
 disabled = true
+ssh_only = true
 style = "#d3b987"
 format = "[$hostname]($style)[ ](#767676)"
 
@@ -40,14 +40,16 @@ format = "[$hostname]($style)[ ](#767676)"
 read_only = " "
 truncation_length = 2
 truncate_to_repo = false
+repo_root_style = "#0087af"
 fish_style_pwd_dir_length = 2
 style = "#00afff"
+# TODO left padding doesn't show up in git repos with repo style on
 format = "[  $path]($style)[$read_only]($read_only_style)"
 
 [git_branch]
 symbol = "  "
 style = "green"
-format = '[  ](#767676)[$symbol$branch]($style)'
+format = "[ ](#767676)[$symbol$branch]($style)"
 
 [git_status]
 stashed = "[*${count}](blue) "
@@ -55,9 +57,8 @@ modified = "[!${count}](yellow) "
 staged = "[+${count}](green) "
 untracked = "[?${count}](blue) "
 deleted = "[-${count}](red) "
-#style = "yellow"
-format = ' ([$stashed$modified$staged$untracked $ahead_behind]($style))'
-#format = ' ([$all_status $ahead_behind]($style))'
+format = " ([$stashed$modified$staged$untracked $ahead_behind]($style))"
+#format = " ([$all_status $ahead_behind]($style))"
 
 ### Right prompt info
 
@@ -83,13 +84,46 @@ format = "[ ](#767676)[tf $version]($style) "
 detect_extensions = ["tf"]
 detect_files = ["terragrunt.hcl"]
 
-[custom.terraform]
-description = "Shows the currently active tfenv Terraform version"
-command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)/.terraform-version || cat ~/.tfenv/version"
-extensions = ["tf"]
-files = ["terragrunt.hcl"]
-style = "#7b42bc"
-format = "[ ](#767676)[tf $output]($style) "
+[kubernetes]
+format = '[$symbol$context( \($namespace\))]($style) '
+
+[golang]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[nodejs]
+format = "[$symbol($version)]($style) "
+
+[python]
+symbol = " "
+format = '[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style) '
+
+[aws]
+disabled = false
+symbol = " "
+format = '([ ](#767676)[$symbol$profile(\[$duration\])]($style) )'
+
+[conda]
+symbol = " "
+
+[docker_context]
+symbol = " "
+format = "[ ](#767676)[$symbol$context]($style) "
+
+[nix_shell]
+symbol = " "
+
+[memory_usage]
+disabled = false
+threshold = -1
+symbol = ""
+style = "#5f8787"
+format = "[ ](#767676)[$ram_pct $symbol]($style)"
+
+[shlvl]
+disabled = true
+
+### Custom plugins
 
 [custom.terragrunt]
 description = "Shows the currently active tgenv Terragrunt version"
@@ -98,33 +132,13 @@ files = ["terragrunt.hcl"]
 style = "#0bb9f2"
 format = "[ ](#767676)[tg $output]($style) "
 
-[kubernetes]
-format = '[$symbol$context( \($namespace\))]($style) '
-
-[golang]
-symbol = " "
-format = '[$symbol($version)]($style) '
-
-[nodejs]
-format = '[$symbol($version)]($style) '
-
-[python]
-symbol = " "
-format = '[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style) '
-
-[aws]
-symbol = " "
-format = '[$symbol($profile)(\[$duration\])]($style) '
-disabled = true
-
-[conda]
-symbol = " "
-
-[docker_context]
-symbol = " "
-
-[nix_shell]
-symbol = " "
+[custom.terraform]
+description = "Shows the currently active tfenv Terraform version"
+command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)/.terraform-version || cat ~/.tfenv/version"
+extensions = ["tf"]
+files = ["terragrunt.hcl"]
+style = "#7b42bc"
+format = "[ ](#767676)[tf $output]($style) "
 
 [custom.loadavg]
 description = "Show load average"
@@ -132,13 +146,3 @@ command = "cat /proc/loadavg | cut -d' ' -f 2"
 style = "#5f8787"
 format = "[ ](#767676)[$output ]($style) "
 when = "true"
-
-[memory_usage]
-disabled = false
-threshold = -1
-symbol = ""
-style = "#5f8787"
-format = "[ ](#767676)[$ram_pct $symbol]($style) "
-
-[shlvl]
-disabled = true
