@@ -1,6 +1,7 @@
 [user]
 	email = josh.reichardt@gmail.com
 	name = Josh Reichardt
+    signingkey = 2AF2A2053D553C2FAE789DD6A9752A813F1EF110
 
 [fetch]
 	prune = true
@@ -10,6 +11,13 @@
 
 [gpg]
 	program = gpg2
+
+; Auto-sign all commits globally
+[commit]
+	gpgsign = true
+
+;[credential]
+;    helper = osxkeychain
 
 ; [core]
 ;     pager = delta
