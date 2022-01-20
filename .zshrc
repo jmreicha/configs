@@ -390,5 +390,5 @@ chpwd_functions=( eval_ondir $chpwd_functions )
 ### Autocomplete
 autoload -U compinit && compinit
 
-# aws-okta
-# source <(aws-okta completion zsh)
+# Starship
+# eval "$(starship init zsh)"
