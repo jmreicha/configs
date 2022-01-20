@@ -134,7 +134,8 @@ alias -s txt=$EDITOR
 # Exports
 #########
 
-# SOPS gpg key
+# GPG key
+export GPG_TTY=$(tty)
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
 
 # GO
@@ -307,6 +308,7 @@ if [[ $(uname) == "Linux" ]]; then
         alias fd="fdfind"
         export PATH=$PATH:/$HOME/.local/bin
     fi
+    alias fd="fdfind --hidden"
 
     # Credentials are stored in gpg/pass
     export AWS_VAULT_BACKEND="pass"
@@ -390,5 +392,3 @@ autoload -U compinit && compinit
 
 # aws-okta
 # source <(aws-okta completion zsh)
-# aws-cli
-complete -C 'aws_completer' aws
