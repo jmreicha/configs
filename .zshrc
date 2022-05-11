@@ -33,7 +33,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
     virtualenv pip osx kube-ps1 zsh-syntax-highlighting terraform python kubectl
-    helm zsh-autosuggestions fd fzf fancy-ctrl-z extract zsh-z nvm)
+    helm zsh-autosuggestions fd fzf fancy-ctrl-z extract nvm)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -182,6 +182,9 @@ fi
 
 # Force the language environment to utf-8
 export LANG=en_US.UTF-8
+
+# Zoxide settings
+export _ZO_FZF_OPTS="--height 40%"
 
 # Compilation flags
 #export ARCHFLAGS="-arch x86_64"
@@ -392,3 +395,4 @@ autoload -U compinit && compinit
 
 # Starship
 # eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"

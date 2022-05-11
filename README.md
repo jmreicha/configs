@@ -13,10 +13,10 @@ The easiest way to use this repo is to clone it and run the `install.sh` script.
 * [shellcheck](https://github.com/koalaman/shellcheck) - analysis tool for shell scripts
 * [fzf](https://github.com/junegunn/fzf) - better fuzzy finder
 * [ripgrep](https://github.com/BurntSushi/ripgrep) - better `grep`
-* [hstr](https://github.com/dvorka/hstr) - better `history`
 * [fd](https://github.com/sharkdp/fd) - better `find`
 * [bat](https://github.com/sharkdp/bat) - better `cat`
 * [highlight](http://www.andre-simon.de/doku/highlight/en/highlight.php) - colorize text
+* [zoxide](https://github.com/ajeetdsouza/zoxide) - better `cd`
 
 If you don't want to use the install script you can use below instructions for
 configuring most of the basic configurations. This will not install many of the
