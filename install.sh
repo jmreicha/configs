@@ -214,6 +214,8 @@ configure() {
 
     # Set the home dir to custom path if we're running in CI
     INTSTALLER_PATH="${RUNNER_PATH:-$HOME}"
+    
+    mkdir -p "$INSTALLER_PATH/.config"
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
