@@ -259,6 +259,7 @@ configure() {
     fi
 
     # Debug logging
+    echo "Done configuring environment"
     # ls -lah "$HOME"
     # ls -lah "$HOME/.vim/plugged"
 }
