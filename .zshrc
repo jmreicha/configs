@@ -161,7 +161,8 @@ export AWS_PAGER=""
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Set the terraform/terragrunt cache in one place
-export TERRAGRUNT_DOWNLOAD=${HOME}/.terragrunt/cache
+export TF_PLUGIN_CACHE_DIR="/tmp/plugins"
+export TERRAGRUNT_DOWNLOAD="/tmp/plugins/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
 # Set up basic pager colors
@@ -237,7 +238,7 @@ export PATH="/usr/local/bin:$PATH"
 ########
 
 # Pyenv pip
-export PATH="$HOME/.local/bin:$PATH"
+# export PATH="$HOME/.local/bin:$PATH"
 
 # Pyenv
 #export PATH="$HOME/.pyenv/bin:$PATH"
@@ -279,9 +280,6 @@ if [[ $(uname) == "Darwin" ]]; then
     # Terraform autocompletion
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C /Users/jreichardt/.tfenv/versions/0.12.29/terraform terraform
-
-    # Autojump
-    [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
     # Retrieve a secret from osx keychain
     get_secret() {
