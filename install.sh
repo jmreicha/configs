@@ -279,6 +279,14 @@ main() {
 
     UPDATE=""
 
+    # Handle automated installs with no args
+    if [[ $# -eq 0 ]]; then
+	install
+	configure
+	switch_shell
+	exit 0
+    fi
+
     case $option in
         --install)
             install
