@@ -213,7 +213,7 @@ configure() {
     echo "Configuring environment"
 
     # Set the home dir to custom path if we're running in CI
-    INTSTALLER_PATH="${RUNNER_PATH:-$HOME}"
+    INSTALLER_PATH="${RUNNER_PATH:-$HOME}"
     
     mkdir -p "$INSTALLER_PATH/.config"
 
@@ -229,16 +229,16 @@ configure() {
     # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
     # TODO: Fix these paths
     if [[ $REMOTE_CONTAINERS != "true" ]]; then
-        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/github.com/configs/config/starship/starship.toml $HOME/.config/starship.toml
+        rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
+        rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
+        rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
+        rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.config/starship.toml || true && ln -s $INSTALLER_PATH/github.com/configs/config/starship/starship.toml $HOME/.config/starship.toml
     else
-        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
+        rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
+        rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
+        rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.config/starship.toml || true && ln -s $INSTALLER_PATH/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
     fi
 
     # i3/wayland configurations
