@@ -10,7 +10,7 @@
 
 set -eou pipefail
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat nerd-fonts"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat nerd-fonts starship pass"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget zoxide"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -227,15 +227,16 @@ configure() {
     # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
     # TODO: Fix these paths
     if [[ $USER != "vscode" ]]; then
-	rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
-	rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
-	rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-	rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
+        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
+        rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
+        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/github.com/configs/config/starship/starship.toml $HOME/.config/starship.toml
     else
-	rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
-	rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
-	rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/dotfiles/.p10k.zsh $HOME/.p10k.zsh
-	rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
+        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
+        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
+        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
     fi
 
     # i3/wayland configurations
@@ -255,7 +256,7 @@ configure() {
         vim --not-a-term +'PlugInstall --sync' +qall
     fi
 
-    # Debug output
+    # Debug logging
     # ls -lah "$HOME"
     # ls -lah "$HOME/.vim/plugged"
 }
