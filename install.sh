@@ -8,9 +8,9 @@
  # Make the install() function more DRY - reusable approach to passing different options for OSes
  # Caching for packages
 
-set -eu
+set -eou pipefail
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat nerd-fonts"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget zoxide"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -47,18 +47,20 @@ set_env() {
 }
 
 _alpine() {
-    apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+    $sudo apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
     if [[ $UPDATE ]]; then
-        apk upgrade --available --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+        $sudo apk upgrade --available --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
         return
     fi
     touch "$HOME/.bashrc"
     install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
     echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
-    $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-    echo "Installing Python tools: $PY_TOOLS"
-    pip install wheel
-    pip install $PY_TOOLS
+    $sudo $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
+    if [[ $USER != "vscode" ]]; then
+        echo "Installing Python tools: $PY_TOOLS"
+        pip install wheel
+        pip install $PY_TOOLS
+    fi
 }
 
 _arch() {
@@ -152,9 +154,11 @@ install() {
         exit 0
     fi
 
-    install_nvm
-    install_awscli
-    echo "Finished installing packages and tools"
+    if [[ $USER != "vscode" ]]; then
+        install_nvm
+        install_awscli
+        echo "Finished installing packages and tools"
+    fi
 }
 
 ### Non-packaged tools
@@ -221,10 +225,19 @@ configure() {
 
     # Link configs
     # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
-    rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
-    rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
-    rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-    rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
+    # TODO: Fix these paths
+    if [[ $USER != "vscode" ]]; then
+	rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
+	rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
+	rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
+	rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
+    else
+	rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
+	rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
+	rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/dotfiles/.p10k.zsh $HOME/.p10k.zsh
+	rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
+    fi
+
     # i3/wayland configurations
     # kitty configuration
     # pylint configuration
@@ -242,8 +255,9 @@ configure() {
         vim --not-a-term +'PlugInstall --sync' +qall
     fi
 
-    ls -lah "$HOME"
-    ls -lah "$HOME/.vim/plugged"
+    # Debug output
+    # ls -lah "$HOME"
+    # ls -lah "$HOME/.vim/plugged"
 }
 
 switch_shell() {
