@@ -10,7 +10,7 @@
 
 set -eou pipefail
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat nerd-fonts starship pass"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat starship pass"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget zoxide"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
