@@ -311,8 +311,12 @@ if [[ $(uname) == "Linux" ]]; then
     fi
     alias fd="fdfind --hidden"
 
-    # Credentials are stored in gpg/pass
-    export AWS_VAULT_BACKEND="pass"
+    # Credentials are stored in gpg/pass in non container envs
+    if [[ $REMOTE_CONTAINERS = "true" ]]; then
+        export AWS_VAULT_BACKEND="file"
+    else
+        export AWS_VAULT_BACKEND="pass"
+    fi
 
     # Python3
     #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
