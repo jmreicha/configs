@@ -360,7 +360,6 @@ bindkey \^U backward-kill-line
 
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-bindkey -s "\C-r" "\eqhh\n"
 
 # NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
@@ -379,9 +378,9 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Ondir configuration
-eval_ondir() {
-  eval "`ondir \"$OLDPWD\" \"$PWD\"`"
-}
+# eval_ondir() {
+#   eval "`ondir \"$OLDPWD\" \"$PWD\"`"
+# }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
 
