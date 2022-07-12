@@ -318,7 +318,7 @@ if [[ $(uname) == "Linux" ]]; then
     #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
     export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
-    source ~/.local/bin/virtualenvwrapper.sh
+    #source ~/.local/bin/virtualenvwrapper.sh
 
     # Retrieve a secret from pgp pass backend
     get_secret() {
