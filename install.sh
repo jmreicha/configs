@@ -218,7 +218,7 @@ configure() {
     mkdir -p "$INSTALLER_PATH/.config"
 
     # oh-my-zsh
-    if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
+    if [[ ! -d $"$HOME/.oh-my-zsh" ]] || [[ $REMOTE_CONTAINERS == "true" ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
         git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
