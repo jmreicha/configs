@@ -56,7 +56,7 @@ _alpine() {
     install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
     echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
     $sudo $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-    if [[ $REMOTE_CONTAINERS != "true" ]]; then
+    if [[ -z $REMOTE_CONTAINERS ]]; then
         echo "Installing Python tools: $PY_TOOLS"
         pip install wheel
         pip install $PY_TOOLS
@@ -154,7 +154,7 @@ install() {
         exit 0
     fi
 
-    if [[ $REMOTE_CONTAINERS != "true" ]]; then
+    if [[ -z $REMOTE_CONTAINERS ]]; then
         install_nvm
         install_awscli
         echo "Finished installing packages and tools"
@@ -229,7 +229,7 @@ configure() {
     # Link configs
     # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
     # TODO: Fix these paths
-    if [[ $REMOTE_CONTAINERS != "true" ]]; then
+    if [[ -z $REMOTE_CONTAINERS ]]; then
         rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
         rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
         rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
