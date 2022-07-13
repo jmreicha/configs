@@ -32,7 +32,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip osx kube-ps1 zsh-syntax-highlighting terraform python kubectl
+    virtualenv pip kube-ps1 zsh-syntax-highlighting terraform python kubectl
     helm zsh-autosuggestions fd fzf fancy-ctrl-z extract nvm)
 
 # Load here to be able to source extra plugins and configurations
@@ -161,8 +161,8 @@ export AWS_PAGER=""
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Set the terraform/terragrunt cache in one place
-export TF_PLUGIN_CACHE_DIR="/tmp/plugins"
-export TERRAGRUNT_DOWNLOAD="/tmp/plugins/.terragrunt/cache"
+export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
+export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
 # Set up basic pager colors
@@ -296,6 +296,8 @@ if [[ $(uname) == "Darwin" ]]; then
     # export DATADOG_APP_KEY="$(get_secret dd_frontend_preprod_app)"
     export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
     export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
+
+    plugins+=(osx)
 fi
 
 ### Linux
@@ -398,3 +400,6 @@ autoload -U compinit && compinit
 eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
+
+# Misc
+# eval $(thefuck --alias f -y)
