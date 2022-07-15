@@ -42,7 +42,7 @@ jobs:
   alpine:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.14
+      image: alpine:3.15
       volumes:
         # mount our configs into the correct path in the container
         - /home/runner/work/configs/configs/:/github/home/work/configs/configs
