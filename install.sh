@@ -7,6 +7,7 @@
  # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
  # Make the install() function more DRY - reusable approach to passing different options for OSes
  # Caching for packages
+ # bats tests to check for correctly installed packages
 
 set -eou pipefail
 
@@ -214,27 +215,26 @@ configure() {
 
     # Set the home dir to custom path if we're running in CI
     INSTALLER_PATH="${RUNNER_PATH:-$HOME}"
-    
+
     mkdir -p "$INSTALLER_PATH/.config"
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
-    
+
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
     git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
 
     # Link configs
-    # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
     # TODO: Fix these paths
     if [[ -z ${REMOTE_CONTAINERS-} ]]; then
         rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
         rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
         rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
         rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INSTALLER_PATH/github.com/configs/config/starship/starship.toml $HOME/.config/starship.toml
+        rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/github.com/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     else
         rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
         rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
