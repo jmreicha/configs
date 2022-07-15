@@ -237,7 +237,7 @@ configure() {
         rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
         rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
         rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
-        rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/github.com/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
+        # rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/github.com/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     else
         rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
         rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
