@@ -308,10 +308,10 @@ if [[ $(uname) == "Linux" ]]; then
 
     # OS specific configs
     if cat /etc/os-release | grep ID=debian; then
-        alias fd="fdfind"
+        alias fd="fdfind --hidden"
         export PATH=$PATH:/$HOME/.local/bin
     fi
-    alias fd="fdfind --hidden"
+    alias fd="fd --hidden"
 
     # Credentials are stored in gpg/pass in non container envs
     if [[ $REMOTE_CONTAINERS = "true" ]]; then
