@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-load '/Users/jreichardt/.nvm/versions/node/v14.17.6/lib/node_modules/bats-support/load'
-load '/Users/jreichardt/.nvm/versions/node/v14.17.6/lib/node_modules/bats-file/load'
+load "/usr/local/bin/bats-support/load"
+load "/usr/local/bin/bats-file/load"
 
 @test "vimrc exists" {
     assert_exists ~/.vimrc
