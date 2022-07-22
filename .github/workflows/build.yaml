@@ -52,6 +52,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           apk add --no-cache bash
           cd ${CONTAINER_HOME}/github.com/configs
@@ -70,6 +72,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --all
@@ -87,6 +91,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --all
