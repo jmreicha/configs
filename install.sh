@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-# Simple cross platform installation script for basic setup including tools and
-# other configurations.
+# A cross platform installation script for basic setup including tools and other
+# configurations.
 
 # TODO
  # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
  # Make the install() function more DRY - reusable approach to passing different options for OSes
  # Caching for packages
- # bats tests to check for correctly installed packages
 
 set -eou pipefail
 
@@ -246,11 +245,14 @@ configure() {
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
 
     # Link configs
+    env | sort
+    set -x
     rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/.zshrc $HOME/.zshrc
     rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/.vimrc $HOME/.vimrc
     rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/.tmux.conf $HOME/.tmux.conf
     rm -rf $HOME/.config/starship.toml || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/.p10k.zsh $HOME/.p10k.zsh
+    set +x
 
     # i3/wayland configurations
     # kitty configuration
@@ -316,6 +318,9 @@ main() {
             configure
             # Change the shell as the last step because it is interactive
             switch_shell
+            ;;
+        --extras)
+            # TODO: install extras separately to speed up base installs
             ;;
         *)
             echo "'$option' not a recognized option"
