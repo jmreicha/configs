@@ -47,6 +47,21 @@ set_env() {
     fi
 }
 
+set_env_paths() {
+    if [[ -z ${REMOTE_CONTAINERS-} ]]; then
+        # Set the home dir to our remote containers path
+        INSTALLER_PATH="$HOME/github.com/configs"
+    elif [[ -z ${CODESPACES-} ]]; then
+        # Set the home dir to our codespaces path
+        INSTALLER_PATH="/workspaces/.codespaces/.persistedshare/dotfiles"
+    else
+        # Set the home dir to custom path if we're running in CI
+        INSTALLER_PATH="${RUNNER_PATH:-$HOME}"
+    fi
+
+    mkdir -p "${RUNNER_PATH:-$HOME}/.config"
+}
+
 _alpine() {
     $sudo apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
     if [[ $UPDATE ]]; then
@@ -216,10 +231,7 @@ configure() {
     # git pull
     echo "Configuring environment"
 
-    # Set the home dir to custom path if we're running in CI
-    INSTALLER_PATH="${RUNNER_PATH:-$HOME}"
-
-    mkdir -p "$INSTALLER_PATH/.config"
+    set_env_paths
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
@@ -231,19 +243,11 @@ configure() {
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
 
     # Link configs
-    # TODO: Fix these paths
-    if [[ -z ${REMOTE_CONTAINERS-} ]]; then
-        rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-        rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
-        # rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/github.com/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
-    else
-        rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INSTALLER_PATH/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
-    fi
+    rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/.zshrc $HOME/.zshrc
+    rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/.vimrc $HOME/.vimrc
+    rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/.tmux.conf $HOME/.tmux.conf
+    rm -rf $HOME/.config/starship.toml || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
+    rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/.p10k.zsh $HOME/.p10k.zsh
 
     # i3/wayland configurations
     # kitty configuration
