@@ -47,13 +47,13 @@ set_env() {
 }
 
 set_env_paths() {
-    if [[ $REMOTE_CONTAINERS ]]; then
+    if [[ ${REMOTE_CONTAINERS-} ]]; then
         # Set the home dir to our remote containers path
         INSTALLER_PATH="$HOME/github.com/configs"
-    elif [[ $CODESPACES ]]; then
+    elif [[ ${CODESPACES-} ]]; then
         # Set the home dir to our codespaces path
         INSTALLER_PATH="/workspaces/.codespaces/.persistedshare/dotfiles"
-    elif [[ $CI ]]; then
+    elif [[ ${CI-} ]]; then
         # Set the home dir to custom path if we're running in CI
         INSTALLER_PATH="${RUNNER_PATH}"
     else
