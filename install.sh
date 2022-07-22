@@ -61,7 +61,7 @@ set_env_paths() {
         INSTALLER_PATH="${HOME}"
     fi
 
-    mkdir -p "${RUNNER_PATH:-$HOME}/.config"
+    mkdir -p "$HOME/.config"
 }
 
 _alpine() {
