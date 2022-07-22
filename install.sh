@@ -54,9 +54,12 @@ set_env_paths() {
     elif [[ -z ${CODESPACES-} ]]; then
         # Set the home dir to our codespaces path
         INSTALLER_PATH="/workspaces/.codespaces/.persistedshare/dotfiles"
-    else
+    elif [[ -z ${CI-} ]]; then
         # Set the home dir to custom path if we're running in CI
-        INSTALLER_PATH="${RUNNER_PATH:-$HOME}"
+        INSTALLER_PATH="${RUNNER_PATH}"
+    else
+        # Set the default dir to home
+        INSTALLER_PATH="${HOME}"
     fi
 
     mkdir -p "${RUNNER_PATH:-$HOME}/.config"
@@ -266,10 +269,9 @@ configure() {
         vim --not-a-term +'PlugInstall --sync' +qall
     fi
 
-    # Debug logging
+    # Quick check if configs are linked
+    ls -lah "$HOME"
     echo "Done configuring environment"
-    # ls -lah "$HOME"
-    # ls -lah "$HOME/.vim/plugged"
 }
 
 switch_shell() {
