@@ -47,7 +47,7 @@ set_env() {
 }
 
 set_env_paths() {
-    if [[ ${REMOTE_CONTAINERS-} ]]; then
+    if [[ ${REMOTE_CONTAINERS-} ]] || [[ ${CODESPACES-} ]]; then
         # Set the home dir to our remote containers path
         INSTALLER_PATH="$HOME/github.com/configs"
     elif [[ ${CODESPACES-} ]]; then
@@ -74,7 +74,7 @@ _alpine() {
     install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
     echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
     $sudo $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-    if [[ -z ${REMOTE_CONTAINERS-} ]]; then
+    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         echo "Installing Python tools: $PY_TOOLS"
         pip install wheel
         pip install $PY_TOOLS
@@ -175,7 +175,7 @@ install() {
     # Install starship across all systems
     curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-    if [[ -z ${REMOTE_CONTAINERS-} ]]; then
+    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_nvm
         install_awscli
         echo "Finished installing packages and tools"
@@ -245,14 +245,11 @@ configure() {
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
 
     # Link configs
-    env | sort
-    set -x
-    rm -rf $HOME/.zshrc || true && ln -s $INSTALLER_PATH/.zshrc $HOME/.zshrc
-    rm -rf $HOME/.vimrc || true && ln -s $INSTALLER_PATH/.vimrc $HOME/.vimrc
-    rm -rf $HOME/.tmux.conf || true && ln -s $INSTALLER_PATH/.tmux.conf $HOME/.tmux.conf
-    rm -rf $HOME/.config/starship.toml || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
-    rm -rf $HOME/.p10k.zsh || true && ln -s $INSTALLER_PATH/.p10k.zsh $HOME/.p10k.zsh
-    set +x
+    rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/.zshrc" "$HOME/.zshrc"
+    rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/.vimrc" "$HOME/.vimrc"
+    rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/.tmux.conf" "$HOME/.tmux.conf"
+    rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
+    rm -rf "$HOME/.p10k.zsh" || true && ln -s "$INSTALLER_PATH/.p10k.zsh" "$HOME/.p10k.zsh"
 
     # i3/wayland configurations
     # kitty configuration
