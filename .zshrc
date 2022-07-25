@@ -32,7 +32,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip osx kube-ps1 zsh-syntax-highlighting terraform python kubectl
+    virtualenv pip kube-ps1 zsh-syntax-highlighting terraform python kubectl
     helm zsh-autosuggestions fd fzf fancy-ctrl-z extract nvm)
 
 # Load here to be able to source extra plugins and configurations
@@ -161,8 +161,8 @@ export AWS_PAGER=""
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Set the terraform/terragrunt cache in one place
-export TF_PLUGIN_CACHE_DIR="/tmp/plugins"
-export TERRAGRUNT_DOWNLOAD="/tmp/plugins/.terragrunt/cache"
+export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
+export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
 # Set up basic pager colors
@@ -296,6 +296,8 @@ if [[ $(uname) == "Darwin" ]]; then
     # export DATADOG_APP_KEY="$(get_secret dd_frontend_preprod_app)"
     export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
     export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
+
+    plugins+=(osx)
 fi
 
 ### Linux
@@ -306,19 +308,23 @@ if [[ $(uname) == "Linux" ]]; then
 
     # OS specific configs
     if cat /etc/os-release | grep ID=debian; then
-        alias fd="fdfind"
+        alias fd="fdfind --hidden"
         export PATH=$PATH:/$HOME/.local/bin
     fi
-    alias fd="fdfind --hidden"
+    alias fd="fd --hidden"
 
-    # Credentials are stored in gpg/pass
-    export AWS_VAULT_BACKEND="pass"
+    # Credentials are stored in gpg/pass in non container envs
+    if [[ $REMOTE_CONTAINERS = "true" ]]; then
+        export AWS_VAULT_BACKEND="file"
+    else
+        export AWS_VAULT_BACKEND="pass"
+    fi
 
     # Python3
     #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
     export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
-    source ~/.local/bin/virtualenvwrapper.sh
+    #source ~/.local/bin/virtualenvwrapper.sh
 
     # Retrieve a secret from pgp pass backend
     get_secret() {
@@ -360,7 +366,6 @@ bindkey \^U backward-kill-line
 
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-bindkey -s "\C-r" "\eqhh\n"
 
 # NVM
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
@@ -379,9 +384,9 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Ondir configuration
-eval_ondir() {
-  eval "`ondir \"$OLDPWD\" \"$PWD\"`"
-}
+# eval_ondir() {
+#   eval "`ondir \"$OLDPWD\" \"$PWD\"`"
+# }
 
 chpwd_functions=( eval_ondir $chpwd_functions )
 
@@ -395,3 +400,6 @@ autoload -U compinit && compinit
 eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
+
+# Misc
+# eval $(thefuck --alias f -y)

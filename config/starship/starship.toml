@@ -8,6 +8,9 @@
 # right prompt tools and versions
 # prompt character
 
+# Commands may be slower in restricted environments, e.g. containers
+command_timeout = 1000
+
 format = """
 $username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
@@ -43,7 +46,9 @@ truncate_to_repo = false
 repo_root_style = "#0087af"
 fish_style_pwd_dir_length = 2
 style = "#00afff"
-# TODO left padding doesn't show up in git repos with repo style on
+# Repo format
+repo_root_format = "[  $before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+# Non repo format
 format = "[  $path]($style)[$read_only]($read_only_style)"
 
 [git_branch]

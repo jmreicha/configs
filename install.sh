@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Simple cross platform installation script for basic setup including tools and
-# other configurations.
+# A cross platform installation script for basic setup including tools and other
+# configurations.
 
 # TODO
  # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
@@ -10,7 +10,7 @@
 
 set -eou pipefail
 
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat nerd-fonts starship pass"
+ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat pass"
 ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat"
 COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget zoxide"
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
@@ -46,6 +46,24 @@ set_env() {
     fi
 }
 
+set_env_paths() {
+    if [[ ${REMOTE_CONTAINERS-} ]] || [[ ${CODESPACES-} ]]; then
+        # Set the home dir to our remote containers path
+        INSTALLER_PATH="$HOME/github.com/configs"
+    elif [[ ${CODESPACES-} ]]; then
+        # Set the home dir to our codespaces path
+        INSTALLER_PATH="/workspaces/.codespaces/.persistedshare/dotfiles"
+    elif [[ ${CI-} ]]; then
+        # Set the home dir to custom path if we're running in CI
+        INSTALLER_PATH="${RUNNER_PATH}"
+    else
+        # Set the default dir to home
+        INSTALLER_PATH="${HOME}"
+    fi
+
+    mkdir -p "$HOME/.config"
+}
+
 _alpine() {
     $sudo apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
     if [[ $UPDATE ]]; then
@@ -56,7 +74,7 @@ _alpine() {
     install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
     echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
     $sudo $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-    if [[ $USER != "vscode" ]]; then
+    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         echo "Installing Python tools: $PY_TOOLS"
         pip install wheel
         pip install $PY_TOOLS
@@ -154,7 +172,10 @@ install() {
         exit 0
     fi
 
-    if [[ $USER != "vscode" ]]; then
+    # Install starship across all systems
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+
+    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_nvm
         install_awscli
         echo "Finished installing packages and tools"
@@ -212,32 +233,23 @@ configure() {
     # git pull
     echo "Configuring environment"
 
-    # Set the home dir to custom path if we're running in CI
-    INTSTALLER_PATH="${RUNNER_PATH:-$HOME}"
+    set_env_paths
 
     # oh-my-zsh
     if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
     fi
 
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
+
     # Link configs
-    # rm -rf $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme || true && ln -s $HOME/github.com/configs/josh.zsh-theme $HOME/.oh-my-zsh/themes/josh-custom.zsh-theme
-    # TODO: Fix these paths
-    if [[ $USER != "vscode" ]]; then
-        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/github.com/configs/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.p10k.zsh || true && ln -s $INTSTALLER_PATH/github.com/configs/.p10k.zsh $HOME/.p10k.zsh
-        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/github.com/configs/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/github.com/configs/config/starship/starship.toml $HOME/.config/starship.toml
-    else
-        rm -rf $HOME/.zshrc || true && ln -s $INTSTALLER_PATH/dotfiles/.zshrc $HOME/.zshrc
-        rm -rf $HOME/.vimrc || true && ln -s $INTSTALLER_PATH/dotfiles/.vimrc $HOME/.vimrc
-        rm -rf $HOME/.tmux.conf || true && ln -s $INTSTALLER_PATH/dotfiles/.tmux.conf $HOME/.tmux.conf
-        rm -rf $HOME/.config/starship.toml || true && ln -s $INTSTALLER_PATH/dotfiles/config/starship/starship.toml $HOME/.config/starship.toml
-    fi
+    rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/.zshrc" "$HOME/.zshrc"
+    rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/.vimrc" "$HOME/.vimrc"
+    rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/.tmux.conf" "$HOME/.tmux.conf"
+    rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
+    rm -rf "$HOME/.p10k.zsh" || true && ln -s "$INSTALLER_PATH/.p10k.zsh" "$HOME/.p10k.zsh"
 
     # i3/wayland configurations
     # kitty configuration
@@ -256,9 +268,9 @@ configure() {
         vim --not-a-term +'PlugInstall --sync' +qall
     fi
 
-    # Debug logging
-    # ls -lah "$HOME"
-    # ls -lah "$HOME/.vim/plugged"
+    # Quick check if configs are linked
+    ls -lah "$HOME"
+    echo "Done configuring environment"
 }
 
 switch_shell() {
@@ -279,6 +291,14 @@ main() {
 
     UPDATE=""
 
+    # Handle automated installs with no args
+    if [[ $# -eq 0 ]]; then
+        install
+        configure
+        switch_shell
+        exit 0
+    fi
+
     case $option in
         --install)
             install
@@ -295,6 +315,9 @@ main() {
             configure
             # Change the shell as the last step because it is interactive
             switch_shell
+            ;;
+        --extras)
+            # TODO: install extras separately to speed up base installs
             ;;
         *)
             echo "'$option' not a recognized option"

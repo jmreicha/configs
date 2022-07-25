@@ -12,7 +12,7 @@ env:
 
 jobs:
   ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checking out our code
         uses: actions/checkout@master
@@ -42,7 +42,7 @@ jobs:
   alpine:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.14
+      image: alpine:3.15
       volumes:
         # mount our configs into the correct path in the container
         - /home/runner/work/configs/configs/:/github/home/work/configs/configs
@@ -52,6 +52,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           apk add --no-cache bash
           cd ${CONTAINER_HOME}/github.com/configs
@@ -70,6 +72,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --all
@@ -87,6 +91,8 @@ jobs:
         with:
           path: github.com/configs
       - name: Run installer
+        env:
+          CI: true
         run: |
           cd /github/home/work/configs/configs/github.com/configs
           ./install.sh --all
