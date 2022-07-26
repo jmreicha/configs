@@ -4,7 +4,7 @@
 ; port 2     - proxmox.thepracticalsysadmin.com - VM server
 ; port 3     - raspberrpi.thepracticalsysadmin.com - Hyperion
 ; port 4     - proxmox-01.thepracticalsysadmin.com - VM server
-; port 23-24 - Ubiquity APs
+; port 22-24 - Ubiquity APs
 
 hostname "procurve"
 snmp-server contact "Josh"
@@ -14,9 +14,9 @@ ip default-gateway 192.168.1.1
 snmp-server community "public" Unrestricted
 vlan 1
    name "DEFAULT_VLAN"
-   untagged 1-2,4-22
+   untagged 1-2,4-21
    ip address 192.168.1.3 255.255.255.0
-   no untagged 3,23-24
+   no untagged 3,22-24
    exit
 vlan 10
    name "Server"
@@ -26,18 +26,18 @@ vlan 10
    exit
 vlan 20
    name "Wifi"
-   untagged 23-24
+   untagged 22-24
    tagged 1
    no ip address
    exit
 vlan 30
    name "IoT"
-   tagged 1,23-24
+   tagged 1,22-24
    no ip address
    exit
 vlan 40
    name "Guest"
-   tagged 1,23-24
+   tagged 1,22-24
    no ip address
    exit
 vlan 50
