@@ -12,10 +12,10 @@
 command_timeout = 1000
 
 format = """
-$username$hostname$directory$git_branch$git_commit$git_state$git_status\
+$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}$memory_usage
+$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}$memory_usage$time
 $character
 """
 
@@ -28,6 +28,9 @@ symbol = " "
 success_symbol = "[❯](green)"
 
 ### Left prompt
+
+[sudo]
+disabled = false
 
 [username]
 # Don't display for normal logged in user
@@ -80,7 +83,7 @@ format = "[$symbol$status]($style) "
 
 [cmd_duration]
 style = "#a8a8a8"
-format = "[ ](#767676)[$duration ]($style) "
+format = "([ ](#767676)[$duration ]($style) )"
 
 ### Right prompt tools and versions
 
@@ -96,14 +99,14 @@ format = '([ ](#767676)[$symbol$context( \($namespace\))]($style) '
 
 [golang]
 symbol = " "
-format = "([ ](#767676)[$symbol($version)]($style) "
+format = "([ ](#767676)[$symbol($version)]($style) )"
 
 [nodejs]
-format = "([ ](#767676)[$symbol($version)]($style) "
+format = "([ ](#767676)[$symbol($version)]($style) )"
 
 [python]
 symbol = " "
-format = '([ ](#767676)[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)) '
+format = '([ ](#767676)[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style) )'
 
 [aws]
 disabled = false
@@ -115,7 +118,7 @@ symbol = " "
 
 [docker_context]
 symbol = " "
-format = "[ ](#767676)[$symbol$context]($style) "
+format = "([ ](#767676)[$symbol$context]($style) )"
 
 [nix_shell]
 symbol = " "
@@ -125,7 +128,11 @@ disabled = false
 threshold = -1
 symbol = ""
 style = "#5f8787"
-format = "[ ](#767676)[$ram_pct $symbol]($style)"
+format = "([ ](#767676)[$ram_pct $symbol]($style) )"
+
+[time]
+disabled = true
+format = "([ ](#767676)[$time]($style) )"
 
 [shlvl]
 disabled = true
@@ -137,7 +144,7 @@ description = "Shows the currently active tgenv Terragrunt version"
 command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
-format = "[ ](#767676)[tg $output]($style) "
+format = "([ ](#767676)[tg $output]($style) )"
 
 [custom.terraform]
 description = "Shows the currently active tfenv Terraform version"
@@ -145,14 +152,14 @@ command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)
 extensions = ["tf"]
 files = ["terragrunt.hcl"]
 style = "#7b42bc"
-format = "[ ](#767676)[tf $output]($style) "
+format = "([ ](#767676)[tf $output]($style) )"
 
 [custom.loadavg]
 description = "Show load average"
 # Linux
-command = "cat /proc/loadavg | cut -d' ' -f 2"
+# command = "cat /proc/loadavg | cut -d' ' -f 2"
 # OSX
-# command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
+command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "[ ](#767676)[$output ]($style) "
+format = "([ ](#767676)[$output ]($style) )"
 when = "true"
