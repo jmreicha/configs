@@ -106,7 +106,7 @@ format = "([ ](#767676)[$symbol($version)]($style) )"
 
 [python]
 symbol = " "
-format = '([ ](#767676)[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style) )'
+format = '([ ](#767676)[${symbol}${pyenv_prefix}(${version} )([\($virtualenv\)](#306998))]($style) )'
 
 [aws]
 disabled = false
