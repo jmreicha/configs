@@ -15,7 +15,7 @@ format = """
 $sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}$memory_usage$time
+$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time
 $character
 """
 
@@ -31,10 +31,12 @@ success_symbol = "[❯](green)"
 
 [sudo]
 disabled = false
+symbol = "🧙"
+format = "[$symbol]($style)"
 
 [username]
 # Don't display for normal logged in user
-disabled = false
+disabled = true
 style_user = "#d3b987"
 format = "[$user]($style)"
 
@@ -52,9 +54,9 @@ repo_root_style = "#0087af"
 fish_style_pwd_dir_length = 2
 style = "#00afff"
 # Repo format
-repo_root_format = "[  $before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+repo_root_format = "[ $before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
 # Non repo format
-format = "[  $path]($style)[$read_only]($read_only_style) "
+format = "[ $path]($style)[$read_only]($read_only_style) "
 
 [git_branch]
 symbol = "  "
@@ -102,6 +104,7 @@ symbol = " "
 format = "([ ](#767676)[$symbol($version)]($style) )"
 
 [nodejs]
+symbol = " "
 format = "([ ](#767676)[$symbol($version)]($style) )"
 
 [python]
@@ -153,6 +156,14 @@ extensions = ["tf"]
 files = ["terragrunt.hcl"]
 style = "#7b42bc"
 format = "([ ](#767676)[tf $output]($style) )"
+
+[custom.disk]
+description = "Show % of disk used"
+#command = "df -k | grep /dev/sda1 |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
+command = 'df -h --output=avail "$PWD" | tail -n 1'
+style = "#00af5f"
+format = "[ ](#767676)[$output ]($style) "
+when = "true"
 
 [custom.loadavg]
 description = "Show load average"
