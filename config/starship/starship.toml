@@ -15,7 +15,7 @@ format = """
 $sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time
+$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time$os
 $character
 """
 
@@ -139,6 +139,29 @@ format = "([ ](#767676)[$time]($style) )"
 
 [shlvl]
 disabled = true
+
+[os]
+#format = "on [($name )]($style)"
+format = "[ ](#767676)[$symbol]($style)"
+#style = "bold blue"
+disabled = false
+
+[os.symbols]
+"Alpine" = ""
+"Arch" =  ""
+"CentOS" = ""
+#"CoreOS" = ""
+"Debian" = ""
+"Fedora" = ""
+"Gentoo" = ""
+"Linux" =  ""
+"Macos" = ""
+"Manjaro" = ""
+"Mint" =  ""
+"NixOS" =  ""
+"Raspbian" =  ""
+"Ubuntu" = ""
+"Windows" = ""
 
 ### Custom plugins
 
