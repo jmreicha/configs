@@ -70,6 +70,7 @@ Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Better motions
+Plug 'jeetsukumaran/vim-indentwise'
 " Plug 'unblevable/quick-scope'
 Plug 'justinmk/vim-sneak'
 Plug 'easymotion/vim-easymotion'
