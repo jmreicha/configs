@@ -12,6 +12,7 @@ Plug 'pearofducks/ansible-vim'
 Plug 'ntpeters/vim-better-whitespace'
 " Syntax and linting
 Plug 'dense-analysis/ale'
+Plug 'z0mbix/vim-shfmt'
 " Dockerfile
 Plug 'ekalinin/Dockerfile.vim'
 " Jsonnet
@@ -179,6 +180,10 @@ let g:rainbow_active = 1
 
 " jsonnet formatting
 let g:jsonnet_fmt_options = ' -i -n 2 --string-style d --comment-style h '
+
+" shfmt
+let g:shfmt_extra_args = '-i 4'
+let g:shfmt_fmt_on_save = 1
 
 "" ALE
 
