@@ -15,7 +15,7 @@ format = """
 $sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time$os
+$nix_shell$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time$os
 $character
 """
 
@@ -125,6 +125,7 @@ format = "([ ](#767676)[$symbol$context]($style) )"
 
 [nix_shell]
 symbol = " "
+format = "[${symbol}nix ${state} ]($style)"
 
 [memory_usage]
 disabled = false
