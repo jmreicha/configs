@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -6,25 +6,14 @@
 
   ### Boot
 
+  # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";
-  # boot.loader.systemd-boot.enable = true; # (for UEFI systems only)
-
-  ### Networking
-
-  networking.hostName = "nixos";
-  networking.firewall.enable = false;
-  # networking.networkmanager.enable = true;
-
-  # Set a static IP
-  # networking.interfaces.eth0.ipv4.addresses = [{
-  #   address = "192.0.2.1";
-  #   prefixLength = 24;
-  # }];
-
-# networking.defaultGateway = "192.0.2.254";
-# networking.nameservers = [ "8.8.8.8" ];
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.efiInstallAsRemovable = true;
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # Define on which hard drive you want to install Grub.
+  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
   ### Filesystem
 
@@ -44,7 +33,7 @@
 
   # fileSystems."/".mountPoint = "/mnt"
 
-  ### System
+  ### Nix
 
   # Collect nix store garbage and optimise daily.
   nix.gc.automatic = true;
@@ -52,93 +41,138 @@
   nix.optimise.automatic = true;
 
   # Automatic upgrades
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = false;
+  #system.autoUpgrade.enable = true;
+  #system.autoUpgrade.allowReboot = false;
 
-  ### Services
+  ### Networking
 
-  # Only keep the last 500MiB of systemd journal.
-  services.journald.extraConfig = "SystemMaxUse=500M";
-  services.sshd.enable = true;
-  services.timesyncd.enable = true;
+  networking.hostName = "nixos"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # services.openssh = {
-  #     enable = true;
-  #     passwordAuthentication = false;
-  #     challengeResponseAuthentication = false;
-  #   };
-
-  # No passwords for sudo
-  security.sudo.wheelNeedsPassword = false
-
-  ### Packages
-
-  nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = with pkgs; [
-    # language support
-    go
-    nodejs
-    python39
-    # Kube
-    krew
-    kubectl
-    kubectx
-    # Terraform
-    tfk8s
-    tflint
-    tfsec
-    # Misc
-    bat
-    colordiff
-    curl
-    direnv
-    docker
-    exa
-    fd
-    fzf
-    git
-    hadolint
-    helm
-    jq
-    pandoc
-    pass
-    ripgrep
-    shellcheck
-    tmux
-    tree
-    vim
-    wget
-    yamllint
-    yq-go
-    zsh
-  ];
-
-  virtualisation.docker.enable = true;
-
-  # TODO qemu guest agent
-
-  ### Environment
-
+  # Set your time zone.
   time.timeZone = "America/Chicago";
-  # environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };
-  programs.zsh.enable = true;
 
-  # Disable password prompt for sudo users
-  security.sudo.wheelNeedsPassword = false;
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.ens18.useDHCP = true;
 
-  users.extraUsers.jmreicha = {
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  networking.firewall.enable = false;
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  ### System
+
+  # Select internationalisation properties.
+  # i18n.defaultLocale = "en_US.UTF-8";
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
+
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
+  # Configure keymap in X11
+  # services.xserver.layout = "us";
+  # services.xserver.xkbOptions = "eurosign:e";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+
+  # Enable sound.
+  # sound.enable = true;
+  # hardware.pulseaudio.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.jmreicha = {
     isNormalUser = true;
-    home = "/home/jmreicha";
-    description = "Josh Reichardt";
-    extraGroups = ["wheel" "docker"];
-    createHome = true;
-    # shell = "/run/current-system/sw/bin/zsh";
-    # shell = pkgs.zsh;
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = [
       # Windows Desktop
       "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAk473LDx0EplCWC2ZVAf7/oZhb7J8J+05SFunRy8rHzEn3TweIi5VJ8If437oJhXLmcTMPnx7+v7+zRGCW/WuLeR1o/kZ+mODufUOUuJ3qsUISgse5duCzgA1tlv34t5L+bRscuOWbIvi8BXkarvOpa6kG/LD/GisRSqrTDuSeSMejVwB3bRwD8IDSXN3H29+nGyld0L/phW5YpAc0CFSrxO/A7yLKzRNXXpPyAiRbff+5G1g+JfqP1eyhqoFTK0E5UG+IJmgdlhHuoAw5bpnC/GAUKMshreKgTqQoUOK3dy2aJtaA/Lxm+9yYmoSrTh8LEzfBjycF6wXI0f4ff4kPQ== rsa-key-20180315"
     ];
+    shell = pkgs.zsh;
   };
 
-  system.stateVersion = "21.05";
+  # No password for sudo
+  security.sudo.wheelNeedsPassword = false;
+
+  # List packages installed in system profile. To search, run
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    curl
+    git
+    vim
+    fd
+    #python39
+    #(python39.withPackages(ps: with ps; [
+    #  pylint
+    #  flake8
+    #  bashate
+    #  pre-commit
+    #  isort
+    #  virtualenvwrapper
+    #  commitizen
+    #]))
+    jq
+    fzf
+    ripgrep
+    bat
+    colordiff
+    exa
+    pandoc
+    tmux
+    pass
+    direnv
+    shellcheck
+    shfmt
+    zsh
+    tree
+    zoxide
+  ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # Enable the Docker daemon.
+  virtualisation.docker.enable = true;
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+  };
+
+  services.timesyncd.enable = true;
+
+  # Shell config
+  programs.zsh.enable = true;
+
+  # copy the configuration.nix into /run/current-system/configuration.nix
+  #system.copySystemConfiguration = true;
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "21.05"; # Did you read the comment?
 }
