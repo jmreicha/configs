@@ -70,6 +70,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Nix
+Plug 'LnL7/vim-nix'
 " Better motions
 Plug 'jeetsukumaran/vim-indentwise'
 " Plug 'unblevable/quick-scope'

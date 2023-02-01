@@ -4,14 +4,51 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Allow unstable packages to be referenced.
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import <unstable> {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+
   ### Home settings
 
   home.username = "jmreicha";
   home.homeDirectory = "/home/jmreicha";
 
-  ### Packages
+  # Link existing config files
+  home.file.".config/starship.toml".source = ./starship.toml;
+  #home.file.".tmux.conf".source = ./.tmux.conf;
+  home.file.".vimrc".source = ./.vimrc;
+  home.file.".zshrc".source = ./.zshrc;
 
-  home.packages = [
+  # Environment
+
+  # home.sessionVariables = {
+  #   EDITOR = "vim";
+  # };
+
+  # bootstrap-home = pkgs.writeScriptBin "bootstrap-home" ''
+  #   git clone --depth 1 https://github.com/jmreicha/configs.git || true
+  #   # Remove existing configuration.nix and symlink to ours
+  #   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  #   # Install extra zsh plugins
+  #   # Install home-manager
+  #   # symlink to home.nix
+  #   # Link .vimrc to nix path
+  #   # Link .zshr to nix path
+  #   # Link starship.toml to nix path
+  #   home-manager switch
+  # '';
+
+  # scripts = [ bootstrap-home ];
+
+  # Packages
+
+  home.packages = with pkgs; [
     #bashate
     #commitizen
     #flake8
@@ -31,13 +68,14 @@
     #tgenv
     #virtualenvwrapper
     #yamllint
-    pkgs.ansible
-    pkgs.ansible-lint
-    pkgs.aws-vault
-    pkgs.awscli2
-    pkgs.nodejs
-    pkgs.pre-commit
-    pkgs.starship
+    ansible
+    ansible-lint
+    aws-vault
+    awscli2
+    nodejs
+    pre-commit
+
+    unstable.starship
   ];
 
   ### Configurations
@@ -55,19 +93,21 @@
   };
 
   programs.zsh = {
-    enable = false;
-    # oh-my-zsh = {
-    #   enable = true;
-    #   plugins = [ "git" "thefuck" ];
-    # };
+    dotDir = ".config/zsh";
+    enable = true;
+    enableAutosuggestions = true;
+    # enableSyntaxHighlighting = true;
+
+    initExtra = "source $HOME/.zshrc";
+
+    oh-my-zsh.enable = true;
+
+    # envExtra = ''
+    #   "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    #   "source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    #   "source $HOME/.zshrc";
+    # '';
   };
-
-  ### Link existing config files
-
-  home.file.".vimrc".source = ./.vimrc;
-  home.file.".zshrc".source = ./.zshrc;
-  #home.file.".tmux.conf".source = ./.tmux.conf;
-  #home.file.".config/starship/starship.toml".source = ./starship.toml;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
