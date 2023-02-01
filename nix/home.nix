@@ -19,11 +19,11 @@
   home.username = "jmreicha";
   home.homeDirectory = "/home/jmreicha";
 
-  # Link existing config files
-  home.file.".config/starship.toml".source = ./starship.toml;
+  # Link existing config files from our repo
+  home.file.".config/starship.toml".source = ../config/starship/starship.toml;
   #home.file.".tmux.conf".source = ./.tmux.conf;
-  home.file.".vimrc".source = ./.vimrc;
-  home.file.".zshrc".source = ./.zshrc;
+  home.file.".vimrc".source = ../.vimrc;
+  home.file.".zshrc".source = ../.zshrc;
 
   # Environment
 
