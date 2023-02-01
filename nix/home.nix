@@ -80,6 +80,12 @@
 
   ### Configurations
 
+  programs.git = {
+    enable = true;
+    userName = "jmreicha";
+    userEmail = "josh.reichardt@gmail.com";
+  };
+
   programs.starship = {
     enable = false;
   };
