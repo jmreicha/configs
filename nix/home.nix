@@ -28,15 +28,15 @@
   # Environment
 
   # home.sessionVariables = {
-  #   EDITOR = "vim";
+  #   FOO = "bar";
   # };
 
   # bootstrap-home = pkgs.writeScriptBin "bootstrap-home" ''
   #   git clone --depth 1 https://github.com/jmreicha/configs.git || true
-  #   # Remove existing configuration.nix and symlink to ours
-  #   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  #   # Install extra zsh plugins
+  #   # bootstrap vim-plugin
   #   # Install home-manager
+  #   # Install deven
+  #   # Remove existing configuration.nix and symlink to ours
   #   # symlink to home.nix
   #   # Link .vimrc to nix path
   #   # Link .zshr to nix path
@@ -90,6 +90,7 @@
     enable = true;
     userName = "jmreicha";
     userEmail = "josh.reichardt@gmail.com";
+    # signing.signByDefault = true;
   };
 
   programs.starship = {
@@ -109,17 +110,15 @@
     enable = true;
     enableAutosuggestions = true;
     enableSyntaxHighlighting = true;
-
     initExtra = "source $HOME/.zshrc";
-
     oh-my-zsh.enable = true;
-
-    # envExtra = ''
-    #   "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    #   "source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    #   "source $HOME/.zshrc";
-    # '';
   };
+
+  ### Services
+
+  # services.git-sync = {
+  #   repositories = [];
+  # }
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
