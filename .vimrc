@@ -189,10 +189,11 @@ let g:shfmt_fmt_on_save = 1
 
 "" ALE
 
-" Don't use ale lsps
+" Use CoC in favor of ale lsps
 let g:ale_disable_lsp = 1
 
 " Look and feel
+let g:ale_virtualtext_cursor = 0
 let g:ale_echo_msg_format = '[%linter%][%severity%](%code%) %s'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'

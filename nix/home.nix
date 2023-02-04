@@ -51,7 +51,6 @@
   # Packages
 
   home.packages = with pkgs; [
-    #bashate
     #commitizen
     #flake8
     #hadolint
@@ -74,6 +73,7 @@
     ansible-lint
     aws-vault
     awscli2
+    bashate
     nodejs
     pre-commit
 
