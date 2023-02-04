@@ -34,8 +34,10 @@
   # bootstrap-home = pkgs.writeScriptBin "bootstrap-home" ''
   #   git clone --depth 1 https://github.com/jmreicha/configs.git || true
   #   # bootstrap vim-plugin
-  #   # Install home-manager
-  #   # Install deven
+  #   # Add extra config to allow flakes
+  #   # Update nix channels/flakes for hm and devenv
+  #   # Install home-manager - nix-shell '<home-manager>' -A install
+  #   # Install deven - nix profile install github:cachix/devenv/v0.5
   #   # Remove existing configuration.nix and symlink to ours
   #   # symlink to home.nix
   #   # Link .vimrc to nix path

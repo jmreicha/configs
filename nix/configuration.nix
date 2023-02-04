@@ -45,13 +45,13 @@
   ### Nix
 
   nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 30d";
+  nix.gc.options = "--delete-older-than 28d";
   nix.optimise.automatic = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Automatic upgrades
   system.autoUpgrade.enable = true;
-  #system.autoUpgrade.allowReboot = false;
+  system.autoUpgrade.allowReboot = false;
 
   ### System
 
