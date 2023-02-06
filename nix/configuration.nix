@@ -162,6 +162,9 @@
 
   services.timesyncd.enable = true;
 
+  # Enable qemu Proxmox integration
+  services.qemuGuest.enable = true;
+
   # copy the configuration.nix into /run/current-system/configuration.nix
   #system.copySystemConfiguration = true;
 
