@@ -20,10 +20,10 @@
   home.homeDirectory = "/home/jmreicha";
 
   # Link existing config files from our repo
-  home.file.".config/starship.toml".source = ../config/starship/starship.toml;
-  #home.file.".tmux.conf".source = ./.tmux.conf;
-  home.file.".vimrc".source = ../.vimrc;
-  home.file.".zshrc".source = ../.zshrc;
+  # home.file.".config/starship.toml".source = ../config/starship/starship.toml;
+  # home.file.".tmux.conf".source = ./.tmux.conf;
+  # home.file.".vimrc".source = ../.vimrc;
+  # home.file.".zshrc".source = ../.zshrc;
 
   # Environment
 
@@ -95,6 +95,14 @@
     # signing.signByDefault = true;
   };
 
+  services.gpg-agent = {
+    enable = true;
+    pinentryFlavor = "curses";
+
+    defaultCacheTtl = 31536000; #86400
+    maxCacheTtl = 31536000; #86400
+  };
+
   programs.starship = {
     enable = false;
   };
@@ -114,6 +122,10 @@
     enableSyntaxHighlighting = true;
     initExtra = "source $HOME/.zshrc";
     oh-my-zsh.enable = true;
+
+    shellAliases = {
+      home-rebuild = "home-manager switch && exec zsh";
+    };
   };
 
   ### Services
