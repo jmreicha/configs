@@ -2,8 +2,10 @@
 # ZSH
 #####
 
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# Path to oh-my-zsh installation if not using Nix.
+if [[ -z "$NIX" ]]; then
+    export ZSH=$HOME/.oh-my-zsh
+fi
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
 # ZSH_THEME="josh-custom"
@@ -32,8 +34,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip kube-ps1 zsh-syntax-highlighting terraform python kubectl
-    helm zsh-autosuggestions fd fzf fancy-ctrl-z extract nvm)
+    virtualenv pip kube-ps1 terraform python kubectl
+    helm fd fzf fancy-ctrl-z extract nvm)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -226,9 +228,6 @@ list_env() {
 # Krew k8s package manager
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# Pulumi
-export PATH="$HOME/.pulumi/bin:$PATH"
-
 # Home user bin directory
 export PATH="$HOME/bin:$PATH"
 
@@ -257,17 +256,6 @@ if [ -f $HOME/.venvburrito/startup.sh ]; then
     . $HOME/.venvburrito/startup.sh
 fi
 
-###############
-# Powerlevel10k
-###############
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 #############
 # OS Specific
 #############
@@ -279,25 +267,26 @@ if [[ $(uname) == "Darwin" ]]; then
     # Python3
     export PATH=$PATH:/$HOME/Library/Python/3.9/bin/
 
-    # Terraform autocompletion
-    autoload -U +X bashcompinit && bashcompinit
-    complete -o nospace -C /Users/jreichardt/.tfenv/versions/0.12.29/terraform terraform
+    # Homebrew
+    export PATH="/opt/homebrew/bin:$PATH"
+
+    # tgenv
+    export PATH="$HOME/.tgenv/bin:$PATH"
 
     # Retrieve a secret from osx keychain
     get_secret() {
         security find-generic-password -gs "${1}" -w
     }
 
-    # virtualenvwrapper
-    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-    export VIRTUALENVWRAPPER_VIRTUALENV=/Users/jreichardt/Library/Python/3.9/bin/virtualenv
-    source /Users/jreichardt/Library/Python/3.9/bin/virtualenvwrapper.sh
+    # Virtualenvwrapper
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    # Brew paths
+    export VIRTUALENVWRAPPER_VIRTUALENV="$HOME/Library/Python/3.9/bin/virtualenv"
+    source "$HOME/Library/Python/3.9/bin/virtualenvwrapper.sh"
 
-    # Export secrets as environment variables
-    # export DATADOG_API_KEY="$(get_secret dd_frontend_preprod_api)"
-    # export DATADOG_APP_KEY="$(get_secret dd_frontend_preprod_app)"
-    export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
-    export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
+    # Export extra secrets as environment variables
+    # export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
+    # export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
 
     plugins+=(osx)
 fi
@@ -339,7 +328,7 @@ if [[ $(uname) == "Linux" ]]; then
     # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
-plugins+=(virtualenvwrapper)
+plugins+=(zsh-autosuggestions zsh-syntax-highlighting virtualenvwrapper)
 
 #####################
 # Misc Configurations
@@ -402,6 +391,5 @@ autoload -U compinit && compinit
 eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
-
 # Misc
 # eval $(thefuck --alias f -y)
