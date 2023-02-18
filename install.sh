@@ -4,9 +4,9 @@
 # configurations.
 
 # TODO
- # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
- # Make the install() function more DRY - reusable approach to passing different options for OSes
- # Caching for packages
+# Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
+# Make the install() function more DRY - reusable approach to passing different options for OSes
+# Caching for packages
 
 set -eou pipefail
 
@@ -94,7 +94,7 @@ _arch() {
     if [[ $EUID != 0 ]]; then
         echo "Installing extras: $ARCH_EXTRAS"
         yay_cmd="yay -S --needed --noconfirm"
-        if ! yay -V &> /dev/null; then install_yay; fi
+        if ! yay -V &>/dev/null; then install_yay; fi
         # Update package list
         $yay_cmd $ARCH_EXTRAS
     fi
@@ -127,6 +127,8 @@ _gentoo() {
 }
 
 _macos() {
+    # TODO: Check for brew and install if it isn't already installed
+    # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update
     if [[ $UPDATE ]]; then
         brew upgrade
@@ -138,9 +140,38 @@ _macos() {
     pip3 install --user --no-warn-script-location $PY_TOOLS
 }
 
+:'
 _nixos() {
-    echo
+    # Link configs
+    ln -s ~/configs/.zshrc ~/.zshrc
+    ln -s ~/configs/config/starship/starship.toml ~/.config/starship.toml
+
+    # Vim
+    curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    ln -s ~/configs/.vimrc ~/.vimrc
+
+    # Add extra channels
+    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
+    nix-channel --update
+
+    # NIXOS
+    ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
+    nixos-rebuild switch
+
+    # OSX
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
+    nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+    ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
+    ./result/bin/darwin-installer
+    darwin-rebuild switch
+
+    # Home manager
+    nix-shell ' <home-manager >' -A install
+    ln -s ~/configs/nix/home.nix ~/.config/nixpkgs/home.nix
+    home-manager switch
 }
+'
 
 _ubuntu() {
     $sudo apt update -y
@@ -165,7 +196,7 @@ install() {
         _ubuntu
     elif grep ID=alpine /etc/os-release; then
         _alpine
-    elif  [[ "$(uname -s)" = "Darwin" ]]; then
+    elif [[ "$(uname -s)" = "Darwin" ]]; then
         _macos
     else
         echo "Unkown OS"
@@ -193,7 +224,7 @@ install_yay() {
 }
 
 install_awscli() {
-    if ! aws --version &> /dev/null; then
+    if ! aws --version &>/dev/null; then
         echo "Installing AWS CLI"
         # Grab the newest version by default
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -232,6 +263,11 @@ install_docker_compose() {
 configure() {
     # git pull
     echo "Configuring environment"
+
+    # TODO: Create extra directories if they don't exist
+    mkdir -p "$HOME/.terragrunt/plugins"
+    mkdir -p "$HOME/.aws"
+    mkdir -p "$HOME/git"
 
     set_env_paths
 
@@ -300,28 +336,29 @@ main() {
     fi
 
     case $option in
-        --install)
-            install
-            ;;
-        --configure)
-            configure
-            ;;
-        --update)
-            UPDATE=true
-            install
-            ;;
-        --all)
-            install
-            configure
-            # Change the shell as the last step because it is interactive
-            switch_shell
-            ;;
-        --extras)
-            # TODO: install extras separately to speed up base installs
-            ;;
-        *)
-            echo "'$option' not a recognized option"
-            exit 1
+    --install)
+        install
+        ;;
+    --configure)
+        configure
+        ;;
+    --update)
+        UPDATE=true
+        install
+        ;;
+    --all)
+        install
+        configure
+        # Change the shell as the last step because it is interactive
+        switch_shell
+        ;;
+    --extras)
+        # TODO: install extras separately to speed up base installs
+        ;;
+    *)
+        echo "'$option' not a recognized option"
+        exit 1
+        ;;
     esac
 }
 
