@@ -298,7 +298,7 @@ if [[ $(uname) == "Linux" ]]; then
     alias ip="ip -c"
 
     # OS specific configs
-    if cat /etc/os-release | grep ID=debian; then
+    if grep ID=debian /etc/os-release; then
         alias fd="fdfind --hidden"
         export PATH=$PATH:/$HOME/.local/bin
     fi
@@ -323,8 +323,8 @@ if [[ $(uname) == "Linux" ]]; then
     }
 
     # Export secrets as environment variables
-    export NPM_TOKEN="$(get_secret tokens/npm)"
-    export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
+    # export NPM_TOKEN="$(get_secret tokens/npm)"
+    # export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
     # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
