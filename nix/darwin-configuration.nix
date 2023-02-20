@@ -49,8 +49,10 @@
     fd
     fzf
     git
+    gnupg
     jq
     pandoc
+    pinentry_mac
     ripgrep
     shellcheck
     shfmt
@@ -85,10 +87,10 @@
 
   ### Programs
 
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
   # programs.ssh = {
   #   knownHosts = {};
@@ -97,6 +99,7 @@
   programs.zsh = {
     enable = true;
     enableFzfCompletion = true;
+    enableFzfGit = false;
     enableFzfHistory = true;
   };
 
