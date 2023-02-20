@@ -90,40 +90,30 @@
   ### Environment
 
   environment.systemPackages = with pkgs; [
-    curl
-    git
-    vim
-    fd
-    #python39
-    #(python39.withPackages(ps: with ps; [
-    #  pylint
-    #  flake8
-    #  bashate
-    #  pre-commit
-    #  isort
-    #  virtualenvwrapper
-    #  commitizen
-    #]))
-    jq
-    fzf
-    ripgrep
     bat
     colordiff
-    exa
-    pandoc
-    tmux
-    pass
+    curl
     direnv
+    exa
+    fd
+    fzf
+    git
+    jq
+    pandoc
+    pass
+    ripgrep
     shellcheck
     shfmt
-    zsh
+    tmux
     tree
+    vim
     zoxide
+    zsh
   ];
 
-  environment.variables = {
-    NIXOS = "true";
-  };
+  # environment.variables = {
+  #   FOO = "bar";
+  # };
 
   ### Programs
 
