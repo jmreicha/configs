@@ -43,17 +43,13 @@
 
   environment.systemPackages = with pkgs; [
     bat
-    black
     curl
     direnv
     exa
     fd
     fzf
     git
-    hadolint
-    isort
     jq
-    nerdfonts
     pandoc
     ripgrep
     shellcheck
@@ -85,10 +81,6 @@
       "obsidian"
       "visual-studio-code"
     ];
-  };
-
-  environment.variables = {
-    NIX = "true";
   };
 
   ### Programs
