@@ -67,6 +67,7 @@
 
     # TUI
     brews = [
+      "pinentry-touchid"
       "terramate"
       "tfenv"
     ];
@@ -81,6 +82,11 @@
       "microsoft-remote-desktop"
       "obsidian"
       "visual-studio-code"
+    ];
+
+    # Custom
+    taps = [
+      "jorgelbg/tap"
     ];
   };
 
