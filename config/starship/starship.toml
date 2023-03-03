@@ -97,7 +97,12 @@ detect_extensions = ["tf"]
 detect_files = ["terragrunt.hcl"]
 
 [kubernetes]
-format = '([ ](#767676)[$symbol$context( \($namespace\))]($style) '
+disabled = false
+style = "blue"
+format = '([ ](#767676)[$symbol$context (\[$namespace\])]($style) )'
+detect_extensions = []
+detect_files = ['Dockerfile', 'docker-compose.yaml']
+detect_folders = ['*helm*']
 
 [golang]
 symbol = " "
@@ -142,10 +147,8 @@ format = "([ ](#767676)[$time]($style) )"
 disabled = true
 
 [os]
-#format = "on [($name )]($style)"
-format = "[ ](#767676)[$symbol]($style)"
-#style = "bold blue"
 disabled = false
+format = "[ ](#767676)[$symbol]($style)"
 
 [os.symbols]
 "Alpine" = ""
@@ -183,10 +186,12 @@ format = "([ ](#767676)[tf $output]($style) )"
 
 [custom.disk]
 description = "Show % of disk used"
-#command = "df -k | grep /dev/sda1 |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
-command = 'df -h --output=avail "$PWD" | tail -n 1'
+# Linux
+# command = 'df -h --output=avail "$PWD" | tail -n 1'
+# OSX
+command = "df -k | grep /dev/disk3s1s1 |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
-format = "[ ](#767676)[$output ]($style) "
+format = "[ ](#767676)[$output% ]($style) "
 when = "true"
 
 [custom.loadavg]
