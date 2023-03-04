@@ -15,7 +15,7 @@ format = """
 $sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$nix_shell$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg}${custom.disk}$memory_usage$time$os
+$nix_shell$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg-linux}${custom.loadavg-mac}${custom.disk-linux}${custom.disk-mac}$memory_usage$time$os
 $character
 """
 
@@ -184,22 +184,34 @@ files = ["terragrunt.hcl"]
 style = "#7b42bc"
 format = "([ ](#767676)[tf $output]($style) )"
 
-[custom.disk]
+[custom.disk-linux]
+description = "Show disk used"
+command = 'df -h --output=avail "$PWD" | tail -n 1'
+style = "#00af5f"
+format = "[ ](#767676)[$output ]($style) "
+when = "true"
+os = "linux"
+
+[custom.disk-mac]
 description = "Show % of disk used"
-# Linux
-# command = 'df -h --output=avail "$PWD" | tail -n 1'
-# OSX
 command = "df -k | grep /dev/disk3s1s1 |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
 format = "[ ](#767676)[$output% ]($style) "
 when = "true"
+os = "macos"
 
-[custom.loadavg]
+[custom.loadavg-linux]
 description = "Show load average"
-# Linux
-# command = "cat /proc/loadavg | cut -d' ' -f 2"
-# OSX
+command = "cat /proc/loadavg | cut -d' ' -f 2"
+style = "#5f8787"
+format = "([ ](#767676)[$output ]($style) )"
+when = "true"
+os = "linux"
+
+[custom.loadavg-mac]
+description = "Show load average"
 command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
 style = "#5f8787"
 format = "([ ](#767676)[$output ]($style) )"
 when = "true"
+os = "macos"
