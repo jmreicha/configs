@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
 
+# TODO: Dynamically pick username to assign directory to in below config
+
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -7,6 +9,7 @@
   # Allow unstable packages to be referenced.
   nixpkgs.config = {
     allowUnfree = true;
+    # allowUnsupportedSystem = true;
     packageOverrides = pkgs: {
       unstable = import <unstable> {
         config = config.nixpkgs.config;
@@ -16,8 +19,24 @@
 
   ### Home settings
 
-  home.username = "jmreicha";
-  home.homeDirectory = "/home/jmreicha";
+  home.username = "josh.reichardt";
+  home.homeDirectory = "/Users/josh.reichardt";
+
+  home.file.".config/git/config.personal".text = ''
+  [user]
+          email = "josh.reichardt@gmail.com"
+          signingKey = "382541722B298C07"
+  '';
+
+  home.file.".config/git/config.work".text = ''
+  [user]
+          email = "josh.reichardt@lytx.com"
+          signingKey = "DD1DED98B96B8EDE"
+  '';
+
+  home.file.".npmrc".text = ''
+    prefix=''${HOME}/.npm-packages
+  '';
 
   # Link existing config files from our repo
   # home.file.".config/starship.toml".source = ../config/starship/starship.toml;
@@ -27,60 +46,75 @@
 
   # Environment
 
-  # home.sessionVariables = {
-  #   FOO = "bar";
-  # };
-
-  # bootstrap-home = pkgs.writeScriptBin "bootstrap-home" ''
-  #   git clone --depth 1 https://github.com/jmreicha/configs.git || true
-  #   # bootstrap vim-plugin
-  #   # Add extra config to allow flakes
-  #   # Update nix channels/flakes for hm and devenv
-  #   # Install home-manager - nix-shell '<home-manager>' -A install
-  #   # Install deven - nix profile install github:cachix/devenv/v0.5
-  #   # Remove existing configuration.nix and symlink to ours
-  #   # symlink to home.nix
-  #   # Link .vimrc to nix path
-  #   # Link .zshr to nix path
-  #   # Link starship.toml to nix path
-  #   home-manager switch
-  # '';
-
-  # scripts = [ bootstrap-home ];
+  home.sessionVariables = {
+    NIX = "true";
+  };
 
   # Packages
 
   home.packages = with pkgs; [
     #commitizen
     #flake8
-    #hadolint
-    #helm
-    #isort
-    #k9s
-    #krew
-    #kube-linter
-    #kubectl
-    #kubectx
-    #pkgs.pylint
-    #terraform
-    #tfenv
-    #tflint
-    #tfsec
-    #tgenv
-    #virtualenvwrapper
+    #pylint
     #yamllint
+
+    # Local
+    act
     ansible
     ansible-lint
     aws-vault
     awscli2
     bashate
+    black
+    colordiff
+    gh
+    hadolint
+    isort
+    nerdfonts
     nodejs
     pre-commit
+    trivy
+    vault
+    vaultenv
+    watch
+
+    # Kubernetes
+    k9s
+    krew
+    kube-bench
+    kube-linter
+    kubectx
+    kubernetes-helm
+    kubescape
+    kubeval
+    #argo
+    #argocd
+    #aws-iam-authenticator
+    #fluxctl
+    #kind
+    #kubeaudit
+    #kubecolor
+    #kubectl
+    #kubegrunt
+    #kustomize
+    #tfk8s
+
+    # Terraform
+    iam-policy-json-to-terraform
+    terraform-docs
+    terraformer
+    tflint
+    tfsec
+    #checkov
+    #terrascan
+    #conftest
+    #tgswitch
+    #tfswitch
 
     unstable.starship
   ];
 
-  ### Configurations
+  ### Program configs
 
   programs.direnv = {
     enable = true;
@@ -88,17 +122,57 @@
     nix-direnv.enable = true;
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.git = {
     enable = true;
-    userName = "jmreicha";
-    userEmail = "josh.reichardt@gmail.com";
-    # signing.signByDefault = true;
+
+    # TODO: Ordering matters and the includeif before user breaks the override.
+    extraConfig = {
+      commit = {
+        gpgSign = true;
+      };
+      gpg = {
+        program = "gpg2";
+      };
+      include = {
+        path = "~/.config/git/config.personal";
+      };
+      "includeIf \"gitdir:~/git/lytx/\"" = {
+        path = "~/.config/git/config.work";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+      tag = {
+        gpgSign = true;
+      };
+      user = {
+        name = "jmreicha";
+      };
+    };
+
+    ignores = [
+      ".DS_Store*"
+      ".vscode"
+      "*.log"
+    ];
+
+    # signing = {
+    #   signByDefault = false;
+    #   key = "382541722B298C07"; # personal key
+    # };
+
+    # userName = "jmreicha";
+    # userEmail = "josh.reichardt@gmail.com";
   };
 
   services.gpg-agent = {
-    enable = true;
+    enable = false;
     pinentryFlavor = "curses";
-
     defaultCacheTtl = 31536000; #86400
     maxCacheTtl = 31536000; #86400
   };
@@ -125,6 +199,7 @@
 
     shellAliases = {
       home-rebuild = "home-manager switch && exec zsh";
+      rebuild-all = "home-manager switch && darwin-rebuild switch && exec zsh";
     };
   };
 
@@ -134,13 +209,5 @@
   #   repositories = [];
   # }
 
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
   home.stateVersion = "22.11";
 }

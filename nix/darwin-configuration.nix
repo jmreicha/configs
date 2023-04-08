@@ -70,6 +70,8 @@
       "pinentry-touchid"
       "terramate"
       "tfenv"
+      "tfsort"
+      "act"
     ];
 
     # GUI
@@ -86,7 +88,8 @@
 
     # Custom
     taps = [
-      "jorgelbg/tap"
+      "alexnabokikh/tfsort" #tfsort
+      "jorgelbg/tap" #pinentry-touchid
     ];
   };
 
