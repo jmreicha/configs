@@ -264,25 +264,23 @@ fi
 if [[ $(uname) == "Darwin" ]]; then
     echo "Loading additional OSX configuration"
 
-    # Python3
-    export PATH=$PATH:/$HOME/Library/Python/3.9/bin/
-
-    # Homebrew
-    export PATH="/opt/homebrew/bin:$PATH"
-
-    # tgenv
-    export PATH="$HOME/.tgenv/bin:$PATH"
+    alias pinentry='pinentry-mac'
 
     # Retrieve a secret from osx keychain
     get_secret() {
         security find-generic-password -gs "${1}" -w
     }
 
+    # Python3
+    export PATH=$PATH:/$HOME/Library/Python/3.9/bin/
+    # Homebrew
+    export PATH="/opt/homebrew/bin:$PATH"
+    # tgenv
+    export PATH="$HOME/.tgenv/bin:$PATH"
     # Virtualenvwrapper
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-    # Brew paths
-    export VIRTUALENVWRAPPER_VIRTUALENV="$HOME/Library/Python/3.9/bin/virtualenv"
-    source "$HOME/Library/Python/3.9/bin/virtualenvwrapper.sh"
+    # export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    # export VIRTUALENVWRAPPER_VIRTUALENV="$HOME/Library/Python/3.9/bin/virtualenv"
+    # source "$HOME/Library/Python/3.9/bin/virtualenvwrapper.sh"
 
     # Export extra secrets as environment variables
     # export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"

@@ -9,3 +9,4 @@ cloud_init_arch.yaml
 .envrc
 **/*devenv*
 !devenv.lock
+**result

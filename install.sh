@@ -127,8 +127,6 @@ _gentoo() {
 }
 
 _macos() {
-    # TODO: Check for brew and install if it isn't already installed
-    # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update
     if [[ $UPDATE ]]; then
         brew upgrade
@@ -140,38 +138,59 @@ _macos() {
     pip3 install --user --no-warn-script-location $PY_TOOLS
 }
 
-:'
-_nixos() {
+_nix() {
     # Link configs
-    ln -s ~/configs/.zshrc ~/.zshrc
-    ln -s ~/configs/config/starship/starship.toml ~/.config/starship.toml
+    rm -rf ~/.zshrc && ln -s ~/configs/.zshrc ~/.zshrc
+    rm -rf ~/.config/starship.toml && ln -s ~/configs/config/starship/starship.toml ~/.config/starship.toml
 
     # Vim
     curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    ln -s ~/configs/.vimrc ~/.vimrc
-
-    # Add extra channels
-    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-    nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
-    nix-channel --update
-
-    # NIXOS
-    ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
-    nixos-rebuild switch
+    rm -rf ~/.vimrc && ln -s ~/configs/.vimrc ~/.vimrc
 
     # OSX
-    curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
-    nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-    ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
-    ./result/bin/darwin-installer
-    darwin-rebuild switch
+    if [[ "$(uname -s)" = "Darwin" ]]; then
+        # This step needs sudo
+        if ! command -v nix-build; then
+            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sudo sh -s -- install
+            #curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
+        fi
+
+        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+            set +u
+            . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+            set -u
+        fi
+
+        mkdir -p ~/.nixpkgs && rm -rf ~/.nixpkgs/darwin-configuration.nix && ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
+        nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+
+        if ! command -v darwin-rebuild ]]; then
+            ./result/bin/darwin-installer
+            exec zsh
+        fi
+
+        # Either move or chown config files created by nix installer
+        sudo mv /etc/bashrc /etc/bashrc.old
+        sudo mv /etc/zshrc /etc/zshrc.old
+        sudo chown $(id -un) /etc/nix/nix.conf
+        darwin-rebuild switch
+    else
+        # NIXOS
+        ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
+        nixos-rebuild switch
+    fi
+
+    # Extra channels
+    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
+    sudo nix-channel --update
 
     # Home manager
-    nix-shell ' <home-manager >' -A install
-    ln -s ~/configs/nix/home.nix ~/.config/nixpkgs/home.nix
+    nix-shell '<home-manager>' -A install
+    # mkdir -p ~/.config/nixpkgs && ln -s ~/configs/nix/home.nix ~/.config/nixpkgs/home.nix
+    mkdir -p ~/.config/home-manager && rm -rf ~/.config/home-manager/home.nix && ln -s ~/configs/nix/home.nix ~/.config/home-manager/home.nix
     home-manager switch
 }
-'
 
 _ubuntu() {
     $sudo apt update -y
@@ -188,6 +207,7 @@ _ubuntu() {
 
 install() {
     set_env
+    mkdir -p ~/.config
     if grep ID=arch /etc/os-release; then
         _arch
     elif grep ID=debian /etc/os-release; then
@@ -197,7 +217,10 @@ install() {
     elif grep ID=alpine /etc/os-release; then
         _alpine
     elif [[ "$(uname -s)" = "Darwin" ]]; then
-        _macos
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        #_macos
+        _nix
+        return
     else
         echo "Unkown OS"
         exit 0

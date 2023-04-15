@@ -5,10 +5,12 @@
 
   ### Networking
 
-  # networking.computerName = "prometheus";
-  # networking.dns = [];
-  # networking.hostName = "prometheus";
-  # networking.localHostName = "prometheus"
+  networking = {
+    computerName = "prometheus";
+    # dns = [];
+    hostName = "prometheus";
+    localHostName = "prometheus";
+  };
 
   ### Nix
 
@@ -77,8 +79,10 @@
     # GUI
     casks = [
       "authy"
+      "discord"
       "docker"
       "drawio"
+      "firefox"
       "grammarly"
       "iterm2"
       "microsoft-remote-desktop"

@@ -25,7 +25,7 @@
   home.file.".config/git/config.personal".text = ''
   [user]
           email = "josh.reichardt@gmail.com"
-          signingKey = "382541722B298C07"
+          signingKey = "A9752A813F1EF110"
   '';
 
   home.file.".config/git/config.work".text = ''
@@ -176,6 +176,8 @@
     defaultCacheTtl = 31536000; #86400
     maxCacheTtl = 31536000; #86400
   };
+
+  programs.go.enable = true;
 
   programs.starship = {
     enable = false;
