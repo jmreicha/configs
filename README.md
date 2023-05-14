@@ -23,7 +23,7 @@ cd configs
 ```
 
 Another option is to run the full installation and configuration for a given
-platform.
+platform, which should be detected automatically by the install script.
 
 ```bash
 cd configs
