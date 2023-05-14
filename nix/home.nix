@@ -44,6 +44,10 @@
   # home.file.".vimrc".source = ../.vimrc;
   # home.file.".zshrc".source = ../.zshrc;
 
+  home.file.".npmrc".text = ''
+    prefix = ''${HOME}/.npm-packages
+  '';
+
   # Environment
 
   home.sessionVariables = {
@@ -66,6 +70,7 @@
     awscli2
     bashate
     black
+    checkov
     colordiff
     gh
     hadolint
@@ -76,17 +81,22 @@
     trivy
     vault
     vaultenv
+    virtualenvwrapper
     watch
 
     # Kubernetes
+    datree
     k9s
     krew
     kube-bench
     kube-linter
+    kubeconform
     kubectx
     kubernetes-helm
     kubescape
+    kubescape
     kubeval
+    pluto
     #argo
     #argocd
     #aws-iam-authenticator
