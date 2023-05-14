@@ -44,10 +44,6 @@
   # home.file.".vimrc".source = ../.vimrc;
   # home.file.".zshrc".source = ../.zshrc;
 
-  home.file.".npmrc".text = ''
-    prefix = ''${HOME}/.npm-packages
-  '';
-
   # Environment
 
   home.sessionVariables = {
@@ -81,7 +77,6 @@
     trivy
     vault
     vaultenv
-    virtualenvwrapper
     watch
 
     # Kubernetes
