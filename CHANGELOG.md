@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/jmreicha/configs/compare/v0.2.0...v0.2.1) (2023-05-14)
+
+
+### Bug Fixes
+
+* remove extra npm config and virtualenvwrapper package ([901b371](https://github.com/jmreicha/configs/commit/901b37188a11d946bba61cf30cc60a24994dce52))
+
+
+
 # [0.2.0](https://github.com/jmreicha/configs/compare/v0.1.0...v0.2.0) (2023-05-14)
 
 
