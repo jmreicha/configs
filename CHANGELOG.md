@@ -1,4 +1,13 @@
-# 0.1.0 (2023-05-13)
+# [0.2.0](https://github.com/jmreicha/configs/compare/v0.1.0...v0.2.0) (2023-05-14)
+
+
+### Features
+
+* more system wide packages ([880e113](https://github.com/jmreicha/configs/commit/880e113a993645bfd46366c6afe6a22c3d19e340))
+
+
+
+# [0.1.0](https://github.com/jmreicha/configs/compare/e23016343457101ebbc594d4b081b93d09a7f630...v0.1.0) (2023-05-13)
 
 
 ### Bug Fixes
