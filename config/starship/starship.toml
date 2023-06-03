@@ -194,7 +194,7 @@ os = "linux"
 
 [custom.disk-mac]
 description = "Show % of disk used"
-command = "df -k | grep /dev/disk3s1s1 |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
+command = "df -k | grep -E '/dev/disk1s(3|4)' |  awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
 format = "[ ](#767676)[$output% ]($style) "
 when = "true"
