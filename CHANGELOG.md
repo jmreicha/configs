@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/jmreicha/configs/compare/v0.2.1...v0.2.2) (2023-06-03)
+
+
+### Bug Fixes
+
+* better handling for disk monitor ([6554e19](https://github.com/jmreicha/configs/commit/6554e19f533601e21e1f45647069851b5fffef67))
+
+
+
 ## [0.2.1](https://github.com/jmreicha/configs/compare/v0.2.0...v0.2.1) (2023-05-14)
 
 
