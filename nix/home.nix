@@ -1,8 +1,11 @@
 { config, pkgs, ... }:
 
-# TODO: Dynamically pick username to assign directory to in below config
-
-{
+# Dynamic variables
+let
+  user = "josh.reichardt";
+  gpgKeyPersonal = "A9752A813F1EF110";
+  gpgKeyWork = "DD1DED98B96B8EDE";
+in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -19,19 +22,19 @@
 
   ### Home settings
 
-  home.username = "josh.reichardt";
-  home.homeDirectory = "/Users/josh.reichardt";
+  home.username = "${user}";
+  home.homeDirectory = "/Users/${user}";
 
   home.file.".config/git/config.personal".text = ''
   [user]
-          email = "josh.reichardt@gmail.com"
-          signingKey = "A9752A813F1EF110"
+          email = "${user}@gmail.com"
+          signingKey = "${gpgKeyPersonal}"
   '';
 
   home.file.".config/git/config.work".text = ''
   [user]
-          email = "josh.reichardt@lytx.com"
-          signingKey = "DD1DED98B96B8EDE"
+          email = "${user}@lytx.com"
+          signingKey = "${gpgKeyWork}"
   '';
 
   home.file.".npmrc".text = ''
@@ -56,9 +59,8 @@
     #commitizen
     #flake8
     #pylint
-    #yamllint
 
-    # Local
+    # Local tools
     act
     ansible
     ansible-lint
@@ -68,16 +70,19 @@
     black
     checkov
     colordiff
+    conftest
     gh
     hadolint
     isort
     nerdfonts
-    nodejs
+    packer
     pre-commit
+    thefuck
     trivy
     vault
     vaultenv
     watch
+    yamllint
 
     # Kubernetes
     datree
@@ -93,7 +98,7 @@
     kubeval
     pluto
     #argo
-    #argocd
+    argocd
     #aws-iam-authenticator
     #fluxctl
     #kind
@@ -102,7 +107,6 @@
     #kubectl
     #kubegrunt
     #kustomize
-    #tfk8s
 
     # Terraform
     iam-policy-json-to-terraform
@@ -110,22 +114,20 @@
     terraformer
     tflint
     tfsec
-    #checkov
     #terrascan
-    #conftest
-    #tgswitch
-    #tfswitch
+    #tfk8s
 
     unstable.starship
+    unstable.nodejs_20
   ];
 
   ### Program configs
 
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
+  # programs.direnv = {
+  #   enable = true;
+  #   enableZshIntegration = true;
+  #   nix-direnv.enable = true;
+  # };
 
   programs.fzf = {
     enable = true;
@@ -165,14 +167,6 @@
       ".vscode"
       "*.log"
     ];
-
-    # signing = {
-    #   signByDefault = false;
-    #   key = "382541722B298C07"; # personal key
-    # };
-
-    # userName = "jmreicha";
-    # userEmail = "josh.reichardt@gmail.com";
   };
 
   services.gpg-agent = {
@@ -211,6 +205,18 @@
   };
 
   ### Services
+
+  # TODO: Waiting for upstream support for osx to get merged
+  # services.gpg-agent = {
+  #   defaultCacheTtl = 1800;
+  #   defaultCacheTtlSsh = 1800;
+  #   enable = false;
+  #   enableSshSupport = true;
+  #   enableZshIntegration = true;
+  #   extraConfig = ''
+  #     allow-mac-pinentry
+  #   '';
+  # };
 
   # services.git-sync = {
   #   repositories = [];
