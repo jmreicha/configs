@@ -64,6 +64,7 @@ in {
     act
     ansible
     ansible-lint
+    asdf-vm
     aws-vault
     awscli2
     bashate
@@ -74,6 +75,7 @@ in {
     gh
     hadolint
     isort
+    lazygit
     nerdfonts
     packer
     pre-commit
@@ -97,7 +99,7 @@ in {
     kubescape
     kubeval
     pluto
-    #argo
+    popeye
     argocd
     #aws-iam-authenticator
     #fluxctl
@@ -169,13 +171,6 @@ in {
     ];
   };
 
-  services.gpg-agent = {
-    enable = false;
-    pinentryFlavor = "curses";
-    defaultCacheTtl = 31536000; #86400
-    maxCacheTtl = 31536000; #86400
-  };
-
   programs.go.enable = true;
 
   programs.starship = {
@@ -217,6 +212,13 @@ in {
   #     allow-mac-pinentry
   #   '';
   # };
+
+  services.gpg-agent = {
+    enable = false;
+    pinentryFlavor = "curses";
+    defaultCacheTtl = 31536000; #86400
+    maxCacheTtl = 31536000; #86400
+  };
 
   # services.git-sync = {
   #   repositories = [];

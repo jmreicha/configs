@@ -34,6 +34,7 @@
   time.timeZone = "America/Chicago";
 
   # system.keyboard.remapCapsLockToControl = true;
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
 
   # Finder
   # system.defaults.finder.ShowPathbar = true;
@@ -69,6 +70,8 @@
 
     # TUI
     brews = [
+      "checkov"
+      "packer"
       "pinentry-touchid"
       "terramate"
       "tfenv"
@@ -85,9 +88,11 @@
       "firefox"
       "grammarly"
       "iterm2"
+      "maccy"
       "microsoft-remote-desktop"
       "obsidian"
       "visual-studio-code"
+      "stats"
     ];
 
     # Custom
