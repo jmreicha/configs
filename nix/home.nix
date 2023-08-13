@@ -117,7 +117,7 @@ in {
     tflint
     tfsec
     #terrascan
-    #tfk8s
+    tfk8s
 
     unstable.starship
     unstable.nodejs_20
