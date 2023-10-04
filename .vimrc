@@ -4,6 +4,8 @@ set nocompatible
 
 call plug#begin('~/.vim/plugged')
 
+" Language detection and support
+Plug 'sheerun/vim-polyglot'
 " Whitespace
 Plug 'ntpeters/vim-better-whitespace'
 " Syntax and linting
