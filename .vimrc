@@ -202,6 +202,7 @@ let b:ale_fixers = {
 " Ignore lines over 80 chars
 let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_sh_bashate_options = '-i E006'
+let g:ale_yaml_yamllint_options='-d "{extends: relaxed, rules: {line-length: disable}}"'
 
 " Switch this setting to 0 to disable fixers
 let g:ale_fix_on_save = 1
