@@ -1,40 +1,22 @@
 "" Plugins
 
+set nocompatible
+
 call plug#begin('~/.vim/plugged')
 
-" Terraform
-Plug 'hashivim/vim-terraform'
-" JSON
-Plug 'elzr/vim-json'
-" Ansible
-Plug 'pearofducks/ansible-vim'
+" Language detection and support
+Plug 'sheerun/vim-polyglot'
 " Whitespace
 Plug 'ntpeters/vim-better-whitespace'
 " Syntax and linting
 Plug 'dense-analysis/ale'
 Plug 'z0mbix/vim-shfmt'
-" Dockerfile
-Plug 'ekalinin/Dockerfile.vim'
-" Jsonnet
-Plug 'google/vim-jsonnet'
-" Typescript
-Plug 'leafgarland/typescript-vim'
-" Yaml
-Plug 'mrk21/yaml-vim'
 " Colors
 Plug 'lilydjwg/colorizer'
-" PowerShell
-Plug 'PProvost/vim-ps1'
-" Rego
-Plug 'tsandall/vim-rego'
-" Nix
-Plug 'LnL7/vim-nix'
 " Git integration
 Plug 'tpope/vim-fugitive'
 " Show Git file changes
 Plug 'airblade/vim-gitgutter'
-" GO tools
-Plug 'fatih/vim-go'
 " Color schemes
 Plug 'flazz/vim-colorschemes'
 Plug 'danilo-augusto/vim-afterglow'
@@ -51,7 +33,6 @@ Plug 'othree/yajs.vim'
 Plug 'wellle/targets.vim'
 " Markdown tools
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 " Surround tools
 Plug 'tpope/vim-surround'
 " Comment tools
@@ -70,8 +51,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Code completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Nix
-Plug 'LnL7/vim-nix'
 " Better motions
 Plug 'jeetsukumaran/vim-indentwise'
 " Plug 'unblevable/quick-scope'
