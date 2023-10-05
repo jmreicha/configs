@@ -69,16 +69,21 @@ in {
     awscli2
     bashate
     black
-    checkov
+    # checkov
     colordiff
     conftest
+    doctl
     gh
+    glow
+    go-task
     hadolint
-    isort
+    # isort
+    just
     lazygit
     nerdfonts
     packer
     pre-commit
+    s3cmd
     thefuck
     trivy
     vault
@@ -88,6 +93,7 @@ in {
 
     # Kubernetes
     datree
+    eksctl
     k9s
     krew
     kube-bench
@@ -95,8 +101,7 @@ in {
     kubeconform
     kubectx
     kubernetes-helm
-    kubescape
-    kubescape
+    # kubescape
     kubeval
     pluto
     popeye

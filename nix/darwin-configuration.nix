@@ -29,6 +29,11 @@
     fonts = [ pkgs.nerdfonts ];
   };
 
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
+  system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+  system.defaults.SoftwareUpdate.AutomaticallyInstallMacOSUpdates = false;
+  # system.keyboard.remapCapsLockToControl = true;
+
   system.stateVersion = 4;
 
   time.timeZone = "America/Chicago";
@@ -72,18 +77,19 @@
     brews = [
       "checkov"
       "packer"
+      "cdk8s"
+      "maccy"
       "pinentry-touchid"
       "terramate"
       "tfenv"
       "tfsort"
-      "act"
     ];
 
     # GUI
     casks = [
       "authy"
+      "brave-browser"
       "discord"
-      "docker"
       "drawio"
       "firefox"
       "grammarly"
@@ -91,9 +97,15 @@
       "maccy"
       "microsoft-remote-desktop"
       "obsidian"
+      "rancher"
       "visual-studio-code"
       "stats"
+      "wireshark"
     ];
+
+    # Pull in updates automatically
+    # global.autoUpdate = true;
+    # onActivation.autoUpdate = true;
 
     # Custom
     taps = [

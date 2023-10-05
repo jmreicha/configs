@@ -34,8 +34,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip kube-ps1 terraform python kubectl
-    helm fd fzf fancy-ctrl-z extract nvm)
+    virtualenv pip kube-ps1 terraform python kubectl history
+    fd fzf fancy-ctrl-z extract nvm)
 
 # Load here to be able to source extra plugins and configurations
 source $ZSH/oh-my-zsh.sh
@@ -86,6 +86,7 @@ alias python="python3"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
 alias rg="rg --hidden -g '!.git/'"
+alias q="chatblade"
 
 # Docker
 alias d="docker"
@@ -95,6 +96,7 @@ alias dp="docker ps"
 alias di="docker images"
 
 # Kubernetes
+alias k="kubectl"
 alias kw="watch kubectl get pods"
 alias kgpa="kgp --all-namespaces"
 alias kgpaw="kgp -o wide --all-namespaces"
@@ -135,6 +137,9 @@ alias -s txt=$EDITOR
 #########
 # Exports
 #########
+
+# OpenAI
+export OPENAI_API_KEY=
 
 # GPG key
 export GPG_TTY=$(tty)
@@ -390,4 +395,8 @@ eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
 # Misc
-# eval $(thefuck --alias f -y)
+eval $(thefuck --alias f -y)
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/josh.reichardt/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
