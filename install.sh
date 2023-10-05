@@ -151,8 +151,9 @@ _nix() {
     if [[ "$(uname -s)" = "Darwin" ]]; then
         # This step needs sudo
         if ! command -v nix-build; then
-            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sudo sh -s -- install
+            # TODO: run the original script to update the config file needed to map /run dir
             #curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
+            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sudo sh -s -- install
         fi
 
         if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
@@ -164,7 +165,7 @@ _nix() {
         mkdir -p ~/.nixpkgs && rm -rf ~/.nixpkgs/darwin-configuration.nix && ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
         nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
 
-        if ! command -v darwin-rebuild ]]; then
+        if ! command -v darwin-rebuild; then
             ./result/bin/darwin-installer
             exec zsh
         fi
@@ -174,6 +175,7 @@ _nix() {
         sudo mv /etc/zshrc /etc/zshrc.old
         sudo chown $(id -un) /etc/nix/nix.conf
         darwin-rebuild switch
+        exec zsh
     else
         # NIXOS
         ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
@@ -183,6 +185,7 @@ _nix() {
     # Extra channels
     nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
     nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
+    nix-channel --update
     sudo nix-channel --update
 
     # Home manager
