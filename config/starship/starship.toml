@@ -9,7 +9,7 @@
 # prompt character
 
 # Commands may be slower in restricted environments, e.g. containers
-command_timeout = 1000
+command_timeout = 10000
 
 format = """
 $sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
@@ -101,7 +101,7 @@ disabled = false
 style = "blue"
 format = '([ ](#767676)[$symbol$context (\[$namespace\])]($style) )'
 detect_extensions = []
-detect_files = ['Dockerfile', 'docker-compose.yaml']
+detect_files = ['Dockerfile', 'docker-compose.yaml', 'Chart.yaml']
 detect_folders = ['*helm*']
 
 [golang]
