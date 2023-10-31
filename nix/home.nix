@@ -56,12 +56,9 @@ in {
   # Packages
 
   home.packages = with pkgs; [
-    #commitizen
-    #flake8
-    #pylint
-
     # Local tools
     act
+    age
     ansible
     ansible-lint
     asdf-vm
@@ -71,25 +68,28 @@ in {
     black
     # checkov
     colordiff
+    commitizen
     conftest
     doctl
     gh
     glow
     go-task
     hadolint
-    # isort
     just
     lazygit
     nerdfonts
     packer
     pre-commit
+    ruff
     s3cmd
+    sops
     thefuck
     trivy
     vault
     vaultenv
     watch
     yamllint
+    yq-go
 
     # Kubernetes
     datree
