@@ -109,8 +109,10 @@
 
     # Custom
     taps = [
-      "alexnabokikh/tfsort" #tfsort
+      "alexnabokikh/tfsort"
+      "common-fate/granted"
       "jorgelbg/tap" #pinentry-touchid
+      "iann0036/iamlive/iamlive"
     ];
   };
 
