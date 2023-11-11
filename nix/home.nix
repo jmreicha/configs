@@ -49,6 +49,7 @@ in {
 
   # Environment
 
+  fonts.fontconfig.enable = true;
   home.sessionVariables = {
     NIX = "true";
   };
@@ -77,7 +78,7 @@ in {
     hadolint
     just
     lazygit
-    nerdfonts
+    (nerdfonts.override { fonts = [ "Meslo" ]; })
     packer
     pre-commit
     ruff
@@ -194,7 +195,7 @@ in {
     dotDir = ".config/zsh";
     enable = true;
     enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     initExtra = "source $HOME/.zshrc";
     oh-my-zsh.enable = true;
 

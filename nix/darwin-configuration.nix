@@ -75,6 +75,7 @@
 
     # TUI
     brews = [
+      "1password-cli"
       "checkov"
       "packer"
       "cdk8s"
