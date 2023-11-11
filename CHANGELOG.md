@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/jmreicha/configs/compare/v0.2.2...v0.3.0) (2023-11-11)
+
+
+### Features
+
+* fonts and pop os config ([af3ca3c](https://github.com/jmreicha/configs/commit/af3ca3c31f96438b82ea37b7e2e8b9666a7e81c4))
+
+
+
 ## [0.2.2](https://github.com/jmreicha/configs/compare/v0.2.1...v0.2.2) (2023-06-03)
 
 
