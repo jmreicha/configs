@@ -106,6 +106,19 @@ _bsd() {
     echo
 }
 
+_fonts() {
+    $sudo apt install fontconfig
+    cd ~
+    wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
+    mkdir -p .local/share/fonts
+    unzip Meslo.zip -d .local/share/fonts
+    cd .local/share/fonts
+    rm *Windows*
+    cd ~
+    rm Meslo.zip
+    fc-cache -fv
+}
+
 _debian() {
     $sudo apt update -y
     if [[ $UPDATE ]]; then
@@ -117,6 +130,10 @@ _debian() {
     $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
+
+    # Install fonts for extra glyphs
+    _fonts
+
     # Set the default locale otherwise the installer stops to configure it
     $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
     $sudo locale-gen
@@ -206,6 +223,9 @@ _ubuntu() {
     $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
+
+    # Install fonts for extra glyphs
+    _fonts
 }
 
 install() {
@@ -216,6 +236,8 @@ install() {
     elif grep ID=debian /etc/os-release; then
         _debian
     elif grep ID=ubuntu /etc/os-release; then
+        _ubuntu
+    elif grep ID=pop /etc/os-release; then
         _ubuntu
     elif grep ID=alpine /etc/os-release; then
         _alpine
