@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/jmreicha/configs/compare/v0.3.1...v0.3.2) (2023-11-11)
+
+
+### Bug Fixes
+
+* limit nerd font install to speed up build times, deprecations ([4710a4d](https://github.com/jmreicha/configs/commit/4710a4d6afb5c07c25a4d5281f28e01692057400))
+
+
+
 ## [0.3.1](https://github.com/jmreicha/configs/compare/v0.3.0...v0.3.1) (2023-11-11)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * remove extra npm config and virtualenvwrapper package ([901b371](https://github.com/jmreicha/configs/commit/901b37188a11d946bba61cf30cc60a24994dce52))
-
-
-
-# [0.2.0](https://github.com/jmreicha/configs/compare/v0.1.0...v0.2.0) (2023-05-14)
-
-
-### Features
-
-* more system wide packages ([880e113](https://github.com/jmreicha/configs/commit/880e113a993645bfd46366c6afe6a22c3d19e340))
 
 
 
