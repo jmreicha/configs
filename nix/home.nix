@@ -93,12 +93,14 @@ in {
     yq-go
 
     # Kubernetes
+    argocd
     datree
     eksctl
     k9s
     krew
     kube-bench
     kube-linter
+    kubecolor
     kubeconform
     kubectx
     kubernetes-helm
@@ -106,12 +108,11 @@ in {
     kubeval
     pluto
     popeye
-    argocd
+    telepresence2
     #aws-iam-authenticator
     #fluxctl
     #kind
     #kubeaudit
-    #kubecolor
     #kubectl
     #kubegrunt
     #kustomize
