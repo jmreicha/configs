@@ -76,6 +76,11 @@
     # TUI
     brews = [
       "1password-cli"
+      "bats-assert"
+      "bats-core"
+      "bats-detik"
+      "bats-file"
+      "bats-support"
       "checkov"
       "packer"
       "cdk8s"
@@ -111,6 +116,7 @@
     # Custom
     taps = [
       "alexnabokikh/tfsort"
+      "bats-core/bats-core"
       "common-fate/granted"
       "jorgelbg/tap" #pinentry-touchid
       "iann0036/iamlive/iamlive"
