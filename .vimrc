@@ -1,40 +1,22 @@
 "" Plugins
 
+set nocompatible
+
 call plug#begin('~/.vim/plugged')
 
-" Terraform
-Plug 'hashivim/vim-terraform'
-" JSON
-Plug 'elzr/vim-json'
-" Ansible
-Plug 'pearofducks/ansible-vim'
+" Language detection and support
+Plug 'sheerun/vim-polyglot'
 " Whitespace
 Plug 'ntpeters/vim-better-whitespace'
 " Syntax and linting
 Plug 'dense-analysis/ale'
 Plug 'z0mbix/vim-shfmt'
-" Dockerfile
-Plug 'ekalinin/Dockerfile.vim'
-" Jsonnet
-Plug 'google/vim-jsonnet'
-" Typescript
-Plug 'leafgarland/typescript-vim'
-" Yaml
-Plug 'mrk21/yaml-vim'
 " Colors
 Plug 'lilydjwg/colorizer'
-" PowerShell
-Plug 'PProvost/vim-ps1'
-" Rego
-Plug 'tsandall/vim-rego'
-" Nix
-Plug 'LnL7/vim-nix'
 " Git integration
 Plug 'tpope/vim-fugitive'
 " Show Git file changes
 Plug 'airblade/vim-gitgutter'
-" GO tools
-Plug 'fatih/vim-go'
 " Color schemes
 Plug 'flazz/vim-colorschemes'
 Plug 'danilo-augusto/vim-afterglow'
@@ -51,7 +33,6 @@ Plug 'othree/yajs.vim'
 Plug 'wellle/targets.vim'
 " Markdown tools
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 " Surround tools
 Plug 'tpope/vim-surround'
 " Comment tools
@@ -187,10 +168,11 @@ let g:shfmt_fmt_on_save = 1
 
 "" ALE
 
-" Don't use ale lsps
+" Use CoC in favor of ale lsps
 let g:ale_disable_lsp = 1
 
 " Look and feel
+let g:ale_virtualtext_cursor = 0
 let g:ale_echo_msg_format = '[%linter%][%severity%](%code%) %s'
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
@@ -220,6 +202,7 @@ let b:ale_fixers = {
 " Ignore lines over 80 chars
 let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_sh_bashate_options = '-i E006'
+let g:ale_yaml_yamllint_options='-d "{extends: relaxed, rules: {line-length: disable}}"'
 
 " Switch this setting to 0 to disable fixers
 let g:ale_fix_on_save = 1

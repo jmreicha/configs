@@ -4,3 +4,9 @@
 
 cloud_init_debian.yaml
 cloud_init_arch.yaml
+
+# Nix
+.envrc
+**/*devenv*
+!devenv.lock
+**result

@@ -4,9 +4,9 @@
 # configurations.
 
 # TODO
- # Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
- # Make the install() function more DRY - reusable approach to passing different options for OSes
- # Caching for packages
+# Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
+# Make the install() function more DRY - reusable approach to passing different options for OSes
+# Caching for packages
 
 set -eou pipefail
 
@@ -94,7 +94,7 @@ _arch() {
     if [[ $EUID != 0 ]]; then
         echo "Installing extras: $ARCH_EXTRAS"
         yay_cmd="yay -S --needed --noconfirm"
-        if ! yay -V &> /dev/null; then install_yay; fi
+        if ! yay -V &>/dev/null; then install_yay; fi
         # Update package list
         $yay_cmd $ARCH_EXTRAS
     fi
@@ -104,6 +104,21 @@ _arch() {
 
 _bsd() {
     echo
+}
+
+_fonts() {
+    if [[ ! -d $HOME/.local/share/fonts ]]; then
+        $sudo apt install fontconfig
+        cd ~
+        wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
+        mkdir -p .local/share/fonts
+        unzip Meslo.zip -d .local/share/fonts
+        cd .local/share/fonts
+        rm *Windows*
+        cd ~
+        rm Meslo.zip
+        fc-cache -fv
+    fi
 }
 
 _debian() {
@@ -117,6 +132,10 @@ _debian() {
     $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
+
+    # Install fonts for extra glyphs
+    _fonts
+
     # Set the default locale otherwise the installer stops to configure it
     $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
     $sudo locale-gen
@@ -138,8 +157,61 @@ _macos() {
     pip3 install --user --no-warn-script-location $PY_TOOLS
 }
 
-_nixos() {
-    echo
+_nix() {
+    # Link configs
+    rm -rf ~/.zshrc && ln -s ~/configs/.zshrc ~/.zshrc
+    rm -rf ~/.config/starship.toml && ln -s ~/configs/config/starship/starship.toml ~/.config/starship.toml
+
+    # Vim
+    curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    rm -rf ~/.vimrc && ln -s ~/configs/.vimrc ~/.vimrc
+
+    # OSX
+    if [[ "$(uname -s)" = "Darwin" ]]; then
+        # This step needs sudo
+        if ! command -v nix-build; then
+            # TODO: run the original script to update the config file needed to map /run dir
+            #curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
+            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sudo sh -s -- install
+        fi
+
+        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+            set +u
+            . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+            set -u
+        fi
+
+        mkdir -p ~/.nixpkgs && rm -rf ~/.nixpkgs/darwin-configuration.nix && ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
+        nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+
+        if ! command -v darwin-rebuild; then
+            ./result/bin/darwin-installer
+            exec zsh
+        fi
+
+        # Either move or chown config files created by nix installer
+        sudo mv /etc/bashrc /etc/bashrc.old
+        sudo mv /etc/zshrc /etc/zshrc.old
+        sudo chown $(id -un) /etc/nix/nix.conf
+        darwin-rebuild switch
+        exec zsh
+    else
+        # NIXOS
+        ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
+        nixos-rebuild switch
+    fi
+
+    # Extra channels
+    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+    nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
+    nix-channel --update
+    sudo nix-channel --update
+
+    # Home manager
+    nix-shell '<home-manager>' -A install
+    # mkdir -p ~/.config/nixpkgs && ln -s ~/configs/nix/home.nix ~/.config/nixpkgs/home.nix
+    mkdir -p ~/.config/home-manager && rm -rf ~/.config/home-manager/home.nix && ln -s ~/configs/nix/home.nix ~/.config/home-manager/home.nix
+    home-manager switch
 }
 
 _ubuntu() {
@@ -153,20 +225,29 @@ _ubuntu() {
     $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
     echo "Installing Python tools: $PY_TOOLS"
     pip install $PY_TOOLS
+
+    # Install fonts for extra glyphs
+    _fonts
 }
 
 install() {
     set_env
+    mkdir -p ~/.config
     if grep ID=arch /etc/os-release; then
         _arch
     elif grep ID=debian /etc/os-release; then
         _debian
     elif grep ID=ubuntu /etc/os-release; then
         _ubuntu
+    elif grep ID=pop /etc/os-release; then
+        _ubuntu
     elif grep ID=alpine /etc/os-release; then
         _alpine
-    elif  [[ "$(uname -s)" = "Darwin" ]]; then
-        _macos
+    elif [[ "$(uname -s)" = "Darwin" ]]; then
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        #_macos
+        _nix
+        return
     else
         echo "Unkown OS"
         exit 0
@@ -193,7 +274,7 @@ install_yay() {
 }
 
 install_awscli() {
-    if ! aws --version &> /dev/null; then
+    if ! aws --version &>/dev/null; then
         echo "Installing AWS CLI"
         # Grab the newest version by default
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -232,6 +313,11 @@ install_docker_compose() {
 configure() {
     # git pull
     echo "Configuring environment"
+
+    # TODO: Create extra directories if they don't exist
+    mkdir -p "$HOME/.terragrunt/plugins"
+    mkdir -p "$HOME/.aws"
+    mkdir -p "$HOME/git"
 
     set_env_paths
 
@@ -300,28 +386,29 @@ main() {
     fi
 
     case $option in
-        --install)
-            install
-            ;;
-        --configure)
-            configure
-            ;;
-        --update)
-            UPDATE=true
-            install
-            ;;
-        --all)
-            install
-            configure
-            # Change the shell as the last step because it is interactive
-            switch_shell
-            ;;
-        --extras)
-            # TODO: install extras separately to speed up base installs
-            ;;
-        *)
-            echo "'$option' not a recognized option"
-            exit 1
+    --install)
+        install
+        ;;
+    --configure)
+        configure
+        ;;
+    --update)
+        UPDATE=true
+        install
+        ;;
+    --all)
+        install
+        configure
+        # Change the shell as the last step because it is interactive
+        switch_shell
+        ;;
+    --extras)
+        # TODO: install extras separately to speed up base installs
+        ;;
+    *)
+        echo "'$option' not a recognized option"
+        exit 1
+        ;;
     esac
 }
 
