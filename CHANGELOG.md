@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/jmreicha/configs/compare/v0.3.3...v0.4.0) (2024-09-02)
+
+
+### Features
+
+* brewfile ([656c3a0](https://github.com/jmreicha/configs/commit/656c3a05d652387480a011b0976b4e4653aaf58a))
+
+
+
 ## [0.3.3](https://github.com/jmreicha/configs/compare/v0.3.2...v0.3.3) (2023-12-01)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * fonts and pop os config ([af3ca3c](https://github.com/jmreicha/configs/commit/af3ca3c31f96438b82ea37b7e2e8b9666a7e81c4))
-
-
-
-## [0.2.2](https://github.com/jmreicha/configs/compare/v0.2.1...v0.2.2) (2023-06-03)
-
-
-### Bug Fixes
-
-* better handling for disk monitor ([6554e19](https://github.com/jmreicha/configs/commit/6554e19f533601e21e1f45647069851b5fffef67))
 
 
 
