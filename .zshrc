@@ -138,6 +138,10 @@ alias -s txt=$EDITOR
 # Exports
 #########
 
+# Python
+export PYTHON_VENV_NAME=".venv"
+export PYTHON_AUTO_VRUN=true
+
 # OpenAI
 export OPENAI_API_KEY=
 
@@ -239,28 +243,6 @@ export PATH="$HOME/bin:$PATH"
 # Bin
 export PATH="/usr/local/bin:$PATH"
 
-########
-# Python
-########
-
-# Pyenv pip
-# export PATH="$HOME/.local/bin:$PATH"
-
-# Pyenv
-#export PATH="$HOME/.pyenv/bin:$PATH"
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-
-# Virtualenvwrapper
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/projects
-
-# virtualenv-burrito
-if [ -f $HOME/.venvburrito/startup.sh ]; then
-    . $HOME/.venvburrito/startup.sh
-fi
-
 #############
 # OS Specific
 #############
@@ -282,10 +264,6 @@ if [[ $(uname) == "Darwin" ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
     # tgenv
     export PATH="$HOME/.tgenv/bin:$PATH"
-    # Virtualenvwrapper
-    # export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-    # export VIRTUALENVWRAPPER_VIRTUALENV="$HOME/Library/Python/3.9/bin/virtualenv"
-    # source "$HOME/Library/Python/3.9/bin/virtualenvwrapper.sh"
 
     # Export extra secrets as environment variables
     # export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
@@ -314,12 +292,6 @@ if [[ $(uname) == "Linux" ]]; then
         export AWS_VAULT_BACKEND="pass"
     fi
 
-    # Python3
-    #export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-    export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
-    #source ~/.local/bin/virtualenvwrapper.sh
-
     # Retrieve a secret from pgp pass backend
     get_secret() {
         pass show "$1"
@@ -331,7 +303,7 @@ if [[ $(uname) == "Linux" ]]; then
     # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
-plugins+=(zsh-autosuggestions zsh-syntax-highlighting virtualenvwrapper)
+plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
 
 #####################
 # Misc Configurations
