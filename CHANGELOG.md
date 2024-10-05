@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/jmreicha/configs/compare/v0.4.0...v0.5.0) (2024-10-05)
+
+
+### Features
+
+* **zshrc:** remove virtualenvwrapper support, use omz python ([320fb1a](https://github.com/jmreicha/configs/commit/320fb1a79408d8bc14800fa824014ee943aa4487))
+
+
+
 # [0.4.0](https://github.com/jmreicha/configs/compare/v0.3.3...v0.4.0) (2024-09-02)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * make font install smarter ([686c8f7](https://github.com/jmreicha/configs/commit/686c8f7540f9b56e7a4ebcd5cd9e73b1b27dac4a))
-
-
-
-# [0.3.0](https://github.com/jmreicha/configs/compare/v0.2.2...v0.3.0) (2023-11-11)
-
-
-### Features
-
-* fonts and pop os config ([af3ca3c](https://github.com/jmreicha/configs/commit/af3ca3c31f96438b82ea37b7e2e8b9666a7e81c4))
 
 
 
