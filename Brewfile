@@ -41,6 +41,7 @@ brew "turbot/tab/steampipe"
 brew "uv"
 brew "vim"
 brew "wget"
+brew "ymtdzzz/tap/otel-tui"
 brew "yq"
 brew "zoxide"
 
