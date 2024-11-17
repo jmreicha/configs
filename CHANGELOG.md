@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/jmreicha/configs/compare/v0.5.0...v0.5.1) (2024-11-17)
+
+
+### Bug Fixes
+
+* syntax ([32c001f](https://github.com/jmreicha/configs/commit/32c001f9605758bdc06e708c006ce23b47f1645b))
+
+
+
 # [0.5.0](https://github.com/jmreicha/configs/compare/v0.4.0...v0.5.0) (2024-10-05)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * limit nerd font install to speed up build times, deprecations ([4710a4d](https://github.com/jmreicha/configs/commit/4710a4d6afb5c07c25a4d5281f28e01692057400))
-
-
-
-## [0.3.1](https://github.com/jmreicha/configs/compare/v0.3.0...v0.3.1) (2023-11-11)
-
-
-### Bug Fixes
-
-* make font install smarter ([686c8f7](https://github.com/jmreicha/configs/commit/686c8f7540f9b56e7a4ebcd5cd9e73b1b27dac4a))
 
 
 
