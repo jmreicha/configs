@@ -242,7 +242,7 @@ install() {
     elif grep ID=alpine /etc/os-release >/dev/null 2>&1; then
         _alpine
     elif [[ "$(uname -s)" = "Darwin" ]]; then
-        sudo softwareupdate --install-rosetta
+        sudo softwareupdate --install-rosetta --agree-to-license
         PATH=$PATH:/opt/homebrew/bin
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         _macos
