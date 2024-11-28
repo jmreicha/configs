@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/jmreicha/configs/compare/v0.5.1...v0.5.2) (2024-11-28)
+
+
+### Bug Fixes
+
+* **install:** automatically agree to license ([943c7c1](https://github.com/jmreicha/configs/commit/943c7c1d24300476d9f59837b49f9de099557e29))
+
+
+
 ## [0.5.1](https://github.com/jmreicha/configs/compare/v0.5.0...v0.5.1) (2024-11-17)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * spacing issue between prompt arrows ([6dd5355](https://github.com/jmreicha/configs/commit/6dd5355b0bd0462b6a493203ef48f5692ff9bef3))
-
-
-
-## [0.3.2](https://github.com/jmreicha/configs/compare/v0.3.1...v0.3.2) (2023-11-11)
-
-
-### Bug Fixes
-
-* limit nerd font install to speed up build times, deprecations ([4710a4d](https://github.com/jmreicha/configs/commit/4710a4d6afb5c07c25a4d5281f28e01692057400))
 
 
 
