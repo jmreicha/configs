@@ -33,11 +33,32 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
-plugins=(ansible aws git docker docker-compose vagrant golang jsontools
-    virtualenv pip kube-ps1 terraform python kubectl history
-    fd fzf fancy-ctrl-z extract nvm)
+plugins=(
+  ansible
+  aws
+  git
+  docker
+  docker-compose
+  vagrant
+  golang
+  jsontools
+  virtualenv
+  pip
+  kube-ps1
+  terraform
+  python
+  kubectl
+  history
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  fzf
+  fancy-ctrl-z
+  extract
+  nvm
+  uv
+)
 
-# Load here to be able to source extra plugins and configurations
+# Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
 source $ZSH/oh-my-zsh.sh
 
 # Unlimited history
@@ -72,13 +93,6 @@ alias zshrc="vim ~/.zshrc"
 alias zz="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias diff="colordiff -u"
-alias github="cd ~/github.com"
-alias healthline="cd ~/github.com/healthline"
-alias redventures="cd ~/github.com/redventures"
-alias live="cd ~/github.com/healthline/infrastructure-live"
-alias modules="cd ~/github.com/healthline/infrastructure-modules"
-alias sandbox="cd ~/github.com/healthline/infrastructure-live-sandbox"
-alias diff="colordiff"
 alias python="python3"
 # alias pip="pip3"
 # Better cat
@@ -120,11 +134,11 @@ alias av="aws-vault"
 alias ao="aws-okta"
 
 # Exa
-alias ls='exa -a'
-alias ll='exa -lbFa --git --header'
-alias l='exa -lbGF --git'
-alias la='exa -lbhHigmuSa --time-style=long-iso --git --color-scale'
-alias lt='exa --tree --level=2'
+alias ls='eza -a'
+alias ll='eza --group --header --group-directories-first --long'
+alias l='eza -lbGF --git'
+alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
+alias lt='eza --tree --level=2'
 
 # Open specific files types automatically
 alias -s tf=$EDITOR
@@ -303,7 +317,7 @@ if [[ $(uname) == "Linux" ]]; then
     # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
-plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
+# plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
 
 #####################
 # Misc Configurations
@@ -368,7 +382,3 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 # Misc
 eval $(thefuck --alias f -y)
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/josh.reichardt/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

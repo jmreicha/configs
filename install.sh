@@ -16,7 +16,6 @@ COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vi
 DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
 LINUX_TOOLS="pass tmux zsh"
 NODE_TOOLS="bash-language-server fixjson"
-OSX_TOOLS="hadolint fd findutils kubectl yq direnv bat shfmt"
 PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
 
 ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv-bin bat bat-extras \
@@ -146,15 +145,14 @@ _gentoo() {
 }
 
 _macos() {
+    brew analytics off
     brew update
     if [[ $UPDATE ]]; then
         brew upgrade
         return
     fi
-    echo "Installing tools: $COMMON_TOOLS $OSX_TOOLS"
-    brew install $COMMON_TOOLS $OSX_TOOLS
-    echo "Installing Python tools: $PY_TOOLS"
-    pip3 install --user --no-warn-script-location $PY_TOOLS
+    echo "Installing tools from Brewfile"
+    brew bundle install
 }
 
 _nix() {
@@ -233,20 +231,22 @@ _ubuntu() {
 install() {
     set_env
     mkdir -p ~/.config
-    if grep ID=arch /etc/os-release; then
+    if grep ID=arch /etc/os-release >/dev/null 2>&1; then
         _arch
-    elif grep ID=debian /etc/os-release; then
+    elif grep ID=debian /etc/os-release >/dev/null 2>&1; then
         _debian
-    elif grep ID=ubuntu /etc/os-release; then
+    elif grep ID=ubuntu /etc/os-release >/dev/null 2>&1; then
         _ubuntu
-    elif grep ID=pop /etc/os-release; then
+    elif grep ID=pop /etc/os-release >/dev/null 2>&1; then
         _ubuntu
-    elif grep ID=alpine /etc/os-release; then
+    elif grep ID=alpine /etc/os-release >/dev/null 2>&1; then
         _alpine
     elif [[ "$(uname -s)" = "Darwin" ]]; then
+        sudo softwareupdate --install-rosetta
+        PATH=$PATH:/opt/homebrew/bin
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        #_macos
-        _nix
+        _macos
+        #_nix
         return
     else
         echo "Unkown OS"
@@ -256,11 +256,11 @@ install() {
     # Install starship across all systems
     curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
-        install_nvm
-        install_awscli
-        echo "Finished installing packages and tools"
-    fi
+    #if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
+    #    install_nvm
+    #    install_awscli
+    #    echo "Finished installing packages and tools"
+    #fi
 }
 
 ### Non-packaged tools
@@ -317,7 +317,10 @@ configure() {
     # TODO: Create extra directories if they don't exist
     mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/.aws"
+    mkdir -p "$HOME/.ssh"
     mkdir -p "$HOME/git"
+    mkdir -p "$HOME/hack"
+    mkdir -p "$HOME/tmp"
 
     set_env_paths
 
@@ -326,20 +329,21 @@ configure() {
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
 
-    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
-    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k || true
+    ZSH_PATH=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+
+    rm -rf "${ZSH_PATH}/plugins/zsh-syntax-highlighting" || true && git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
+    rm -rf "${ZSH_PATH}/plugins/zsh-autosuggestions" || true && git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
 
     # Link configs
-    rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/.zshrc" "$HOME/.zshrc"
-    rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/.vimrc" "$HOME/.vimrc"
-    rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/.tmux.conf" "$HOME/.tmux.conf"
-    rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/config/starship/starship.toml" "$HOME/.config/starship.toml"
-    rm -rf "$HOME/.p10k.zsh" || true && ln -s "$INSTALLER_PATH/.p10k.zsh" "$HOME/.p10k.zsh"
+    rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/configs/.zshrc" "$HOME/.zshrc"
+    rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/configs/.vimrc" "$HOME/.vimrc"
+    rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/configs/.tmux.conf" "$HOME/.tmux.conf"
+    rm -rf "$HOME/.gitconfig" || true && ln -s "$INSTALLER_PATH/configs/.gitconfig" "$HOME/.gitconfig"
+    rm -rf "$HOME/.ssh/config" || true && ln -s "$INSTALLER_PATH/configs/config/ssh" "$HOME/.ssh/config"
+    rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
 
     # i3/wayland configurations
     # kitty configuration
-    # pylint configuration
 
     echo "Configuring Vim"
 
@@ -356,7 +360,8 @@ configure() {
 
     # Quick check if configs are linked
     ls -lah "$HOME"
-    echo "Done configuring environment"
+    echo "Done configuring environment."
+    echo "Open a new zsh shell to use new conifgs."
 }
 
 switch_shell() {

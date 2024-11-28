@@ -1,7 +1,7 @@
 [user]
-	email = josh.reichardt@gmail.com
-	name = Josh Reichardt
-    signingkey = 2AF2A2053D553C2FAE789DD6A9752A813F1EF110
+    email = josh.reichardt@gmail.com
+    name = Josh Reichardt
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICjYZD3N1Ej/1tA/pohuhJpm03Qv+yILLVdtr4uQDkW9
 
 [fetch]
 	prune = true
@@ -10,9 +10,12 @@
 	default = simple
 
 [gpg]
-	program = gpg2
+    format = ssh
+	; program = gpg2
 
-; Auto-sign all commits globally
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
 [commit]
 	gpgsign = true
 
