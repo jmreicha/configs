@@ -30,13 +30,16 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(
+    1password
     ansible
     aws
     docker
     docker-compose
+    doctl
     extract
     fancy-ctrl-z
     fzf
+    gh
     git
     golang
     history
@@ -48,7 +51,6 @@ plugins=(
     python
     terraform
     uv
-    vagrant
     virtualenv
     zsh-autosuggestions
     zsh-nvm
@@ -129,6 +131,8 @@ alias av="aws-vault"
 alias ao="aws-okta"
 
 # Eza
+alias ld='eza -lD'
+alias ldd='eza -laD'
 alias ls='eza -a'
 alias ll='eza --group --header --group-directories-first --long'
 alias l='eza -lbGF --git'
@@ -351,6 +355,12 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 # Shell startup
 ###############
 
+### Allow autocomplete for aliases
+setopt complete_aliases
+
+# 1password
+source $HOME/.config/op/plugins.sh
+
 # FZF (assume ripgrep is installed)
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
 export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
@@ -362,9 +372,6 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 # }
 
 # chpwd_functions=(eval_ondir $chpwd_functions)
-
-### Autocomplete
-autoload -U compinit && compinit
 
 # Starship
 eval "$(starship init zsh)"
