@@ -4,6 +4,7 @@
 ; port 2     - proxmox.thepracticalsysadmin.com - VM server
 ; port 3     - raspberrpi.thepracticalsysadmin.com - Hyperion
 ; port 4     - proxmox-01.thepracticalsysadmin.com - VM server
+; port 5     - proxmox-02.thepracticalsysadmin.com - VM server
 ; port 22-24 - Ubiquity APs
 
 hostname "procurve"
@@ -14,14 +15,14 @@ ip default-gateway 192.168.1.1
 snmp-server community "public" Unrestricted
 vlan 1
    name "DEFAULT_VLAN"
-   untagged 1-2,4-21
+   untagged 1-2,5-21
    ip address 192.168.1.3 255.255.255.0
    no untagged 3,22-24
    exit
 vlan 10
    name "Server"
    untagged 3
-   tagged 1-2,4
+   tagged 1-2,4-5
    no ip address
    exit
 vlan 20
@@ -42,12 +43,12 @@ vlan 40
    exit
 vlan 50
    name "Untrusted"
-   tagged 1-2,4
+   tagged 1-2,4-5
    no ip address
    exit
 vlan 60
    name "DMZ"
-   tagged 1-2,4
+   tagged 1-2,4-5
    no ip address
    exit
 ip dns domain-name "thepracticalsysadmin.com"
