@@ -153,6 +153,12 @@ _macos() {
     fi
     echo "Installing tools from Brewfile"
     brew bundle install
+
+    # AWS CLI
+    if ! command -v aws &>/dev/null; then
+        curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+        sudo installer -pkg AWSCLIV2.pkg -target /
+    fi
 }
 
 _nix() {
@@ -242,6 +248,7 @@ install() {
     elif grep ID=alpine /etc/os-release >/dev/null 2>&1; then
         _alpine
     elif [[ "$(uname -s)" = "Darwin" ]]; then
+        echo "Sudo password is required for installing rosetta and homebrew"
         sudo softwareupdate --install-rosetta --agree-to-license
         PATH=$PATH:/opt/homebrew/bin
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
