@@ -1,0 +1,65 @@
+; main settings
+
+[user]
+  email = josh.reichardt@gmail.com
+  name = Josh Reichardt
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICjYZD3N1Ej/1tA/pohuhJpm03Qv+yILLVdtr4uQDkW9
+
+[fetch]
+	prune = true
+
+[push]
+	default = simple
+
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+
+[mergetool "code"]
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
+;[credential]
+;    helper = osxkeychain
+
+; commit signing
+
+[gpg]
+  format = ssh
+	; program = gpg2
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+	gpgsign = true
+
+; better diffs
+
+[diff]
+	noprefix = true
+
+[core]
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  features = side-by-side line-numbers decorations
+  whitespace-error-style = 22 reverse
+  syntax-theme = Monokai Extended Bright
+
+[delta "decorations"]
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = none
+
+[delta "line-numbers"]
+  line-numbers-zero-style = black
+  line-numbers-left-style = black
+  line-numbers-right-style = black
+  line-numbers-minus-style = red
+  line-numbers-plus-style = green
