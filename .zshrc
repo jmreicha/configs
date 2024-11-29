@@ -30,28 +30,28 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(
-  ansible
-  aws
-  git
-  docker
-  docker-compose
-  vagrant
-  golang
-  jsontools
-  virtualenv
-  pip
-  kube-ps1
-  terraform
-  python
-  kubectl
-  history
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  fzf
-  fancy-ctrl-z
-  extract
-  nvm
-  uv
+    ansible
+    aws
+    docker
+    docker-compose
+    extract
+    fancy-ctrl-z
+    fzf
+    git
+    golang
+    history
+    jsontools
+    kube-ps1
+    kubectl
+    nvm
+    pip
+    python
+    terraform
+    uv
+    vagrant
+    virtualenv
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 # Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
@@ -90,8 +90,6 @@ alias zz="vim ~/.zshrc"
 alias v="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias python="python3"
-# alias pip="pip3"
-# alias ccat="bat --paging=never"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
 alias rg="rg --hidden -g '!.git/'"
@@ -129,7 +127,7 @@ alias tg="terragrunt"
 alias av="aws-vault"
 alias ao="aws-okta"
 
-# Exa
+# Eza
 alias ls='eza -a'
 alias ll='eza --group --header --group-directories-first --long'
 alias l='eza -lbGF --git'
@@ -206,9 +204,9 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+    export EDITOR='vim'
 else
-  export EDITOR='vim'
+    export EDITOR='vim'
 fi
 
 # Force the language environment to utf-8
@@ -241,12 +239,6 @@ dclean() {
     docker rm $(docker ps -aq --filter status=exited)
     docker rmi $(docker images -q --filter dangling=true)
     docker volume rm $(docker volume ls -qf dangling=true)
-}
-
-# list environment variables
-list_env() {
-  local var
-  var=$(printenv | cut -d= -f1 | fzf) && echo "$var=${(P)var}"
 }
 
 #######
@@ -369,10 +361,7 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 #   eval "`ondir \"$OLDPWD\" \"$PWD\"`"
 # }
 
-chpwd_functions=( eval_ondir $chpwd_functions )
-
-# To customize our prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# chpwd_functions=(eval_ondir $chpwd_functions)
 
 ### Autocomplete
 autoload -U compinit && compinit
@@ -382,7 +371,7 @@ eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
 # Misc
-eval $(thefuck --alias f -y)
+eval "$(thefuck --alias f -y)"
 # Goenv
 eval "$(goenv init -)"
 # Direnv
