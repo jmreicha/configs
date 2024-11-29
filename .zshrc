@@ -51,6 +51,7 @@ plugins=(
     vagrant
     virtualenv
     zsh-autosuggestions
+    zsh-nvm
     zsh-syntax-highlighting
 )
 
@@ -145,6 +146,9 @@ alias -s txt=$EDITOR
 #########
 # Exports
 #########
+
+# Node
+export NVM_COMPLETION=true
 
 # Python
 export PYTHON_VENV_NAME=".venv"
@@ -339,10 +343,6 @@ bindkey \^U backward-kill-line
 
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-
-# NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)

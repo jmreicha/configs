@@ -236,7 +236,8 @@ _ubuntu() {
 
 install() {
     set_env
-    mkdir -p ~/.config
+    mkdir -p "$HOME/.config"
+    mkdir -p "$HOME/.nvm"
     if grep ID=arch /etc/os-release >/dev/null 2>&1; then
         _arch
     elif grep ID=debian /etc/os-release >/dev/null 2>&1; then
@@ -254,6 +255,8 @@ install() {
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         _macos
         #_nix
+
+        # No need to run custom installs for below Linux systems
         return
     else
         echo "Unkown OS"
@@ -263,11 +266,11 @@ install() {
     # Install starship across all systems
     curl -sS https://starship.rs/install.sh | sh -s -- -y
 
-    #if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
-    #    install_nvm
-    #    install_awscli
-    #    echo "Finished installing packages and tools"
-    #fi
+    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
+        install_nvm
+        install_awscli
+        echo "Finished installing packages and tools"
+    fi
 }
 
 ### Non-packaged tools
@@ -321,7 +324,7 @@ configure() {
     # git pull
     echo "Configuring environment"
 
-    # TODO: Create extra directories if they don't exist
+    # Create extra directories if they don't exist
     mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/.aws"
     mkdir -p "$HOME/.ssh"
@@ -338,6 +341,7 @@ configure() {
 
     ZSH_PATH=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 
+    rm -rf "${ZSH_PATH}/plugins/zsh-nvm" || true && git clone --depth=1 https://github.com/lukechilds/zsh-nvm "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-nvm || true
     rm -rf "${ZSH_PATH}/plugins/zsh-syntax-highlighting" || true && git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
     rm -rf "${ZSH_PATH}/plugins/zsh-autosuggestions" || true && git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
 
@@ -351,6 +355,15 @@ configure() {
 
     # i3/wayland configurations
     # kitty configuration
+
+    # Disgusting hack to get node installed and available for vim to bootstrap
+    NVM_DIR="/tmp/.nvm"
+    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" || true
+    LATEST_TAG="$(builtin cd "$NVM_DIR" && git fetch --quiet --tags origin && git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))"
+    builtin cd "$NVM_DIR" && git checkout --quiet "${LATEST_TAG}"
+    source "$NVM_DIR/nvm.sh"
+    nvm install node
+    export PATH=$PATH:$NVM_DIR/versions/node/v23.3.0/bin/node
 
     echo "Configuring Vim"
 
@@ -367,8 +380,9 @@ configure() {
 
     # Quick check if configs are linked
     ls -lah "$HOME"
-    echo "Done configuring environment."
-    echo "Open a new zsh shell to use new conifgs."
+    rm -rf /tmp/.nvm
+
+    echo "Open a new zsh shell to finish configuration."
 }
 
 switch_shell() {
