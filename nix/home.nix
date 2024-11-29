@@ -64,7 +64,6 @@ in {
     ansible-lint
     asdf-vm
     aws-vault
-    awscli2
     bashate
     black
     # checkov
