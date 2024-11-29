@@ -7,10 +7,6 @@ if [[ -z "$NIX" ]]; then
     export ZSH=$HOME/.oh-my-zsh
 fi
 
-# Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
-# ZSH_THEME="josh-custom"
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
 
@@ -95,12 +91,12 @@ alias v="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias python="python3"
 # alias pip="pip3"
-# Better cat
 # alias ccat="bat --paging=never"
 alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
 alias e="exit"
 alias rg="rg --hidden -g '!.git/'"
 alias q="chatblade"
+alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
 
 # Docker
 alias d="docker"
@@ -156,6 +152,10 @@ alias -s txt=$EDITOR
 export PYTHON_VENV_NAME=".venv"
 export PYTHON_AUTO_VRUN=true
 
+# Aqua
+export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
+export AQUA_DISABLE_POLICY=true
+
 # OpenAI
 export OPENAI_API_KEY=
 
@@ -164,8 +164,13 @@ export GPG_TTY=$(tty)
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
 
 # GO
-export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$PATH:$GOROOT/bin:$GOPATH/bin
+
+# Goenv
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
 
 # Better terminal colors
 export TERM="xterm-256color"
@@ -296,8 +301,9 @@ if [[ $(uname) == "Linux" ]]; then
     if grep ID=debian /etc/os-release; then
         alias fd="fdfind --hidden"
         export PATH=$PATH:/$HOME/.local/bin
+    else
+        alias fd="fd --hidden"
     fi
-    alias fd="fd --hidden"
 
     # Credentials are stored in gpg/pass in non container envs
     if [[ $REMOTE_CONTAINERS = "true" ]]; then
@@ -339,11 +345,6 @@ bindkey \^U backward-kill-line
 # alias less='less -m -N -g -i -J --underline-special'
 # alias more='less'
 
-# kube-ps1 prompt comes after the plugin is enabled and extra config is loaded
-# PROMPT=$PROMPT'$(kube_ps1) '
-# KUBE_PS1_SYMBOL_ENABLE=false
-# KUBE_PS1_ENABLED=off
-
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
 
@@ -382,3 +383,7 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 # Misc
 eval $(thefuck --alias f -y)
+# Goenv
+eval "$(goenv init -)"
+# Direnv
+eval "$(direnv hook zsh)"
