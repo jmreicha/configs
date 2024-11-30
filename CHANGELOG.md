@@ -1,3 +1,12 @@
+## [0.5.4](https://github.com/jmreicha/configs/compare/v0.5.3...v0.5.4) (2024-11-30)
+
+
+### Bug Fixes
+
+* osx key repeat settings ([dc211bf](https://github.com/jmreicha/configs/commit/dc211bfc0cbf659c767615f1801207752e638874))
+
+
+
 ## [0.5.3](https://github.com/jmreicha/configs/compare/v0.5.2...v0.5.3) (2024-11-29)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * **zshrc:** remove virtualenvwrapper support, use omz python ([320fb1a](https://github.com/jmreicha/configs/commit/320fb1a79408d8bc14800fa824014ee943aa4487))
-
-
-
-# [0.4.0](https://github.com/jmreicha/configs/compare/v0.3.3...v0.4.0) (2024-09-02)
-
-
-### Features
-
-* brewfile ([656c3a0](https://github.com/jmreicha/configs/commit/656c3a05d652387480a011b0976b4e4653aaf58a))
 
 
 
