@@ -55,6 +55,7 @@ plugins=(
     zsh-autosuggestions
     zsh-nvm
     zsh-syntax-highlighting
+    zsh-you-should-use
 )
 
 # Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
