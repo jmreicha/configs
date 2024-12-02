@@ -88,6 +88,7 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Misc
 alias cat="bat --style=plain --paging=never"
+alias bat="bat --paging=never"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
