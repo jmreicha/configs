@@ -88,7 +88,7 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Misc
 alias cat="bat --style=plain --paging=never"
-alias bat="bat --paging=never"
+alias bat="bat --number"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
@@ -130,6 +130,10 @@ alias lt='eza --tree --level=2'
 # Exports
 #########
 
+# Bat
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export PAGER="/opt/homebrew/bin/bat"
+
 # Node
 export NVM_COMPLETION=true
 
@@ -165,9 +169,11 @@ export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
 export AWS_PAGER=""
-# export AWS_SESSION_TTL="12h"
 # export AWS_ASSUME_ROLE_TTL="1h"
-# export AWS_SESSION_TTL="12h" # healthline default session duration
+# export AWS_CSM_ENABLED=true
+# export AWS_CSM_PORT=31000
+# export AWS_CSM_HOST=127.0.0.1
+# export AWS_SESSION_TTL="12h"
 
 # Krew k8s package manager
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
@@ -299,12 +305,6 @@ bindkey \^U backward-kill-line
 # bindkey -M menuselect 'l' vi-forward-char
 # bindkey -M menuselect 'j' vi-down-line-or-history
 # bindkey -v '^?' backward-delete-char
-
-# Use highlight for better less/more colors
-# export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
-# export LESS=" -R"
-# alias less='less -m -N -g -i -J --underline-special'
-# alias more='less'
 
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
