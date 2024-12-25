@@ -3,23 +3,24 @@
 # The format layout for the prompt is as follows:
 
 # left side
-# fill
-# right prompt info
-# right prompt tools and versions
+# fill (expands to fill the remaining space between left and right prompts)
+# right side info
+# right side additional tools and versions
 # prompt character
 
 # Commands may be slower in restricted environments, e.g. containers
 command_timeout = 10000
 
-format = """
-$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
+format = """$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
 $fill\
 $jobs$status$cmd_duration\
 $nix_shell$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg-linux}${custom.loadavg-mac}${custom.disk-linux}${custom.disk-mac}$memory_usage$time$os
-$character
-"""
+$character"""
 
 # TODO: transient prompt released in v1.10.1
+
+# Additional padding between newlines
+add_newline = true
 
 [fill]
 symbol = " "
@@ -114,7 +115,7 @@ format = "([  ](#767676)[$symbol($version)]($style))"
 
 [python]
 symbol = " "
-format = '([  ](#767676)[${symbol}${pyenv_prefix}(${version} )([\($virtualenv\)](#306998))]($style))'
+format = '([  ](#767676)[${symbol}${pyenv_prefix}(${version})([\($virtualenv\)](#306998))]($style))'
 
 [aws]
 disabled = false
@@ -137,7 +138,7 @@ disabled = false
 threshold = -1
 symbol = ""
 style = "#5f8787"
-format = "([  ](#767676)[$ram_pct $symbol ]($style))"
+format = "([  ](#767676)[$ram_pct $symbol]($style))"
 
 [time]
 disabled = true
@@ -174,7 +175,7 @@ description = "Shows the currently active tgenv Terragrunt version"
 command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
-format = "([  ](#767676)[tg $output ]($style))"
+format = "([  ](#767676)[tg $output]($style))"
 
 [custom.terraform]
 description = "Shows the currently active tfenv Terraform version"
@@ -182,13 +183,13 @@ command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)
 extensions = ["tf"]
 files = ["terragrunt.hcl"]
 style = "#7b42bc"
-format = "([  ](#767676)[tf $output ]($style))"
+format = "([  ](#767676)[tf $output]($style))"
 
 [custom.disk-linux]
 description = "Show disk used"
 command = 'df -h --output=avail "$PWD" | tail -n 1'
 style = "#00af5f"
-format = "[  ](#767676)[$output  ]($style)"
+format = "[  ](#767676)[$output ]($style)"
 when = "true"
 os = "linux"
 
@@ -196,7 +197,7 @@ os = "linux"
 description = "Show % of disk used"
 command = "df -k | grep -E '/dev/disk(1|3)s(3|4)' | awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
-format = "[  ](#767676)[$output%  ]($style)"
+format = "[  ](#767676)[$output% ]($style)"
 when = "true"
 os = "macos"
 
@@ -204,7 +205,7 @@ os = "macos"
 description = "Show load average"
 command = "cat /proc/loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([  ](#767676)[$output  ]($style))"
+format = "([  ](#767676)[$output ]($style))"
 when = "true"
 os = "linux"
 
@@ -212,6 +213,6 @@ os = "linux"
 description = "Show load average"
 command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([  ](#767676)[$output  ]($style))"
+format = "([  ](#767676)[$output ]($style))"
 when = "true"
 os = "macos"
