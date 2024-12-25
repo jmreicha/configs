@@ -87,6 +87,7 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Misc
+alias gld="git log -p --ext-diff"
 alias cat="bat --style=plain --paging=never"
 alias bat="bat --number"
 alias diff="colordiff -u"
