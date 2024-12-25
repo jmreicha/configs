@@ -30,32 +30,36 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
 plugins=(
-  ansible
-  aws
-  git
-  docker
-  docker-compose
-  vagrant
-  golang
-  jsontools
-  virtualenv
-  pip
-  kube-ps1
-  terraform
-  python
-  kubectl
-  history
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  fzf
-  fancy-ctrl-z
-  extract
-  nvm
-  uv
+    1password
+    ansible
+    aws
+    docker
+    docker-compose
+    doctl
+    extract
+    fancy-ctrl-z
+    fzf
+    gh
+    git
+    golang
+    history
+    jsontools
+    kube-ps1
+    kubectl
+    nvm
+    pip
+    python
+    terraform
+    uv
+    virtualenv
+    zsh-autosuggestions
+    zsh-nvm
+    zsh-syntax-highlighting
+    zsh-you-should-use
 )
 
 # Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
-source $ZSH/oh-my-zsh.sh
+source "$ZSH"/oh-my-zsh.sh
 
 # Unlimited history
 HIST_STAMPS="mm/dd/yyyy"
@@ -83,42 +87,26 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Misc
-# alias cdr=$(git rev-parse --show-toplevel)
+alias cat="bat --style=plain --paging=never"
+alias bat="bat --number"
+alias diff="colordiff -u"
+alias e="exit"
+alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
+alias python="python3"
+alias q="chatblade"
+alias rg="rg --hidden -g '!.git/'"
+alias v="vim ~/.vimrc"
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias zz="vim ~/.zshrc"
-alias v="vim ~/.vimrc"
-alias diff="colordiff -u"
-alias python="python3"
-# alias pip="pip3"
-# alias ccat="bat --paging=never"
-alias ccat="highlight $1 --out-format xterm256 --force -s moria --no-trailing-nl"
-alias e="exit"
-alias rg="rg --hidden -g '!.git/'"
-alias q="chatblade"
-alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
 
 # Docker
 alias d="docker"
 alias dc="docker-compose"
-alias dm="docker-machine"
-alias dp="docker ps"
-alias di="docker images"
 
 # Kubernetes
-alias k="kubectl"
-alias kw="watch kubectl get pods"
-alias kgpa="kgp --all-namespaces"
-alias kgpaw="kgp -o wide --all-namespaces"
-alias kgn="kubectl get nodes -o wide"
-alias kdn="kubectl describe nodes"
-alias ktn="kubectl top nodes"
-alias ktp="kubectl top pods --all-namespaces"
-alias ktpa="k top pods --all-namespaces"
 alias kctx="kubectx"
 alias kns="kubens"
-alias kdump="kubectl get all --all-namespaces"
-alias klft="klf --tail 100"
 alias ktop="k9s -n all"
 
 # Terraform
@@ -129,24 +117,25 @@ alias tg="terragrunt"
 alias av="aws-vault"
 alias ao="aws-okta"
 
-# Exa
+# Eza
+alias ld='eza -lD'
+alias ldd='eza -laD'
 alias ls='eza -a'
 alias ll='eza --group --header --group-directories-first --long'
 alias l='eza -lbGF --git'
 alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
 alias lt='eza --tree --level=2'
 
-# Open specific files types automatically
-alias -s tf=$EDITOR
-alias -s tfvars=$EDITOR
-alias -s hcl=$EDITOR
-alias -s md=$EDITOR
-alias -s markdown=$EDITOR
-alias -s txt=$EDITOR
-
 #########
 # Exports
 #########
+
+# Bat
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export PAGER="/opt/homebrew/bin/bat"
+
+# Node
+export NVM_COMPLETION=true
 
 # Python
 export PYTHON_VENV_NAME=".venv"
@@ -180,15 +169,26 @@ export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
 export AWS_PAGER=""
-# export AWS_SESSION_TTL="12h"
 # export AWS_ASSUME_ROLE_TTL="1h"
-# export AWS_SESSION_TTL="12h" # healthline default session duration
+# export AWS_CSM_ENABLED=true
+# export AWS_CSM_PORT=31000
+# export AWS_CSM_HOST=127.0.0.1
+# export AWS_SESSION_TTL="12h"
 
-# Okta
-# AWS_OKTA_SESSION_CACHE_SINGLE_ITEM=true
+# Krew k8s package manager
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# Home user bin directory
+export PATH="$HOME/bin:$PATH"
+
+# Bin
+export PATH="/usr/local/bin:$PATH"
+
+# hstr
+export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
 
 # Export SSH key so it doesn't need to be passed in every time.
-export SSH_KEY_PATH="~/.ssh/id_rsa"
+export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 
 # Set the terraform/terragrunt cache in one place
 export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
@@ -206,9 +206,9 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+    export EDITOR='vim'
 else
-  export EDITOR='vim'
+    export EDITOR='vim'
 fi
 
 # Force the language environment to utf-8
@@ -219,48 +219,15 @@ export LC_ALL=en_US.UTF-8
 # Zoxide settings
 export _ZO_FZF_OPTS="--height 40%"
 
-# Compilation flags
-#export ARCHFLAGS="-arch x86_64"
-
-# Owner
-#export USER_NAME="YOUR NAME"
-
 ###########
 # Functions
 ###########
 
-aws-ssh() {
-    aws-vault exec $1 -- aws ssm start-session --target $2
-}
-
-describe-instances() {
-    aws-vault exec $1 -- aws ec2 describe-instances | jq -r ".Reservations[].Instances[] | [.InstanceId, .NetworkInterfaces[].PrivateIpAddress, (.Tags[]?|select(.Key==\"Name\")|.Value)]"
-}
-
 dclean() {
-    docker rm $(docker ps -aq --filter status=exited)
-    docker rmi $(docker images -q --filter dangling=true)
-    docker volume rm $(docker volume ls -qf dangling=true)
+    docker rm "$(docker ps -aq --filter status=exited)"
+    docker rmi "$(docker images -q --filter dangling=true)"
+    docker volume rm "$(docker volume ls -qf dangling=true)"
 }
-
-# list environment variables
-list_env() {
-  local var
-  var=$(printenv | cut -d= -f1 | fzf) && echo "$var=${(P)var}"
-}
-
-#######
-# Paths
-#######
-
-# Krew k8s package manager
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# Home user bin directory
-export PATH="$HOME/bin:$PATH"
-
-# Bin
-export PATH="/usr/local/bin:$PATH"
 
 #############
 # OS Specific
@@ -339,25 +306,18 @@ bindkey \^U backward-kill-line
 # bindkey -M menuselect 'j' vi-down-line-or-history
 # bindkey -v '^?' backward-delete-char
 
-# Use highlight for better less/more colors
-# export LESSOPEN="| $(which highlight) %s --out-format xterm256 -l --force -s moria --no-trailing-nl"
-# export LESS=" -R"
-# alias less='less -m -N -g -i -J --underline-special'
-# alias more='less'
-
-# hstr
-export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
-
-# NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
 
 ###############
 # Shell startup
 ###############
+
+### Allow autocomplete for aliases
+setopt complete_aliases
+
+# 1password
+source "$HOME"/.config/op/plugins.sh
 
 # FZF (assume ripgrep is installed)
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
@@ -369,20 +329,14 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 #   eval "`ondir \"$OLDPWD\" \"$PWD\"`"
 # }
 
-chpwd_functions=( eval_ondir $chpwd_functions )
-
-# To customize our prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-### Autocomplete
-autoload -U compinit && compinit
+# chpwd_functions=(eval_ondir $chpwd_functions)
 
 # Starship
 eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
 # Misc
-eval $(thefuck --alias f -y)
+eval "$(thefuck --alias f -y)"
 # Goenv
 eval "$(goenv init -)"
 # Direnv

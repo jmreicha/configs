@@ -180,18 +180,17 @@ highlight ALEErrorSign ctermbg=NONE ctermfg=red
 highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " Linters
-" let g:ale_linters = {'python': ['black', 'flake8', 'pycodestyle', 'pylint']}
 let g:ale_linters = {
     \ 'docker': ['hadolint'],
     \ 'go': ['golangci-lint'],
-    \ 'python': ['flake8', 'pylint'],
+    \ 'python': ['ruff'],
     \ 'yaml': ['yamllint']
     \ }
 
 " Fixers
 let b:ale_fixers = {
     \ 'json': ['fixjson'],
-    \ 'python': ['black', 'isort'],
+    \ 'python': ['ruff'],
     \ '*': ['remove_trailing_lines', 'trim_whitespace']
     \ }
 " let b:ale_fixers = {'python': ['isort']}
