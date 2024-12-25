@@ -27,6 +27,7 @@ symbol = " "
 
 [character]
 success_symbol = "[❯](green)"
+format = "\n$symbol "
 
 ### Left prompt
 
