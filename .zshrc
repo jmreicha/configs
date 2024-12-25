@@ -44,7 +44,6 @@ plugins=(
     golang
     history
     jsontools
-    kube-ps1
     kubectl
     nvm
     pip
@@ -90,16 +89,16 @@ setopt HIST_IGNORE_ALL_DUPS
 alias gld="git log -p --ext-diff"
 alias cat="bat --style=plain --paging=never"
 alias bat="bat --number"
+# Attempt to open vim to previous edit
+alias v='vim +'"'"'normal! g`"'"'"
+alias zz="vim ~/.zshrc"
+alias vv="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
 alias python="python3"
 alias q="chatblade"
 alias rg="rg --hidden -g '!.git/'"
-alias v="vim ~/.vimrc"
-alias vimrc="vim ~/.vimrc"
-alias zshrc="vim ~/.zshrc"
-alias zz="vim ~/.zshrc"
 
 # Docker
 alias d="docker"
@@ -256,6 +255,9 @@ if [[ $(uname) == "Darwin" ]]; then
     # export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
     # export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
 
+    # 1password
+    source "$HOME"/.config/op/plugins.sh
+
     plugins+=(osx)
 fi
 
@@ -316,9 +318,6 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 
 ### Allow autocomplete for aliases
 setopt complete_aliases
-
-# 1password
-source "$HOME"/.config/op/plugins.sh
 
 # FZF (assume ripgrep is installed)
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
