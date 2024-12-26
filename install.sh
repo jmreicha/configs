@@ -153,12 +153,21 @@ _macos() {
     fi
     echo "Installing tools from Brewfile"
     brew bundle install
+    brew update
     brew bundle install
 
     # AWS CLI
     if ! command -v aws &>/dev/null; then
+        echo "Installing AWS CLI"
         curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
         sudo installer -pkg AWSCLIV2.pkg -target /
+    fi
+
+    # Spotify
+    if ! [[ -d /Applications/Spotify.app ]]; then
+        echo "Installing and configuring Spotify"
+        brew install --cask spotify
+        bash <(curl -sSL https://spotx-official.github.io/run.sh) --blockupdates
     fi
 
     # vim key repeating settings https://vimforvscode.com/enable-key-repeat-vim
@@ -331,6 +340,7 @@ configure() {
     echo "Configuring environment"
 
     # Create extra directories if they don't exist
+    mkdir -p "$HOME/.config/ghostty"
     mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/.aws"
     mkdir -p "$HOME/.ssh"
@@ -362,6 +372,7 @@ configure() {
     rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/configs/.tmux.conf" "$HOME/.tmux.conf"
     rm -rf "$HOME/.gitconfig" || true && ln -s "$INSTALLER_PATH/configs/.gitconfig" "$HOME/.gitconfig"
     rm -rf "$HOME/.ssh/config" || true && ln -s "$INSTALLER_PATH/configs/config/ssh" "$HOME/.ssh/config"
+    rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
 
     # i3/wayland configurations
