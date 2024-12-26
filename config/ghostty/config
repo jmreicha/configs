@@ -1,0 +1,21 @@
+# Cursor
+cursor-color = green
+cursor-style = block
+shell-integration-features = no-cursor
+cursor-style-blink = true
+
+# Display
+# macos-titlebar-style = hidden
+theme = Afterglow
+fullscreen = true
+
+# Font
+font-size = 14
+
+# Misc
+keybind = global:cmd+s=toggle_quick_terminal
+quit-after-last-window-closed = false
+shell-integration = zsh
+macos-option-as-alt = false
+clipboard-read = allow
+clipboard-write = allow
