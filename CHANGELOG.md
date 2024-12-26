@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/jmreicha/configs/compare/v0.5.4...v0.6.0) (2024-12-26)
+
+
+### Features
+
+* brews, installer updates, starship formatting ([a2e5798](https://github.com/jmreicha/configs/commit/a2e5798f27a846615bf5a9123f026f16b2744d51))
+
+
+
 ## [0.5.4](https://github.com/jmreicha/configs/compare/v0.5.3...v0.5.4) (2024-11-30)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * syntax ([32c001f](https://github.com/jmreicha/configs/commit/32c001f9605758bdc06e708c006ce23b47f1645b))
-
-
-
-# [0.5.0](https://github.com/jmreicha/configs/compare/v0.4.0...v0.5.0) (2024-10-05)
-
-
-### Features
-
-* **zshrc:** remove virtualenvwrapper support, use omz python ([320fb1a](https://github.com/jmreicha/configs/commit/320fb1a79408d8bc14800fa824014ee943aa4487))
 
 
 
