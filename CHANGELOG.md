@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/jmreicha/configs/compare/v0.6.0...v0.7.0) (2024-12-26)
+
+
+### Features
+
+* ghostty config ([e1dcd35](https://github.com/jmreicha/configs/commit/e1dcd3566973ab80f8d2648d6f96d0e3865ce43c))
+
+
+
 # [0.6.0](https://github.com/jmreicha/configs/compare/v0.5.4...v0.6.0) (2024-12-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * **install:** automatically agree to license ([943c7c1](https://github.com/jmreicha/configs/commit/943c7c1d24300476d9f59837b49f9de099557e29))
-
-
-
-## [0.5.1](https://github.com/jmreicha/configs/compare/v0.5.0...v0.5.1) (2024-11-17)
-
-
-### Bug Fixes
-
-* syntax ([32c001f](https://github.com/jmreicha/configs/commit/32c001f9605758bdc06e708c006ce23b47f1645b))
 
 
 
