@@ -5,17 +5,26 @@ shell-integration-features = no-cursor
 cursor-style-blink = true
 
 # Display
-# macos-titlebar-style = hidden
-theme = Afterglow
+theme = ayu
 fullscreen = true
 
+# Tray icon
+macos-icon = custom-style
+macos-icon-ghost-color = dark green
+macos-icon-screen-color = black
+
 # Font
-font-size = 14
+font-size = 16
+
+# Keybindings
+keybind = global:cmd+s=toggle_quick_terminal
+keybind = command+left=previous_tab
+keybind = command+right=next_tab
 
 # Misc
-keybind = global:cmd+s=toggle_quick_terminal
 quit-after-last-window-closed = false
 shell-integration = zsh
 macos-option-as-alt = false
 clipboard-read = allow
 clipboard-write = allow
+copy-on-select = true
