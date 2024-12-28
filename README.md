@@ -1,13 +1,13 @@
 configs
 =======
 
-A repository for all my configs and dotfiles.  I also keep track of my preferred
+A repository for all my configs and dotfiles. I also keep track of my preferred
 command line productivity tools here.
 
-The easiest way to use this repo is to clone the rep and run the `install.sh`
+The easiest way to get started is to clone the repo and run the `install.sh`
 script. Check the following examples for various installation options.
 
-My current preferred system is `Nix` on Mac OS. To install and configure:
+To install and configure:
 
 ```bash
 cd configs
