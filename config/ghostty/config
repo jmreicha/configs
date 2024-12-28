@@ -5,7 +5,7 @@ shell-integration-features = no-cursor
 cursor-style-blink = true
 
 # Display
-theme = Afterglow
+# theme = Brogrammer
 fullscreen = true
 background-opacity = .7
 background-blur-radius = 20
@@ -16,6 +16,7 @@ macos-icon-ghost-color = dark green
 macos-icon-screen-color = black
 
 # Font
+font-family = MesloLGS Nerd Font Mono
 font-size = 16
 
 # Misc
@@ -30,3 +31,25 @@ copy-on-select = true
 keybind = global:cmd+s=toggle_quick_terminal
 keybind = command+left=previous_tab
 keybind = command+right=next_tab
+
+# Modified Tender colorscheme
+palette = 0=#282828
+palette = 1=#f43753
+palette = 2=#1dd361
+palette = 3=#e5b567
+palette = 4=#6c99bb
+palette = 5=#d3b987
+palette = 6=#73cef4
+palette = 7=#ffffff
+palette = 8=#505050
+palette = 9=#f43753
+palette = 10=#1dd361
+palette = 11=#e5b567
+palette = 12=#b3deef
+palette = 13=#d3b987
+palette = 14=#73cef4
+palette = 15=#ffffff
+background = #202020
+foreground = #ffffff
+selection-background = 404040
+selection-foreground = d0d0d0
