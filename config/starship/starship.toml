@@ -26,6 +26,7 @@ add_newline = true
 symbol = " "
 
 [character]
+vimcmd_symbol = "[normal ❯](#07FDF0)"
 success_symbol = "[❯](green)"
 format = "\n$symbol "
 
@@ -46,7 +47,7 @@ format = "[$user]($style)"
 disabled = true
 ssh_only = true
 style = "#d3b987"
-format = "[@$hostname]($style)[ ](#767676)"
+format = "[@$hostname]($style)[ ❯](#767676)"
 
 [directory]
 read_only = " "
@@ -63,7 +64,7 @@ format = "[ $path]($style)[$read_only]($read_only_style) "
 [git_branch]
 symbol = "  "
 style = "green"
-format = "[ ](#767676)[$symbol$branch]($style)"
+format = "[❯ ](#767676)[$symbol$branch]($style)"
 
 [git_status]
 stashed = "[*${count}](blue) "
@@ -87,48 +88,48 @@ format = "[$symbol$status]($style)"
 
 [cmd_duration]
 style = "#a8a8a8"
-format = "([  ](#767676)[$duration ]($style))"
+format = "([ ❮ ](#767676)[$duration ]($style))"
 
 ### Right prompt tools and versions
 
 [terraform]
 # We disable the native tf plugin because it is much slower than tfenv
 disabled = true
-format = "[  ](#767676)[tf $version]($style)"
+format = "[ ❮ ](#767676)[tf $version]($style)"
 detect_extensions = ["tf"]
 detect_files = ["terragrunt.hcl"]
 
 [kubernetes]
 disabled = false
 style = "blue"
-format = '([  ](#767676)[$symbol$context (\[$namespace\])]($style))'
+format = '([ ❮ ](#767676)[$symbol$context (\[$namespace\])]($style))'
 detect_extensions = []
 detect_files = ['Chart.yaml']
 detect_folders = ['*helm*']
 
 [golang]
 symbol = " "
-format = "([  ](#767676)[$symbol($version)]($style))"
+format = "([ ❮ ](#767676)[$symbol($version)]($style))"
 
 [nodejs]
 symbol = " "
-format = "([  ](#767676)[$symbol($version)]($style))"
+format = "([ ❮ ](#767676)[$symbol($version)]($style))"
 
 [python]
 symbol = " "
-format = '([  ](#767676)[${symbol}${pyenv_prefix}(${version})([\($virtualenv\)](#306998))]($style))'
+format = '([ ❮ ](#767676)[${symbol}${pyenv_prefix}(${version})([\($virtualenv\)](#306998))]($style))'
 
 [aws]
 disabled = false
 symbol = " "
-format = '([  ](#767676)[$symbol$profile(\[$duration\])]($style))'
+format = '([ ❮ ](#767676)[$symbol$profile(\[$duration\])]($style))'
 
 [conda]
 symbol = " "
 
 [docker_context]
 symbol = " "
-format = "([  ](#767676)[$symbol$context]($style))"
+format = "([ ❮ ](#767676)[$symbol$context]($style))"
 
 [nix_shell]
 symbol = " "
@@ -139,24 +140,23 @@ disabled = false
 threshold = -1
 symbol = " "
 style = "#5f8787"
-format = "([  ](#767676)[$ram_pct $symbol]($style))"
+format = "([ ❮ ](#767676)[$ram_pct $symbol]($style))"
 
 [time]
 disabled = true
-format = "([  ](#767676)[$time]($style))"
+format = "([ ❮ ](#767676)[$time]($style))"
 
 [shlvl]
 disabled = true
 
 [os]
 disabled = false
-format = "[  ](#767676)[$symbol]($style)"
+format = "[ ❮ ](#767676)[$symbol]($style)"
 
 [os.symbols]
 "Alpine" = ""
 "Arch" =  ""
 "CentOS" = ""
-#"CoreOS" = ""
 "Debian" = ""
 "Fedora" = ""
 "Gentoo" = ""
@@ -176,7 +176,7 @@ description = "Shows the currently active tgenv Terragrunt version"
 command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
-format = "([  ](#767676)[tg $output]($style))"
+format = "([ ❮ ](#767676)[tg $output]($style))"
 
 [custom.terraform]
 description = "Shows the currently active tfenv Terraform version"
@@ -184,13 +184,13 @@ command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)
 extensions = ["tf"]
 files = ["terragrunt.hcl"]
 style = "#7b42bc"
-format = "([  ](#767676)[tf $output]($style))"
+format = "([ ❮ ](#767676)[tf $output]($style))"
 
 [custom.disk-linux]
 description = "Show disk used"
 command = 'df -h --output=avail "$PWD" | tail -n 1'
 style = "#00af5f"
-format = "[  ](#767676)[$output  ]($style)"
+format = "[ ❮ ](#767676)[$output ]($style)"
 when = "true"
 os = "linux"
 
@@ -198,7 +198,7 @@ os = "linux"
 description = "Show % of disk used"
 command = "df -k | grep -E '/dev/disk(1|3)s(3|4)' | awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
-format = "[  ](#767676)[$output%  ]($style)"
+format = "[ ❮ ](#767676)[$output% ]($style)"
 when = "true"
 os = "macos"
 
@@ -206,7 +206,7 @@ os = "macos"
 description = "Show load average"
 command = "cat /proc/loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([  ](#767676)[$output  ]($style))"
+format = "([ ❮ ](#767676)[$output ]($style))"
 when = "true"
 os = "linux"
 
@@ -214,6 +214,6 @@ os = "linux"
 description = "Show load average"
 command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([  ](#767676)[$output  ]($style))"
+format = "([ ❮ ](#767676)[$output ]($style))"
 when = "true"
 os = "macos"

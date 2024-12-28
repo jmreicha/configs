@@ -50,6 +50,7 @@ plugins=(
     python
     terraform
     uv
+    vi-mode
     virtualenv
     zsh-autosuggestions
     zsh-nvm
@@ -92,7 +93,7 @@ alias bat="bat --number"
 # Attempt to open vim to previous edit
 alias v='vim +'"'"'normal! g`"'"'"
 alias zz="vim ~/.zshrc"
-alias vv="vim ~/.vimrc"
+# alias vv="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
@@ -115,7 +116,6 @@ alias tg="terragrunt"
 
 # AWS
 alias av="aws-vault"
-alias ao="aws-okta"
 
 # Eza
 alias ld='eza -lD'
