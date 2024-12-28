@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/jmreicha/configs/compare/v0.7.0...v0.8.0) (2024-12-28)
+
+
+### Features
+
+* port tender colorscheme ([5e584e6](https://github.com/jmreicha/configs/commit/5e584e615a8349d48fb1b16fc9b2cf0ecf3b3e50))
+
+
+
 # [0.7.0](https://github.com/jmreicha/configs/compare/v0.6.0...v0.7.0) (2024-12-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * sync linux zsh config back ([0529863](https://github.com/jmreicha/configs/commit/0529863d19999456178319c7fb401e816d1f5309))
-
-
-
-## [0.5.2](https://github.com/jmreicha/configs/compare/v0.5.1...v0.5.2) (2024-11-28)
-
-
-### Bug Fixes
-
-* **install:** automatically agree to license ([943c7c1](https://github.com/jmreicha/configs/commit/943c7c1d24300476d9f59837b49f9de099557e29))
 
 
 
