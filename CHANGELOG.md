@@ -1,3 +1,12 @@
+# [0.9.0](https://github.com/jmreicha/configs/compare/v0.8.0...v0.9.0) (2024-12-28)
+
+
+### Features
+
+* **starship:** vi mode, cleaner symbols ([1154f35](https://github.com/jmreicha/configs/commit/1154f35b397f34b0702d8f1096b2466871c7626f))
+
+
+
 # [0.8.0](https://github.com/jmreicha/configs/compare/v0.7.0...v0.8.0) (2024-12-28)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * osx key repeat settings ([dc211bf](https://github.com/jmreicha/configs/commit/dc211bfc0cbf659c767615f1801207752e638874))
-
-
-
-## [0.5.3](https://github.com/jmreicha/configs/compare/v0.5.2...v0.5.3) (2024-11-29)
-
-
-### Bug Fixes
-
-* sync linux zsh config back ([0529863](https://github.com/jmreicha/configs/commit/0529863d19999456178319c7fb401e816d1f5309))
 
 
 
