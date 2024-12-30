@@ -38,6 +38,7 @@ plugins=(
     doctl
     extract
     fancy-ctrl-z
+    fzf-tab
     fzf
     gh
     git
@@ -50,8 +51,8 @@ plugins=(
     python
     terraform
     uv
-    vi-mode
     virtualenv
+    zsh-vi-mode
     zsh-autosuggestions
     zsh-nvm
     zsh-syntax-highlighting
@@ -93,7 +94,7 @@ alias bat="bat --number"
 # Attempt to open vim to previous edit
 alias v='vim +'"'"'normal! g`"'"'"
 alias zz="vim ~/.zshrc"
-# alias vv="vim ~/.vimrc"
+alias vv="vim ~/.vimrc"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
@@ -302,13 +303,6 @@ fi
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
 
-# Use vim keys in tab complete menu
-# bindkey -M menuselect 'h' vi-backward-char
-# bindkey -M menuselect 'k' vi-up-line-or-history
-# bindkey -M menuselect 'l' vi-forward-char
-# bindkey -M menuselect 'j' vi-down-line-or-history
-# bindkey -v '^?' backward-delete-char
-
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
 
@@ -320,6 +314,7 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 setopt complete_aliases
 
 # FZF (assume ripgrep is installed)
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
 export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

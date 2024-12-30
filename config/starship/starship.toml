@@ -26,7 +26,7 @@ add_newline = true
 symbol = " "
 
 [character]
-vimcmd_symbol = "[normal ❯](#07FDF0)"
+vimcmd_symbol = "[NORMAL ❯](#73cef4)"
 success_symbol = "[❯](green)"
 format = "\n$symbol "
 
@@ -138,7 +138,7 @@ format = "[${symbol}nix ${state} ]($style)"
 [memory_usage]
 disabled = false
 threshold = -1
-symbol = " "
+symbol = ""
 style = "#5f8787"
 format = "([ ❮ ](#767676)[$ram_pct $symbol]($style))"
 
