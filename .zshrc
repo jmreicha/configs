@@ -70,19 +70,6 @@ SAVEHIST=$HISTSIZE
 # Ignore duplictates in history file
 setopt HIST_IGNORE_ALL_DUPS
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
 #########
 # Aliases
 #########
@@ -121,7 +108,7 @@ alias av="aws-vault"
 # Eza
 alias ld='eza -lD'
 alias ldd='eza -laD'
-alias ls='eza -a'
+alias ls='eza -a --icons'
 alias ll='eza --group --header --group-directories-first --long'
 alias l='eza -lbGF --git'
 alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
@@ -196,15 +183,6 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
 export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
-# Set up basic pager colors
-export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
-export LESS_TERMCAP_me=$'\E[0m'           # end mode
-export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
-export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
-export LESS_TERMCAP_ue=$'\E[0m'           # end underline
-export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
-
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
     export EDITOR='vim'
@@ -217,7 +195,7 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# Zoxide settings
+# Zoxide
 export _ZO_FZF_OPTS="--height 40%"
 
 ###########
@@ -252,10 +230,6 @@ if [[ $(uname) == "Darwin" ]]; then
     # tgenv
     export PATH="$HOME/.tgenv/bin:$PATH"
 
-    # Export extra secrets as environment variables
-    # export GITHUB_OAUTH_TOKEN="$(get_secret GITHUB_OAUTH_TOKEN)"
-    # export PAGERDUTY_TOKEN="$(get_secret pagerduty_token)"
-
     # 1password
     source "$HOME"/.config/op/plugins.sh
 
@@ -287,11 +261,6 @@ if [[ $(uname) == "Linux" ]]; then
     get_secret() {
         pass show "$1"
     }
-
-    # Export secrets as environment variables
-    # export NPM_TOKEN="$(get_secret tokens/npm)"
-    # export PAGERDUTY_TOKEN="$(get_secret tokens/pagerduty)"
-    # export GITHUB_TOKEN="$(get_secret tokens/github_oauth)"
 fi
 
 # plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
@@ -299,6 +268,12 @@ fi
 #####################
 # Misc Configurations
 #####################
+
+# disable zsh-vim-mode cursor
+ZVM_CURSOR_STYLE_ENABLED=false
+
+# Vi normal mode hotkey
+ZVM_VI_INSERT_ESCAPE_BINDKEY=";;"
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
@@ -310,7 +285,7 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 # Shell startup
 ###############
 
-### Allow autocomplete for aliases
+# Allow autocomplete for aliases
 setopt complete_aliases
 
 # FZF (assume ripgrep is installed)
