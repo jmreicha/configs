@@ -52,5 +52,5 @@ palette = 14=#73cef4
 palette = 15=#ffffff
 background = #202020
 foreground = #ffffff
-selection-background = 404040
-selection-foreground = d0d0d0
+selection-background = #404040
+selection-foreground = #d0d0d0
