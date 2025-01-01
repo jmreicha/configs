@@ -1,3 +1,12 @@
+## [0.9.1](https://github.com/jmreicha/configs/compare/v0.9.0...v0.9.1) (2025-01-01)
+
+
+### Bug Fixes
+
+* fzf and vi mode, custom zsh plugins, chatgpt cask ([cf8b2a2](https://github.com/jmreicha/configs/commit/cf8b2a2958218fd9ac23c127cfe42e58b4495653))
+
+
+
 # [0.9.0](https://github.com/jmreicha/configs/compare/v0.8.0...v0.9.0) (2024-12-28)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * brews, installer updates, starship formatting ([a2e5798](https://github.com/jmreicha/configs/commit/a2e5798f27a846615bf5a9123f026f16b2744d51))
-
-
-
-## [0.5.4](https://github.com/jmreicha/configs/compare/v0.5.3...v0.5.4) (2024-11-30)
-
-
-### Bug Fixes
-
-* osx key repeat settings ([dc211bf](https://github.com/jmreicha/configs/commit/dc211bfc0cbf659c767615f1801207752e638874))
 
 
 
