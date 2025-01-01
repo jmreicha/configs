@@ -355,8 +355,12 @@ configure() {
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
 
+    # Custom zsh plugins
+
     ZSH_PATH=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 
+    rm -rf "${ZSH_PATH}/plugins/fzf-tab" || true
+    git clone --depth=1 https://github.com/Aloxaf/fzf-tab "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/fzf-tab || true
     rm -rf "${ZSH_PATH}/plugins/zsh-you-should-use" || true
     git clone --depth=1 https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-you-should-use || true
     rm -rf "${ZSH_PATH}/plugins/zsh-nvm" || true
@@ -365,6 +369,8 @@ configure() {
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
     rm -rf "${ZSH_PATH}/plugins/zsh-autosuggestions" || true
     git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
+    rm -rf "${ZSH_PATH}/plugins/zsh-vi-mode" || true
+    git clone --depth=1 https://github.com/jeffreytse/zsh-vi-mode "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-vi-mode || true
 
     # Link configs
     rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/configs/.zshrc" "$HOME/.zshrc"

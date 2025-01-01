@@ -269,10 +269,9 @@ fi
 # Misc Configurations
 #####################
 
-# disable zsh-vim-mode cursor
+# zsh-vim-mode
 ZVM_CURSOR_STYLE_ENABLED=false
-
-# Vi normal mode hotkey
+ZVM_VI_HIGHLIGHT_BACKGROUND=#505050
 ZVM_VI_INSERT_ESCAPE_BINDKEY=";;"
 
 # Bash hotkey for end of line kill
@@ -289,10 +288,9 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 setopt complete_aliases
 
 # FZF (assume ripgrep is installed)
-zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
+zvm_after_init_commands+=('source <(fzf --zsh)')
 export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
 export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Ondir configuration
 # eval_ondir() {
@@ -301,13 +299,9 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 
 # chpwd_functions=(eval_ondir $chpwd_functions)
 
-# Starship
+# Init
 eval "$(starship init zsh)"
-# Zoxide
 eval "$(zoxide init zsh)"
-# Misc
 eval "$(thefuck --alias f -y)"
-# Goenv
 eval "$(goenv init -)"
-# Direnv
 eval "$(direnv hook zsh)"

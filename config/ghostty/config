@@ -5,10 +5,10 @@ shell-integration-features = no-cursor
 cursor-style-blink = true
 
 # Display
-# theme = Brogrammer
 fullscreen = true
 background-opacity = .7
 background-blur-radius = 20
+unfocused-split-opacity = .3
 
 # Tray icon
 macos-icon = custom-style
@@ -20,6 +20,7 @@ font-family = MesloLGS Nerd Font Mono
 font-size = 16
 
 # Misc
+window-save-state = always
 quick-terminal-screen = macos-menu-bar
 quit-after-last-window-closed = false
 macos-option-as-alt = false
