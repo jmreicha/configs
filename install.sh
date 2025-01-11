@@ -359,8 +359,6 @@ configure() {
 
     ZSH_PATH=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 
-    rm -rf "${ZSH_PATH}/plugins/fzf-tab" || true
-    git clone --depth=1 https://github.com/Aloxaf/fzf-tab "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/fzf-tab || true
     rm -rf "${ZSH_PATH}/plugins/zsh-you-should-use" || true
     git clone --depth=1 https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-you-should-use || true
     rm -rf "${ZSH_PATH}/plugins/zsh-nvm" || true

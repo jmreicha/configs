@@ -38,7 +38,6 @@ plugins=(
     doctl
     extract
     fancy-ctrl-z
-    fzf-tab
     fzf
     gh
     git
