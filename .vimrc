@@ -211,6 +211,10 @@ autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 
 "" Shortcuts
 
+" Beginning of line
+nnoremap gh ^
+" End of line
+nnoremap gl $
 " Split lines
 nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
 " FZF
