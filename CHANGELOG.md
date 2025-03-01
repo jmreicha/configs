@@ -1,3 +1,12 @@
+## [0.9.2](https://github.com/jmreicha/configs/compare/v0.9.1...v0.9.2) (2025-03-01)
+
+
+### Bug Fixes
+
+* copy on text selection ([9dd1a01](https://github.com/jmreicha/configs/commit/9dd1a01576760e63fb895a38ef0eb48f4f94bc16))
+
+
+
 ## [0.9.1](https://github.com/jmreicha/configs/compare/v0.9.0...v0.9.1) (2025-01-01)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * ghostty config ([e1dcd35](https://github.com/jmreicha/configs/commit/e1dcd3566973ab80f8d2648d6f96d0e3865ce43c))
-
-
-
-# [0.6.0](https://github.com/jmreicha/configs/compare/v0.5.4...v0.6.0) (2024-12-26)
-
-
-### Features
-
-* brews, installer updates, starship formatting ([a2e5798](https://github.com/jmreicha/configs/commit/a2e5798f27a846615bf5a9123f026f16b2744d51))
 
 
 
