@@ -19,14 +19,16 @@ macos-icon-screen-color = black
 font-family = MesloLGS Nerd Font Mono
 font-size = 16
 
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = clipboard
+
 # Misc
 window-save-state = always
 quick-terminal-screen = macos-menu-bar
 quit-after-last-window-closed = false
 macos-option-as-alt = false
-clipboard-read = allow
-clipboard-write = allow
-copy-on-select = true
 
 # Keybindings
 keybind = global:cmd+s=toggle_quick_terminal
