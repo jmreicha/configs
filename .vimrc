@@ -31,12 +31,15 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'othree/yajs.vim'
 " Hanldle more text objects
 Plug 'wellle/targets.vim'
+Plug 'terryma/vim-expand-region'
 " Markdown tools
 Plug 'godlygeek/tabular'
 " Surround tools
 Plug 'tpope/vim-surround'
 " Comment tools
 Plug 'tpope/vim-commentary'
+" Writing tools
+Plug 'junegunn/limelight.vim'
 " Repeat with plugins
 Plug 'tpope/vim-repeat'
 " Search highlighting
@@ -215,6 +218,10 @@ autocmd WinEnter * if &buftype ==# 'quickfix' && winnr('$') == 1 | quit | endif
 nnoremap gh ^
 " End of line
 nnoremap gl $
+" Go up
+nnoremap gk {
+" Go down
+nnoremap gj }
 " Split lines
 nnoremap S :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
 " FZF
