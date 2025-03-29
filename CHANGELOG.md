@@ -1,3 +1,12 @@
+# [0.10.0](https://github.com/jmreicha/configs/compare/v0.9.2...v0.10.0) (2025-03-29)
+
+
+### Features
+
+* **vim:** hotkeys for moving between paragraphs, plugins ([06024be](https://github.com/jmreicha/configs/commit/06024be4e1771f21ba54ec380448904f5fbb559d))
+
+
+
 ## [0.9.2](https://github.com/jmreicha/configs/compare/v0.9.1...v0.9.2) (2025-03-01)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * port tender colorscheme ([5e584e6](https://github.com/jmreicha/configs/commit/5e584e615a8349d48fb1b16fc9b2cf0ecf3b3e50))
-
-
-
-# [0.7.0](https://github.com/jmreicha/configs/compare/v0.6.0...v0.7.0) (2024-12-26)
-
-
-### Features
-
-* ghostty config ([e1dcd35](https://github.com/jmreicha/configs/commit/e1dcd3566973ab80f8d2648d6f96d0e3865ce43c))
 
 
 
