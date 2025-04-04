@@ -1,3 +1,12 @@
+# [0.11.0](https://github.com/jmreicha/configs/compare/v0.10.0...v0.11.0) (2025-04-04)
+
+
+### Features
+
+* replace nvm with fnm ([c1e403c](https://github.com/jmreicha/configs/commit/c1e403c90cea88efeb802ea06097d35ab06db3e0))
+
+
+
 # [0.10.0](https://github.com/jmreicha/configs/compare/v0.9.2...v0.10.0) (2025-03-29)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * **starship:** vi mode, cleaner symbols ([1154f35](https://github.com/jmreicha/configs/commit/1154f35b397f34b0702d8f1096b2466871c7626f))
-
-
-
-# [0.8.0](https://github.com/jmreicha/configs/compare/v0.7.0...v0.8.0) (2024-12-28)
-
-
-### Features
-
-* port tender colorscheme ([5e584e6](https://github.com/jmreicha/configs/commit/5e584e615a8349d48fb1b16fc9b2cf0ecf3b3e50))
 
 
 
