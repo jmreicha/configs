@@ -139,9 +139,6 @@ export OPENAI_API_KEY=
 export GPG_TTY=$(tty)
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
 
-# GO
-export PATH=$PATH:/usr/local/go/bin:$PATH:$GOROOT/bin:$GOPATH/bin
-
 # Goenv
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
@@ -272,6 +269,7 @@ fi
 ZVM_CURSOR_STYLE_ENABLED=false
 ZVM_VI_HIGHLIGHT_BACKGROUND=#505050
 ZVM_VI_INSERT_ESCAPE_BINDKEY=";;"
+ZVM_KEYTIMEOUT=0.03
 
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
@@ -304,3 +302,4 @@ eval "$(zoxide init zsh)"
 eval "$(thefuck --alias f -y)"
 eval "$(goenv init -)"
 eval "$(direnv hook zsh)"
+eval "$(fnm env --use-on-cd --shell zsh)"

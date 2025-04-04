@@ -24,7 +24,6 @@ ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv-bin bat bat-extra
 
 # DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat direnv"
 
-NVM_VERSION="v0.39.0"
 COMPOSE_VERSION="v2.0.1"
 
 set_env() {
@@ -250,7 +249,6 @@ _ubuntu() {
 install() {
     set_env
     mkdir -p "$HOME/.config"
-    mkdir -p "$HOME/.nvm"
     if grep ID=arch /etc/os-release >/dev/null 2>&1; then
         _arch
     elif grep ID=debian /etc/os-release >/dev/null 2>&1; then
@@ -278,11 +276,15 @@ install() {
         exit 0
     fi
 
+    # TODO: Golang
+    # goenv install
+    # goenv global 1.24
+    # go install -v golang.org/x/tools/gopls@latest
+
     # Install starship across all systems
     curl -sS https://starship.rs/install.sh | sh -s -- -y
 
     if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
-        install_nvm
         install_awscli
         echo "Finished installing packages and tools"
     fi
@@ -306,25 +308,6 @@ install_awscli() {
         unzip -qq awscliv2.zip
         $sudo ./aws/install
         rm -rf aws*
-    fi
-}
-
-install_nvm() {
-    if [[ ! -f $HOME/.nvm/nvm.sh ]]; then
-        echo "Installing NVM"
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
-        . "$HOME/.nvm/nvm.sh"
-        # We need to do some shenanigans to override the function to retrieve
-        # the correct architecture and point to a musl version of the nodejs
-        # binary when we are using Alpine
-        if grep ID=alpine /etc/os-release; then
-            nvm_get_arch() { nvm_echo "x64-musl"; }
-            export NVM_NODEJS_ORG_MIRROR=https://unofficial-builds.nodejs.org/download/release
-        fi
-        nvm install --lts
-        nvm alias default stable
-        # shellcheck disable=SC2086
-        npm install -g $NODE_TOOLS
     fi
 }
 
@@ -361,8 +344,6 @@ configure() {
 
     rm -rf "${ZSH_PATH}/plugins/zsh-you-should-use" || true
     git clone --depth=1 https://github.com/MichaelAquilina/zsh-you-should-use "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-you-should-use || true
-    rm -rf "${ZSH_PATH}/plugins/zsh-nvm" || true
-    git clone --depth=1 https://github.com/lukechilds/zsh-nvm "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-nvm || true
     rm -rf "${ZSH_PATH}/plugins/zsh-syntax-highlighting" || true
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting || true
     rm -rf "${ZSH_PATH}/plugins/zsh-autosuggestions" || true
@@ -379,17 +360,8 @@ configure() {
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
 
-    # i3/wayland configurations
-    # kitty configuration
-
-    # Disgusting hack to get node installed and available for vim to bootstrap
-    NVM_DIR="/tmp/.nvm"
-    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" || true
-    LATEST_TAG="$(builtin cd "$NVM_DIR" && git fetch --quiet --tags origin && git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))"
-    builtin cd "$NVM_DIR" && git checkout --quiet "${LATEST_TAG}"
-    source "$NVM_DIR/nvm.sh"
-    nvm install node
-    export PATH=$PATH:$NVM_DIR/versions/node/v23.3.0/bin/node
+    # Setup fnm/node so we can stub in node for vim
+    fnm install --lts
 
     echo "Configuring Vim"
 
@@ -406,9 +378,8 @@ configure() {
 
     # Quick check if configs are linked
     ls -lah "$HOME"
-    rm -rf /tmp/.nvm
 
-    echo "Open a new zsh shell to finish configuration."
+    echo "Open a new zsh shell to finish configuration"
 }
 
 switch_shell() {
@@ -465,4 +436,5 @@ main() {
 }
 
 main "$@"
+echo
 echo "Finished bootstrapping environment"
