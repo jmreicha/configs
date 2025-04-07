@@ -1,3 +1,5 @@
+# shellcheck shell=zsh
+
 #####
 # ZSH
 #####
@@ -16,7 +18,7 @@ fi
 # Disable theme since we are using starship
 ZSH_THEME=""
 
-# Skip insecure directory permissions check
+# Skip insecure directory permissions check to speed up start time
 ZSH_DISABLE_COMPFIX="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
@@ -218,10 +220,23 @@ fi
 # Functions
 ###########
 
+# Clear docker containers, images and volumes
 dclean() {
     docker rm "$(docker ps -aq --filter status=exited)"
     docker rmi "$(docker images -q --filter dangling=true)"
     docker volume rm "$(docker volume ls -qf dangling=true)"
+}
+
+# Lazy-load goenv
+function load_goenv() {
+    eval "$(goenv init -)"
+    unset -f load_goenv
+}
+
+# Only run goenv init before a Go command
+function go() {
+    load_goenv
+    command go "$@"
 }
 
 #############
@@ -314,7 +329,7 @@ zvm_after_init_commands+=('source <(fzf --zsh)')
 _evalcache starship init zsh
 _evalcache zoxide init zsh
 _evalcache thefuck --alias f -y
-_evalcache goenv init -
+# _evalcache goenv init -
 _evalcache direnv hook zsh
 _evalcache fnm env --use-on-cd --shell zsh
 
