@@ -17,7 +17,7 @@ fi
 ZSH_THEME=""
 
 # Skip insecure directory permissions check
-ZSH_DISABLE_COMPFIX=true
+ZSH_DISABLE_COMPFIX="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -51,18 +51,14 @@ plugins=(
     extract
     evalcache
     fancy-ctrl-z
-    # fzf
     gh
     git
     golang
     history
     jsontools
     kubectl
-    pip
-    python
     terraform
     uv
-    virtualenv
     zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
@@ -128,6 +124,10 @@ alias lt='eza --tree --level=2'
 # Exports
 #########
 
+# FZF
+export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
+export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
+
 # Bat
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # export PAGER="/opt/homebrew/bin/bat"
@@ -174,13 +174,6 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
 export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
-else
-    export EDITOR='vim'
-fi
-
 # Force the language environment to utf-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -188,6 +181,13 @@ export LC_ALL=en_US.UTF-8
 
 # Zoxide
 export _ZO_FZF_OPTS="--height 40%"
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR='vim'
+fi
 
 ######
 # PATH
@@ -286,17 +286,15 @@ bindkey \^U backward-kill-line
 # kubectx/kubens completions
 fpath=($ZSH/functions $ZSH/completions $fpath)
 
-###############
-# Shell startup
-###############
-
 # Allow autocomplete for aliases
 setopt complete_aliases
 
 # FZF (assume ripgrep is installed)
 zvm_after_init_commands+=('source <(fzf --zsh)')
-export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
-export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
+
+###############
+# Shell startup
+###############
 
 # Ondir configuration
 # eval_ondir() {
