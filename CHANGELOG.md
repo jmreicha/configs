@@ -1,3 +1,12 @@
+# [0.12.0](https://github.com/jmreicha/configs/compare/v0.11.0...v0.12.0) (2025-04-07)
+
+
+### Features
+
+* zsh performance improvements ([d6b9406](https://github.com/jmreicha/configs/commit/d6b94063e0b79bb26f4314b32a56abb87504572d))
+
+
+
 # [0.11.0](https://github.com/jmreicha/configs/compare/v0.10.0...v0.11.0) (2025-04-04)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * fzf and vi mode, custom zsh plugins, chatgpt cask ([cf8b2a2](https://github.com/jmreicha/configs/commit/cf8b2a2958218fd9ac23c127cfe42e58b4495653))
-
-
-
-# [0.9.0](https://github.com/jmreicha/configs/compare/v0.8.0...v0.9.0) (2024-12-28)
-
-
-### Features
-
-* **starship:** vi mode, cleaner symbols ([1154f35](https://github.com/jmreicha/configs/commit/1154f35b397f34b0702d8f1096b2466871c7626f))
 
 
 
