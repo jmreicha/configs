@@ -10,6 +10,7 @@ script. Check the following examples for various installation options.
 To install and configure:
 
 ```bash
+git clone https://github.com/jmreicha/configs.git
 cd configs
 ./install.sh --install
 ```
@@ -18,6 +19,7 @@ There are other options, including an option to configure a system only and skip
 installation.
 
 ```bash
+git clone https://github.com/jmreicha/configs.git
 cd configs
 ./install.sh --configure
 ```
@@ -26,6 +28,7 @@ Another option is to run the full installation and configuration for a given
 platform, which should be detected automatically by the install script.
 
 ```bash
+git clone https://github.com/jmreicha/configs.git
 cd configs
 ./install.sh --all
 ```
