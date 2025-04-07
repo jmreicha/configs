@@ -2,10 +2,22 @@
 # ZSH
 #####
 
+# Uncomment to enable profiling
+# zmodload zsh/zprof
+
+# Exit if not interactive shell
+[[ $- != *i* ]] && return
+
 # Path to oh-my-zsh installation if not using Nix.
 if [[ -z "$NIX" ]]; then
     export ZSH=$HOME/.oh-my-zsh
 fi
+
+# Disable theme since we are using starship
+ZSH_THEME=""
+
+# Skip insecure directory permissions check
+ZSH_DISABLE_COMPFIX=true
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -37,15 +49,15 @@ plugins=(
     docker-compose
     doctl
     extract
+    evalcache
     fancy-ctrl-z
-    fzf
+    # fzf
     gh
     git
     golang
     history
     jsontools
     kubectl
-    nvm
     pip
     python
     terraform
@@ -53,7 +65,6 @@ plugins=(
     virtualenv
     zsh-vi-mode
     zsh-autosuggestions
-    zsh-nvm
     zsh-syntax-highlighting
     zsh-you-should-use
 )
@@ -121,15 +132,11 @@ alias lt='eza --tree --level=2'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # export PAGER="/opt/homebrew/bin/bat"
 
-# Node
-export NVM_COMPLETION=true
-
 # Python
 export PYTHON_VENV_NAME=".venv"
 export PYTHON_AUTO_VRUN=true
 
 # Aqua
-export PATH=${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH
 export AQUA_DISABLE_POLICY=true
 
 # OpenAI
@@ -141,9 +148,6 @@ export GPG_TTY=$(tty)
 
 # Goenv
 export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$PATH:$GOPATH/bin"
 
 # Better terminal colors
 export TERM="xterm-256color"
@@ -158,15 +162,6 @@ export AWS_PAGER=""
 # export AWS_CSM_PORT=31000
 # export AWS_CSM_HOST=127.0.0.1
 # export AWS_SESSION_TTL="12h"
-
-# Krew k8s package manager
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# Home user bin directory
-export PATH="$HOME/bin:$PATH"
-
-# Bin
-export PATH="/usr/local/bin:$PATH"
 
 # hstr
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
@@ -194,6 +189,31 @@ export LC_ALL=en_US.UTF-8
 # Zoxide
 export _ZO_FZF_OPTS="--height 40%"
 
+######
+# PATH
+######
+
+if [[ -z "$__PATH_SET" ]]; then
+    paths=(
+        "${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin"
+        "${KREW_ROOT:-$HOME/.krew}/bin"
+        "/usr/local/bin"
+        "$GOENV_ROOT/bin"
+        "$HOME/bin"
+        "$PATH"
+        "/opt/homebrew/bin"
+        "$HOME/.tgenv/bin"
+    )
+
+    # Join the paths into colon separated string and export
+    export PATH=$(
+        IFS=:
+        echo "${paths[*]}"
+    )
+    # Ensure PATH only gets set once
+    export __PATH_SET=1
+fi
+
 ###########
 # Functions
 ###########
@@ -210,21 +230,12 @@ dclean() {
 
 ### OSX
 if [[ $(uname) == "Darwin" ]]; then
-    echo "Loading additional OSX configuration"
-
     alias pinentry='pinentry-mac'
 
     # Retrieve a secret from osx keychain
     get_secret() {
         security find-generic-password -gs "${1}" -w
     }
-
-    # Python3
-    export PATH=$PATH:/$HOME/Library/Python/3.9/bin/
-    # Homebrew
-    export PATH="/opt/homebrew/bin:$PATH"
-    # tgenv
-    export PATH="$HOME/.tgenv/bin:$PATH"
 
     # 1password
     source "$HOME"/.config/op/plugins.sh
@@ -234,8 +245,6 @@ fi
 
 ### Linux
 if [[ $(uname) == "Linux" ]]; then
-    echo "Loading additional Linux configuration"
-
     alias ip="ip -c"
 
     # OS specific configs
@@ -297,9 +306,19 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 # chpwd_functions=(eval_ondir $chpwd_functions)
 
 # Init
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(thefuck --alias f -y)"
-eval "$(goenv init -)"
-eval "$(direnv hook zsh)"
-eval "$(fnm env --use-on-cd --shell zsh)"
+# eval "$(starship init zsh)"
+# eval "$(zoxide init zsh)"
+# eval "$(thefuck --alias f -y)"
+# eval "$(goenv init -)"
+# eval "$(direnv hook zsh)"
+# eval "$(fnm env --use-on-cd --shell zsh)"
+
+_evalcache starship init zsh
+_evalcache zoxide init zsh
+_evalcache thefuck --alias f -y
+_evalcache goenv init -
+_evalcache direnv hook zsh
+_evalcache fnm env --use-on-cd --shell zsh
+
+# Uncomment to enable profiling
+# zprof

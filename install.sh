@@ -350,6 +350,8 @@ configure() {
     git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions || true
     rm -rf "${ZSH_PATH}/plugins/zsh-vi-mode" || true
     git clone --depth=1 https://github.com/jeffreytse/zsh-vi-mode "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-vi-mode || true
+    rm -rf "${ZSH_PATH}/plugins/evalcache" || true
+    git clone --depth=1 https://github.com/mroth/evalcache "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/evalcache || true
 
     # Link configs
     rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/configs/.zshrc" "$HOME/.zshrc"
