@@ -70,6 +70,9 @@ plugins=(
 # Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
 source "$ZSH"/oh-my-zsh.sh
 
+# Ensure paths are loadded the same way every time
+fpath=(${(uo)fpath})
+
 # Unlimited history
 HIST_STAMPS="mm/dd/yyyy"
 HISTFILE=~/.zsh_history
@@ -82,80 +85,51 @@ setopt HIST_IGNORE_ALL_DUPS
 # Aliases
 #########
 
-# Misc
-alias gld="git log -p --ext-diff"
-alias cat="bat --style=plain --paging=never"
-alias bat="bat --number"
-# Attempt to open vim to previous edit
-alias v='vim +'"'"'normal! g`"'"'"
-alias zz="vim ~/.zshrc"
-alias vv="vim ~/.vimrc"
-alias diff="colordiff -u"
-alias e="exit"
-alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
-alias python="python3"
-alias q="chatblade"
-alias rg="rg --hidden -g '!.git/'"
+# AWS
+alias av="aws-vault"
 
 # Docker
 alias d="docker"
 alias dc="docker-compose"
+
+# Eza
+alias l='eza -lbGF --git'
+alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
+alias ld='eza -lD'
+alias ldd='eza -laD'
+alias ll='eza --group --header --group-directories-first --long'
+alias ls='eza -a --icons'
+alias lt='eza --tree --level=2'
 
 # Kubernetes
 alias kctx="kubectx"
 alias kns="kubens"
 alias ktop="k9s -n all"
 
+# Misc
+alias bat="bat --number"
+alias cat="bat --style=plain --paging=never"
+alias diff="colordiff -u"
+alias e="exit"
+alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
+alias gld="git log -p --ext-diff"
+alias python="python3"
+alias q="chatblade"
+alias rg="rg --hidden -g '!.git/'"
+alias v='vim +'"'"'normal! g`"'"'"
+alias vv="vim ~/.vimrc"
+alias zz="vim ~/.zshrc"
+
 # Terraform
 alias tf="terraform"
 alias tg="terragrunt"
-
-# AWS
-alias av="aws-vault"
-
-# Eza
-alias ld='eza -lD'
-alias ldd='eza -laD'
-alias ls='eza -a --icons'
-alias ll='eza --group --header --group-directories-first --long'
-alias l='eza -lbGF --git'
-alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
-alias lt='eza --tree --level=2'
 
 #########
 # Exports
 #########
 
-# FZF
-export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
-export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
-
-# Bat
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# export PAGER="/opt/homebrew/bin/bat"
-
-# Python
-export PYTHON_VENV_NAME=".venv"
-export PYTHON_AUTO_VRUN=true
-
 # Aqua
 export AQUA_DISABLE_POLICY=true
-
-# OpenAI
-export OPENAI_API_KEY=
-
-# GPG key
-export GPG_TTY=$(tty)
-# export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
-
-# Goenv
-export GOENV_ROOT="$HOME/.goenv"
-
-# Better terminal colors
-export TERM="xterm-256color"
-
-# Set default kubernetes diff
-export KUBECTL_EXTERNAL_DIFF=colordiff
 
 # AWS
 export AWS_PAGER=""
@@ -165,21 +139,45 @@ export AWS_PAGER=""
 # export AWS_CSM_HOST=127.0.0.1
 # export AWS_SESSION_TTL="12h"
 
-# hstr
+# FZF
+export FZF_DEFAULT_COMMAND='rg --files --hidden -g "!.git/*"'
+export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
+
+# GPG key
+export GPG_TTY=$(tty)
+# export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
+
+# Goenv
+export GOENV_ROOT="$HOME/.goenv"
+
+# HSTR
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
 
-# Export SSH key so it doesn't need to be passed in every time.
-export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
+# Kubernetes
+export KUBECTL_EXTERNAL_DIFF=colordiff
 
-# Set the terraform/terragrunt cache in one place
+# Language - force to utf-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# OpenAI
+export OPENAI_API_KEY=
+
+# Python
+export PYTHON_AUTO_VRUN=true
+export PYTHON_VENV_NAME=".venv"
+
+# Terraform/Terragrunt - set cache in one place
 export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
 export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
 
-# Force the language environment to utf-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+# SSH
+export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
+
+# Terminal
+export TERM="xterm-256color"
 
 # Zoxide
 export _ZO_FZF_OPTS="--height 40%"
