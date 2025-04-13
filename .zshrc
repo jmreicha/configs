@@ -195,14 +195,16 @@ fi
 
 if [[ -z "$__PATH_SET" ]]; then
     paths=(
-        "${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin"
-        "${KREW_ROOT:-$HOME/.krew}/bin"
-        "/usr/local/bin"
-        "$GOENV_ROOT/bin"
-        "$HOME/bin"
-        "$PATH"
         "/opt/homebrew/bin"
-        "$HOME/.tgenv/bin"
+        "/usr/local/bin"
+        "${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-${HOME}/.local/share}/aquaproj-aqua}/bin"
+        "${GOENV_ROOT}/bin"
+        "${HOME}/.local/bin"
+        "${HOME}/.local/share"
+        "${HOME}/.tgenv/bin"
+        "${HOME}/bin"
+        "${KREW_ROOT:-${HOME}/.krew}/bin"
+        "${PATH}"
     )
 
     # Join the paths into colon separated string and export
@@ -261,11 +263,15 @@ if [[ $(uname) == "Linux" ]]; then
     alias ip="ip -c"
 
     # OS specific configs
-    if grep ID=debian /etc/os-release; then
+    if grep ID=debian /etc/os-release >/dev/null; then
         alias fd="fdfind --hidden"
-        export PATH=$PATH:/$HOME/.local/bin
     else
         alias fd="fd --hidden"
+    fi
+
+    FNM_PATH="/home/jmreicha/.local/share/fnm"
+    if [ -d "$FNM_PATH" ]; then
+        export PATH="/home/jmreicha/.local/share/fnm:$PATH"
     fi
 
     # Credentials are stored in gpg/pass in non container envs
