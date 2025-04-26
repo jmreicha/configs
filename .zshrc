@@ -4,8 +4,9 @@
 # ZSH
 #####
 
-# Uncomment to enable profiling
-# zmodload zsh/zprof
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
+fi
 
 # Exit if not interactive shell
 [[ $- != *i* ]] && return
@@ -118,6 +119,7 @@ alias q="chatblade"
 alias rg="rg --hidden -g '!.git/'"
 alias v='vim +'"'"'normal! g`"'"'"
 alias vv="vim ~/.vimrc"
+alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
 
 # Terraform
@@ -337,5 +339,6 @@ _evalcache thefuck --alias f -y
 _evalcache direnv hook zsh
 _evalcache fnm env --use-on-cd --shell zsh
 
-# Uncomment to enable profiling
-# zprof
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi
