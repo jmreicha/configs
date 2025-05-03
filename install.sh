@@ -362,6 +362,14 @@ configure() {
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
 
+    # TODO: Switch this to config file
+    mise settings add idiomatic_version_file_enable_tools go
+    mise settings add idiomatic_version_file_enable_tools node
+    mise settings add idiomatic_version_file_enable_tools python
+
+    echo "Configuring global go"
+    mise use --global go@latest
+
     echo "Configuring global nodejs"
     mise use --global node@lts
 

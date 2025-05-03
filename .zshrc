@@ -229,18 +229,6 @@ dclean() {
     docker volume rm "$(docker volume ls -qf dangling=true)"
 }
 
-# Lazy-load goenv
-function load_goenv() {
-    eval "$(goenv init -)"
-    unset -f load_goenv
-}
-
-# Only run goenv init before a Go command
-function go() {
-    load_goenv
-    command go "$@"
-}
-
 #############
 # OS Specific
 #############
@@ -323,13 +311,11 @@ zvm_after_init_commands+=('source <(fzf --zsh)')
 # eval "$(starship init zsh)"
 # eval "$(zoxide init zsh)"
 # eval "$(thefuck --alias f -y)"
-# eval "$(goenv init -)"
 # eval "$(direnv hook zsh)"
 
 _evalcache starship init zsh
 _evalcache zoxide init zsh
 _evalcache thefuck --alias f -y
-# _evalcache goenv init -
 _evalcache direnv hook zsh
 _evalcache mise activate zsh
 _evalcache mise complete zsh
