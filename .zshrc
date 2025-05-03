@@ -271,11 +271,6 @@ if [[ $(uname) == "Linux" ]]; then
         alias fd="fd --hidden"
     fi
 
-    FNM_PATH="/home/jmreicha/.local/share/fnm"
-    if [ -d "$FNM_PATH" ]; then
-        export PATH="/home/jmreicha/.local/share/fnm:$PATH"
-    fi
-
     # Credentials are stored in gpg/pass in non container envs
     if [[ $REMOTE_CONTAINERS = "true" ]]; then
         export AWS_VAULT_BACKEND="file"
@@ -330,14 +325,14 @@ zvm_after_init_commands+=('source <(fzf --zsh)')
 # eval "$(thefuck --alias f -y)"
 # eval "$(goenv init -)"
 # eval "$(direnv hook zsh)"
-# eval "$(fnm env --use-on-cd --shell zsh)"
 
 _evalcache starship init zsh
 _evalcache zoxide init zsh
 _evalcache thefuck --alias f -y
 # _evalcache goenv init -
 _evalcache direnv hook zsh
-_evalcache fnm env --use-on-cd --shell zsh
+_evalcache mise activate zsh
+_evalcache mise complete zsh
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof

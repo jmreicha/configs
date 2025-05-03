@@ -362,8 +362,8 @@ configure() {
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
 
-    # Setup fnm/node so we can stub in node for vim
-    fnm install --lts
+    echo "Configuring global nodejs"
+    mise use --global node@lts
 
     echo "Configuring Vim"
 
@@ -393,6 +393,38 @@ switch_shell() {
         echo "Non CI environment detected, reloading shell"
         exec zsh
     fi
+}
+
+extras() {
+    # Python
+    uv tool upgrade --all
+    # uv tool install c7n
+    # uvx --from c7n custodian
+    # uv tool install octodns
+    # uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump
+
+    # Node
+    npm upgrade -g
+    # npm install -g eslint
+    # npx eslint
+    # npm install -g wrangler
+    # npx wrangler
+
+    # Golang
+    # go install golang.org/x/tools/gopls@latest
+
+    # Steampipe
+    steampipe plugin update --all
+    steampipe plugin install aws
+    steampipe plugin install kubernetes
+    steampipe plugin install github
+    steampipe plugin install net
+    steampipe plugin install crowdstrike
+
+    # Tailpipe
+    tailpipe plugin update --all
+    tailpipe plugin install aws
+    tailpipe plugin install github
 }
 
 main() {
@@ -428,7 +460,7 @@ main() {
         switch_shell
         ;;
     --extras)
-        # TODO: install extras separately to speed up base installs
+        extras
         ;;
     *)
         echo "'$option' not a recognized option"

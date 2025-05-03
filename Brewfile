@@ -69,7 +69,7 @@ brew "kubent"
 brew "kubescape"
 brew "lazydocker"
 brew "ls-lint"
-brew “mise”
+brew "mise"
 brew "mtr"
 brew "nmap"
 brew "pandoc"
