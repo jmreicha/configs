@@ -110,6 +110,7 @@ brew "wget"
 brew "otel-tui"
 brew "watch"
 brew "yq"
+brew “zizmor”
 brew "zoxide"
 
 cask "1password"
