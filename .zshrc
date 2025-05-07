@@ -62,7 +62,7 @@ plugins=(
     kubectl
     terraform
     uv
-    zsh-vi-mode
+    # zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-you-should-use
@@ -121,6 +121,15 @@ alias v='vim +'"'"'normal! g`"'"'"
 alias vv="vim ~/.vimrc"
 alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
+
+# Node tools
+alias wrangler="npx --yes wrangler@latest"
+
+# Python tools
+alias custodian="uvx --from c7n custodian"
+alias octodns-dump="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
+alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
+alias wafw00f="uvx wafw00f"
 
 # Terraform
 alias tf="terraform"
