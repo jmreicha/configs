@@ -134,5 +134,6 @@ cask "signal"
 cask "slack"
 cask "visual-studio-code"
 cask "wezterm"
+cask “zed”
 cask "zen-browser"
 cask "zoom"
