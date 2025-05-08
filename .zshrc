@@ -54,6 +54,7 @@ plugins=(
     extract
     evalcache
     fancy-ctrl-z
+    fzf
     gh
     git
     golang
@@ -301,9 +302,6 @@ fpath=($ZSH/functions $ZSH/completions $fpath)
 
 # Allow autocomplete for aliases
 setopt complete_aliases
-
-# FZF (assume ripgrep is installed)
-zvm_after_init_commands+=('source <(fzf --zsh)')
 
 ###############
 # Shell startup
