@@ -1,5 +1,54 @@
 # shellcheck shell=zsh
 
+#######
+# Zinit
+#######
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+source "${ZINIT_HOME}/zinit.zsh"
+
+# Load all the auto-completions, has to be done before any compdefs
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# custom plugins
+zinit light-mode for \
+    zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-syntax-highlighting \
+    MichaelAquilina/zsh-you-should-use
+
+# zinit light jeffreytse/zsh-vi-mode
+# zinit light mroth/evalcache
+
+# oh-my-zsh plugins
+zinit wait lucid for \
+    OMZP::1password \
+    OMZP::ansible \
+    OMZP::aws \
+    OMZP::docker \
+    OMZP::docker-compose \
+    OMZP::doctl \
+    OMZP::fancy-ctrl-z \
+    OMZP::fzf \
+    OMZP::gh \
+    OMZP::git \
+    OMZP::golang \
+    OMZP::history \
+    OMZP::jsontools \
+    OMZP::kubectl \
+    OMZP::terraform \
+    OMZP::uv
+
+# Load completions after plugins
+mkdir -p ~/.cache/zinit/completions
+fpath=(~/.cache/zinit/completions $fpath)
+autoload -Uz compinit
+compinit
+zinit cdreplay -q
+
 #####
 # ZSH
 #####
@@ -10,11 +59,6 @@ fi
 
 # Exit if not interactive shell
 [[ $- != *i* ]] && return
-
-# Path to oh-my-zsh installation if not using Nix.
-if [[ -z "$NIX" ]]; then
-    export ZSH=$HOME/.oh-my-zsh
-fi
 
 # Disable theme since we are using starship
 ZSH_THEME=""
@@ -42,35 +86,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# WARNING: `source ~/.zshrc` becomes unusable with the zsh-syntax-highlighting plugin
-plugins=(
-    1password
-    ansible
-    aws
-    docker
-    docker-compose
-    doctl
-    extract
-    evalcache
-    fancy-ctrl-z
-    fzf
-    gh
-    git
-    golang
-    history
-    jsontools
-    kubectl
-    terraform
-    uv
-    # zsh-vi-mode
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    zsh-you-should-use
-)
-
-# Load here to be able to source extra plugins and configurations like zsh-autosuggestions and zsh-syntax-highlighting
-source "$ZSH"/oh-my-zsh.sh
 
 # Ensure paths are loadded the same way every time
 fpath=(${(uo)fpath})
@@ -254,8 +269,6 @@ if [[ $(uname) == "Darwin" ]]; then
 
     # 1password
     source "$HOME"/.config/op/plugins.sh
-
-    plugins+=(osx)
 fi
 
 ### Linux
@@ -281,8 +294,6 @@ if [[ $(uname) == "Linux" ]]; then
         pass show "$1"
     }
 fi
-
-# plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
 
 #####################
 # Misc Configurations
@@ -315,17 +326,11 @@ setopt complete_aliases
 # chpwd_functions=(eval_ondir $chpwd_functions)
 
 # Init
-# eval "$(starship init zsh)"
-# eval "$(zoxide init zsh)"
-# eval "$(thefuck --alias f -y)"
-# eval "$(direnv hook zsh)"
-
-_evalcache starship init zsh
-_evalcache zoxide init zsh
-_evalcache thefuck --alias f -y
-_evalcache direnv hook zsh
-_evalcache mise activate zsh
-_evalcache mise complete zsh
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(thefuck --alias f -y)"
+eval "$(mise activate zsh)"
+eval "$(mise complete zsh)"
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
