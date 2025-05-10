@@ -1,5 +1,12 @@
 # shellcheck shell=zsh
 
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
+fi
+
+# Exit if not interactive shell
+[[ $- != *i* ]] && return
+
 #######
 # Zinit
 #######
@@ -9,21 +16,19 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
 source "${ZINIT_HOME}/zinit.zsh"
+source "${HOME}/.oh-my-zsh/lib/completion.zsh"
 
 # Load all the auto-completions, has to be done before any compdefs
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# custom plugins
+# Required plugins
 zinit light-mode for \
-    zsh-users/zsh-autosuggestions \
-    zsh-users/zsh-syntax-highlighting \
-    MichaelAquilina/zsh-you-should-use
+    mroth/evalcache \
+    zdharma-continuum/fast-syntax-highlighting \
+    zsh-users/zsh-autosuggestions
 
-# zinit light jeffreytse/zsh-vi-mode
-# zinit light mroth/evalcache
-
-# oh-my-zsh plugins
+# Optional plugins
 zinit wait lucid for \
     OMZP::1password \
     OMZP::ansible \
@@ -40,25 +45,25 @@ zinit wait lucid for \
     OMZP::jsontools \
     OMZP::kubectl \
     OMZP::terraform \
-    OMZP::uv
+    OMZP::uv \
+    MichaelAquilina/zsh-you-should-use
+    # jeffreytse/zsh-vi-mode
 
 # Load completions after plugins
 mkdir -p ~/.cache/zinit/completions
 fpath=(~/.cache/zinit/completions $fpath)
 autoload -Uz compinit
-compinit
-zinit cdreplay -q
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    zinit ice lucid atinit"zicompinit; zicdreplay"
+    compinit
+else
+    zinit ice lucid atinit"zicompinit; zicdreplay"
+    compinit -C
+fi
 
 #####
 # ZSH
 #####
-
-if [ -n "${ZSH_DEBUGRC+1}" ]; then
-    zmodload zsh/zprof
-fi
-
-# Exit if not interactive shell
-[[ $- != *i* ]] && return
 
 # Disable theme since we are using starship
 ZSH_THEME=""
@@ -326,12 +331,16 @@ setopt complete_aliases
 # chpwd_functions=(eval_ondir $chpwd_functions)
 
 # Init
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(thefuck --alias f -y)"
-eval "$(mise activate zsh)"
-eval "$(mise complete zsh)"
+# eval "$(starship init zsh)"
+# eval "$(zoxide init zsh)"
+# eval "$(thefuck --alias f -y)"
+# eval "$(mise activate zsh)"
+
+_evalcache starship init zsh
+_evalcache zoxide init zsh
+_evalcache thefuck --alias f -y
+_evalcache mise activate zsh
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
-    zprof
+    zprof | head -n 40
 fi

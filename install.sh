@@ -333,6 +333,11 @@ configure() {
 
     set_env_paths
 
+    # oh-my-zsh
+    if [[ ! -d $"$HOME/.oh-my-zsh" ]]; then
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    fi
+
     # Link configs
     rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/configs/.zshrc" "$HOME/.zshrc"
     rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/configs/.vimrc" "$HOME/.vimrc"
