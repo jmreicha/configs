@@ -51,7 +51,6 @@ zinit wait lucid for \
 
 # Load completions after plugins
 mkdir -p ~/.cache/zinit/completions
-fpath=(~/.cache/zinit/completions $fpath)
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
     zinit ice lucid atinit"zicompinit; zicdreplay"
@@ -60,6 +59,7 @@ else
     zinit ice lucid atinit"zicompinit; zicdreplay"
     compinit
 fi
+zinit cdreplay -q
 
 #####
 # ZSH
@@ -91,9 +91,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Ensure paths are loadded the same way every time
-fpath=(${(uo)fpath})
 
 # Unlimited history
 HIST_STAMPS="mm/dd/yyyy"
@@ -226,7 +223,7 @@ fi
 ######
 
 if [[ -z "$__PATH_SET" ]]; then
-    paths=(
+    path=(
         "/opt/homebrew/bin"
         "/usr/local/bin"
         "${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-${HOME}/.local/share}/aquaproj-aqua}/bin"
@@ -242,7 +239,7 @@ if [[ -z "$__PATH_SET" ]]; then
     # Join the paths into colon separated string and export
     export PATH=$(
         IFS=:
-        echo "${paths[*]}"
+        echo "${path[*]}"
     )
     # Ensure PATH only gets set once
     export __PATH_SET=1
@@ -313,8 +310,8 @@ ZVM_KEYTIMEOUT=0.03
 # Bash hotkey for end of line kill
 bindkey \^U backward-kill-line
 
-# kubectx/kubens completions
-fpath=($ZSH/functions $ZSH/completions $fpath)
+# Additional completions
+fpath=(~/.cache/zinit/completions $ZSH/functions $ZSH/completions $fpath)
 
 # Allow autocomplete for aliases
 setopt complete_aliases
