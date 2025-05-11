@@ -23,7 +23,7 @@ autoload -Uz _zinit
 
 # Required plugins
 zinit light-mode for \
-    mroth/evalcache \
+    mroth/evalcache
 
 # Optional plugins
 zinit wait light-mode lucid for \
@@ -47,7 +47,8 @@ zinit wait light-mode lucid for \
     OMZP::uv \
     MichaelAquilina/zsh-you-should-use \
     zdharma-continuum/fast-syntax-highlighting \
-    zsh-users/zsh-autosuggestions
+    atload"_zsh_autosuggest_start" \
+        @zsh-users/zsh-autosuggestions
     # jeffreytse/zsh-vi-mode
 
 # Load completions after plugins
