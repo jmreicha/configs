@@ -16,7 +16,6 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
 source "${ZINIT_HOME}/zinit.zsh"
-source "${HOME}/.oh-my-zsh/lib/completion.zsh"
 
 # Load all the auto-completions, has to be done before any compdefs
 autoload -Uz _zinit
@@ -25,11 +24,11 @@ autoload -Uz _zinit
 # Required plugins
 zinit light-mode for \
     mroth/evalcache \
-    zdharma-continuum/fast-syntax-highlighting \
-    zsh-users/zsh-autosuggestions
 
 # Optional plugins
-zinit wait lucid for \
+zinit wait light-mode lucid for \
+    OMZL::completion.zsh \
+    OMZL::directories.zsh \
     OMZP::1password \
     OMZP::ansible \
     OMZP::aws \
@@ -46,7 +45,9 @@ zinit wait lucid for \
     OMZP::kubectl \
     OMZP::terraform \
     OMZP::uv \
-    MichaelAquilina/zsh-you-should-use
+    MichaelAquilina/zsh-you-should-use \
+    zdharma-continuum/fast-syntax-highlighting \
+    zsh-users/zsh-autosuggestions
     # jeffreytse/zsh-vi-mode
 
 # Load completions after plugins
@@ -256,6 +257,10 @@ dclean() {
     docker volume rm "$(docker volume ls -qf dangling=true)"
 }
 
+eval_ondir() {
+  eval "`ondir \"$OLDPWD\" \"$PWD\"`"
+}
+
 #############
 # OS Specific
 #############
@@ -316,23 +321,14 @@ fpath=(~/.cache/zinit/completions $ZSH/functions $ZSH/completions $fpath)
 # Allow autocomplete for aliases
 setopt complete_aliases
 
+# Ondir configuration
+# chpwd_functions=(eval_ondir $chpwd_functions)
+
 ###############
 # Shell startup
 ###############
 
-# Ondir configuration
-# eval_ondir() {
-#   eval "`ondir \"$OLDPWD\" \"$PWD\"`"
-# }
-
-# chpwd_functions=(eval_ondir $chpwd_functions)
-
 # Init
-# eval "$(starship init zsh)"
-# eval "$(zoxide init zsh)"
-# eval "$(thefuck --alias f -y)"
-# eval "$(mise activate zsh)"
-
 _evalcache starship init zsh
 _evalcache zoxide init zsh
 _evalcache thefuck --alias f -y
