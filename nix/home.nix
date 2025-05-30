@@ -3,7 +3,8 @@
 # Dynamic variables
 let
   user = "josh.reichardt";
-  gpgKeyPersonal = "A9752A813F1EF110";
+  # TODO: Pull this from GPG
+  gpgKeyPersonal = "382541722B298C07";
   gpgKeyWork = "DD1DED98B96B8EDE";
 in {
   # Let Home Manager install and manage itself.
@@ -12,12 +13,12 @@ in {
   # Allow unstable packages to be referenced.
   nixpkgs.config = {
     allowUnfree = true;
-    # allowUnsupportedSystem = true;
-    packageOverrides = pkgs: {
-      unstable = import <unstable> {
-        config = config.nixpkgs.config;
-      };
-    };
+    allowUnsupportedSystem = true;
+    # packageOverrides = pkgs: {
+    #   unstable = import <unstable> {
+    #     config = config.nixpkgs.config;
+    #   };
+    # };
   };
 
   ### Home settings
@@ -64,11 +65,12 @@ in {
     ansible-lint
     asdf-vm
     aws-vault
+    # awscli2
     bashate
     black
     # checkov
     colordiff
-    commitizen
+    # commitizen
     conftest
     doctl
     gh
@@ -79,10 +81,11 @@ in {
     lazygit
     (nerdfonts.override { fonts = [ "Meslo" ]; })
     packer
-    pre-commit
+    # pre-commit
     ruff
     s3cmd
     sops
+    starship
     thefuck
     trivy
     vault
@@ -117,16 +120,16 @@ in {
     #kustomize
 
     # Terraform
-    iam-policy-json-to-terraform
-    terraform-docs
+    # iam-policy-json-to-terraform
+    # terraform-docs
     terraformer
-    tflint
+    # tflint
     tfsec
     #terrascan
     tfk8s
 
-    unstable.starship
-    unstable.nodejs_20
+    # unstable.starship
+    # unstable.nodejs_20
   ];
 
   ### Program configs
@@ -177,7 +180,7 @@ in {
     ];
   };
 
-  programs.go.enable = true;
+  programs.go.enable = false;
 
   programs.starship = {
     enable = false;
@@ -195,7 +198,7 @@ in {
     dotDir = ".config/zsh";
     enable = true;
     enableAutosuggestions = true;
-    syntaxHighlighting.enable = true;
+    # syntaxHighlighting.enable = true;
     initExtra = "source $HOME/.zshrc";
     oh-my-zsh.enable = true;
 
