@@ -29,6 +29,7 @@ zinit light-mode for \
 zinit wait light-mode lucid for \
     OMZL::completion.zsh \
     OMZL::directories.zsh \
+    OMZL::git.zsh \
     OMZL::history.zsh \
     OMZL::key-bindings.zsh \
     OMZP::1password \
