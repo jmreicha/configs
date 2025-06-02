@@ -20,6 +20,9 @@
 [mergetool "code"]
   cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 
+[init]
+  templateDir = ~/.git-template
+
 ;[credential]
 ;    helper = osxkeychain
 

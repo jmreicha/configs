@@ -358,6 +358,9 @@ configure() {
     echo "Configuring global nodejs"
     mise use --global node@lts
 
+    echo "Confiugring global pre-commit hooks"
+    pre-commit init-templatedir ~/.git-template
+
     echo "Configuring Vim"
 
     if [[ ! -d $HOME/.vim/plugged ]]; then
@@ -374,7 +377,7 @@ configure() {
     # Quick check if configs are linked
     ls -lah "$HOME"
 
-    echo "Open a new zsh shell to finish configuration"
+    echo "Close this shell and open a new one to finish configuration"
 }
 
 switch_shell() {
