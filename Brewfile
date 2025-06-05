@@ -51,6 +51,7 @@ brew "go-task"
 brew "goreleaser"
 brew "gping"
 brew "granted"
+brew “graphviz”
 brew "gron"
 brew "hadolint"
 brew "hcl2json"
