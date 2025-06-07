@@ -359,7 +359,7 @@ configure() {
     mise use --global node@lts
 
     echo "Confiugring global pre-commit hooks"
-    pre-commit init-templatedir ~/.git-template
+    pre-commit init-templatedir ~/.git-template --hook-type commit-msg -t post-commit -t pre-commit
 
     echo "Configuring Vim"
 
