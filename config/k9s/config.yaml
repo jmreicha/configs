@@ -1,0 +1,63 @@
+k9s:
+  apiServerTimeout: 15s
+  defaultView: ""
+  disablePodCounting: false
+  liveViewAutoRefresh: false
+  maxConnRetry: 5
+  noExitOnCtrlC: false
+  portForwardAddress: localhost
+  readOnly: false
+  refreshRate: 2
+  screenDumpDir: /Users/josh.reichardt/Library/Application Support/k9s/screen-dumps
+  skipLatestRevCheck: false
+
+  ui:
+    skin: catppuccin-mocha
+    enableMouse: true
+    headless: false
+    logoless: true
+    crumbsless: false
+    splashless: false
+    reactive: false
+    noIcons: false
+    defaultsToFullScreen: false
+    useFullGVRTitle: false
+
+  shellPod:
+    image: busybox:1.35.0
+    namespace: default
+    limits:
+      cpu: 100m
+      memory: 100Mi
+
+  imageScans:
+    enable: false
+    exclusions:
+      namespaces: []
+      labels: {}
+
+  logger:
+    tail: 100
+    buffer: 5000
+    sinceSeconds: -1
+    textWrap: true
+    disableAutoscroll: false
+    showTime: false
+
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70
+
+  # Additional features
+  featureGates:
+    nodeShell: true
+
+  # Default view
+  namespace:
+    active: all
+  view:
+    active: po
