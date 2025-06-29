@@ -151,7 +151,7 @@ _macos() {
         return
     fi
     echo "Installing tools from Brewfile"
-    brew bundle install
+    brew bundle install || true
     brew update
     brew bundle install
 
