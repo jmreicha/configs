@@ -83,6 +83,7 @@ brew "lima"
 brew "ls-lint"
 brew "lychee"
 brew "mise"
+brew “mkcert”
 brew "mtr"
 brew "nmap"
 brew "otel-tui"
