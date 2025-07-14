@@ -114,6 +114,7 @@ brew "starship"
 brew "steampipe"
 brew "tailpipe"
 brew "tcpdump"
+brew “television”
 brew "terraform-docs"
 brew "tfenv"
 brew "tfk8s"
