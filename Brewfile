@@ -18,6 +18,7 @@ brew "ansible"
 brew "ansible-lint"
 brew "aqua"
 brew "argo"
+brew “aws-sam-cli”
 brew "aws-vault"
 brew "awscurl"
 brew "bash"
