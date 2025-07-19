@@ -146,12 +146,17 @@ alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
 
 # Node tools
+alias cdk="npx --yes aws-cdk@latest"
+alias claude="npx --yes anthropic-ai/claude-code@latest"
 alias wrangler="npx --yes wrangler@latest"
 
 # Python tools
+alias awslocal="uvx --from awscli-local awslocal"
 alias custodian="uvx --from c7n custodian"
 alias octodns-dump="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
 alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
+alias samlocal="uvx --from aws-sam-cli-local samlocal"
+alias tflocal="uvx --from terraform-local tflocal"
 alias wafw00f="uvx wafw00f"
 
 # Terraform
@@ -203,9 +208,11 @@ export PYTHON_AUTO_VRUN=true
 export PYTHON_VENV_NAME=".venv"
 
 # Terraform/Terragrunt - set cache in one place
-export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
-export TERRAGRUNT_DOWNLOAD="$HOME/.terragrunt/cache"
 export TERRAGRUNT_LOCAL="true"
+export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
+export TG_DOWNLOAD_DIR="$HOME/.terragrunt/cache"
+export TG_LOCAL="true"
+export TG_LOG_DISABLE="true"
 
 # SSH
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
