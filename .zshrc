@@ -148,6 +148,8 @@ alias zz="vim ~/.zshrc"
 # Node tools
 alias cdk="npx --yes aws-cdk@latest"
 alias claude="npx --yes anthropic-ai/claude-code@latest"
+alias iam-exapnd="npx --yes cloud-copilot/iam-expand"
+alias iam-shrink="npx --yes cloud-copilot/iam-shrink"
 alias wrangler="npx --yes wrangler@latest"
 
 # Python tools
