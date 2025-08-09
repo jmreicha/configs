@@ -346,6 +346,7 @@ configure() {
     rm -rf "$HOME/.ssh/config" || true && ln -s "$INSTALLER_PATH/configs/config/ssh" "$HOME/.ssh/config"
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
+    rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
 
     # TODO: Switch this to config file
     mise settings add idiomatic_version_file_enable_tools go
