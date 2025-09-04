@@ -58,6 +58,7 @@ brew "git"
 brew "git-delta"
 brew "gnupg"
 brew "go-task"
+brew “gonzo”
 brew "goreleaser"
 brew "gping"
 brew "granted"
