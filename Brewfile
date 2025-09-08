@@ -85,6 +85,7 @@ brew "kubent"
 brew "kubescape"
 brew "lazydocker"
 brew "lazygit"
+brew “lazysql”
 brew "lima"
 brew "localstack-cli"
 brew "ls-lint"
