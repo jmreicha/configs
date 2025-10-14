@@ -42,6 +42,7 @@ brew "conftest"
 brew "coreutils"
 brew "curl"
 brew "deweysasser/tap/eks-kubeconfig-update"
+brew “devspace”
 brew "diff-so-fancy"
 brew "difftastic"
 brew "direnv"
