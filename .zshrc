@@ -152,6 +152,7 @@ alias iam-convert="npx --yes @cloud-copilot/iam-convert"
 alias iam-expand="npx --yes @cloud-copilot/iam-expand"
 alias iam-shrink="npx --yes @cloud-copilot/iam-shrink"
 alias wrangler="npx --yes wrangler@latest"
+alias copilot="npx --yes @github/copilot"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
