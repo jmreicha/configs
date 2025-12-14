@@ -323,10 +323,11 @@ configure() {
     echo "Configuring environment"
 
     # Create extra directories if they don't exist
-    mkdir -p "$HOME/.config/ghostty"
-    mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/.aws"
+    mkdir -p "$HOME/.config/ghostty"
+    mkdir -p "$HOME/.config/k9s"
     mkdir -p "$HOME/.ssh"
+    mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/git"
     mkdir -p "$HOME/hack"
     mkdir -p "$HOME/tmp"
