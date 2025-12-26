@@ -1,5 +1,6 @@
 # shellcheck shell=zsh
 
+# Debug
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zmodload zsh/zprof
 fi
@@ -54,8 +55,12 @@ zinit wait light-mode lucid for \
         @zsh-users/zsh-autosuggestions
     # jeffreytse/zsh-vi-mode
 
+# Run this manually to generate completions since it is cached otherwise
+# autoload -U compinit; compinit
+
 # Load completions after plugins
 mkdir -p ~/.cache/zinit/completions
+autoload -Uz bashcompinit && bashcompinit
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
     zinit ice lucid atinit"zicompinit; zicdreplay"
@@ -336,8 +341,14 @@ bindkey \^U backward-kill-line
 # Additional completions
 fpath=(~/.cache/zinit/completions $ZSH/functions $ZSH/completions $fpath)
 
-# Allow autocomplete for aliases
-setopt complete_aliases
+# AWS CLI completions
+if command -v aws_completer &> /dev/null; then
+    complete -C aws_completer aws
+fi
+
+# tenv
+complete -o nospace -C /Users/joshuareichardt/.tenv/Terraform/1.9.8/terraform terraform
+complete -o nospace -C /Users/joshuareichardt/.tenv/OpenTofu/1.11.2/tofu tofu
 
 # Ondir configuration
 # chpwd_functions=(eval_ondir $chpwd_functions)
@@ -352,6 +363,7 @@ _evalcache zoxide init zsh
 _evalcache thefuck --alias f -y
 _evalcache mise activate zsh
 
+# Debug
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof | head -n 40
 fi
