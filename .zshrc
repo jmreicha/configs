@@ -153,11 +153,12 @@ alias zz="vim ~/.zshrc"
 # Node tools
 alias cdk="npx --yes aws-cdk@latest"
 alias claude="npx --yes anthropic-ai/claude-code@latest"
+alias copilot="npx --yes @github/copilot"
 alias iam-convert="npx --yes @cloud-copilot/iam-convert"
 alias iam-expand="npx --yes @cloud-copilot/iam-expand"
 alias iam-shrink="npx --yes @cloud-copilot/iam-shrink"
+alias renovate="npx --yes renovate@latest"
 alias wrangler="npx --yes wrangler@latest"
-alias copilot="npx --yes @github/copilot"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
