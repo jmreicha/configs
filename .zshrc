@@ -151,6 +151,7 @@ alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
 
 # Node tools
+alias amp="npx --yes @sourcegraph/amp"
 alias cdk="npx --yes aws-cdk@latest"
 alias claude="npx --yes anthropic-ai/claude-code@latest"
 alias copilot="npx --yes @github/copilot"
