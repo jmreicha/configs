@@ -127,7 +127,7 @@ If grep is unavailable, document the failure and proceed with web research or be
 
 ### Web Research
 
-Use webfetch to gather supplemental context from blog posts, tutorials, discussions and other project documentation soures.
+Use webfetch to gather supplemental context from blog posts, tutorials, discussions and other project documentation sources.
 
 **When to use:**
 
