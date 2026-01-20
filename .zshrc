@@ -361,6 +361,9 @@ complete -o nospace -C /Users/joshuareichardt/.tenv/OpenTofu/1.11.2/tofu tofu
 # Shell startup
 ###############
 
+# Work trees
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
 # Init
 _evalcache starship init zsh
 _evalcache zoxide init zsh
