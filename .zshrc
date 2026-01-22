@@ -136,14 +136,14 @@ alias kns="kubens"
 alias ktop="k9s -n all"
 
 # Misc
-alias bat="bat --number"
+# alias bat="bat --number"
 alias cat="bat --style=plain --paging=never"
 alias diff="colordiff -u"
 alias e="exit"
 alias ff="fzf --preview 'bat {} --color=always --style=numbers --theme=1337'"
 alias gld="git log -p --ext-diff"
-alias python="python3"
-alias q="chatblade"
+# alias python="python3"
+# alias q="chatblade"
 alias rg="rg --hidden -g '!.git/'"
 alias v='vim +'"'"'normal! g`"'"'"
 alias vv="vim ~/.vimrc"
@@ -217,8 +217,8 @@ export LC_ALL=en_US.UTF-8
 export OPENAI_API_KEY=
 
 # Python
-export PYTHON_AUTO_VRUN=true
-export PYTHON_VENV_NAME=".venv"
+# export PYTHON_AUTO_VRUN=true
+# export PYTHON_VENV_NAME=".venv"
 
 # Terraform/Terragrunt - set cache in one place
 export TERRAGRUNT_LOCAL="true"
