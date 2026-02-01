@@ -1,0 +1,174 @@
+{{!-- PRD context (if available) --}}
+{{#if prdContent}}
+We are working in a project to implement the following Product Requirements Document (PRD):
+
+{{prdContent}}
+
+---
+{{/if}}
+
+## Bead Details
+- **ID**: {{taskId}}
+- **Title**: {{taskTitle}}
+{{#if epicId}}
+- **Epic**: {{epicId}}{{#if epicTitle}} - {{epicTitle}}{{/if}}
+{{/if}}
+{{#if taskDescription}}
+- **Description**: {{taskDescription}}
+{{/if}}
+
+{{#if acceptanceCriteria}}
+## Acceptance Criteria
+{{acceptanceCriteria}}
+{{/if}}
+
+{{#if dependsOn}}
+**Prerequisites**: {{dependsOn}}
+{{/if}}
+
+{{#if recentProgress}}
+## Recent Progress
+{{recentProgress}}
+{{/if}}
+
+# Iteration Instructions
+
+You are working on a beads issue in an autonomous iteration loop.
+
+## Your Task
+
+Complete the issue using the following the project guidelines and steps.
+
+NEVER ask for input, use your best judgement to meet the requirement.
+
+See AGENTS.md for:
+
+- Code quality standards
+- Commit message format
+- Testing requirements
+- Documentation style
+
+## Process
+
+1. **Verify issue is actionable**
+
+- Check if issue status is blocked: The issue details will show if status is "blocked"
+- If status is blocked, immediately exit with message: "Issue is blocked and requires manual review. Skipping autonomous execution."
+- Do NOT attempt to work on blocked issues - they need manual intervention
+
+2. **Check for existing work**
+
+- Check if PR already exists for this issue: `gh pr list --search "in:title issue-name"`
+- If PR exists, check its status and review state: `gh pr view <pr-number> --json reviewDecision,reviews`
+- If review state is "CHANGES_REQUESTED":
+  - Check review comments: `gh api repos/{owner}/{repo}/pulls/<pr-number>/reviews`
+  - Address each requested change
+  - Make the necessary code changes
+  - Push changes to update the PR
+  - Optionally reply to comments when addressed: `gh pr comment <pr-number> --body "Addressed in <commit-sha>"`
+- If reviews exist from `Copilot` (automated code review):
+  - Fetch detailed comments: `gh api repos/{owner}/{repo}/pulls/<pr-number>/comments`
+  - These are advisory/optional - use judgment on whether to address
+  - If the suggestion improves code quality, make the change
+  - If the suggestion is unnecessary or incorrect, resolve without changes
+- Review failing checks and error messages
+- If checks are failing, fix issues in a separate commit and push to update the PR
+- If no PR exists, check if branch exists: `git branch -a | grep feat/issue-name`
+- If branch exists remotely, checkout and continue: `git checkout feat/issue-name`
+
+3. **Create a worktree (if needed)**
+
+- Use `wt` (worktrunk) for worktree management to enable parallel work
+- Check current worktrees: `wt list`
+- Create a new worktree for the issue: `wt switch -c feat/issue-name` or `wt switch -c fix/issue-name`
+- If worktree already exists, switch to it: `wt switch feat/issue-name`
+- Each worktree has its own working directory, allowing parallel agent work
+- NEVER work directly on main
+
+4. **Understand the requirement**
+
+- Run `bd show {{taskId}}` to understand the issue
+- Read the issue details carefully
+- Check acceptance criteria if present
+- Review any referenced files or context
+
+5. **Check recent history**
+
+- Review the last 10 commits: `git log -10 --oneline`
+- Inspect each commit's changes: `git show <sha>`
+- Look for recent changes that impact the issue
+
+6. **Review**
+
+- Use any relevant MCP servers to understand documentation, code, etc. when needed
+- Investigate the codebase to find the root cause
+- Avoid repeating past mistakes
+- Apply successful patterns from history
+- Keep searches targeted; balance thoroughness with minimizing token/time usage
+- If you have already identified the target files, stop reading and start editing.
+
+7. **Make changes**
+
+- Follow coding standards in AGENTS.md
+- Make small, atomic commits
+- Write clear conventional commit messages
+
+8. **Test your changes**
+
+- Create unit tests for your fix (create any test files if needed)
+- Create any integration tests if applicable
+- Run checks: `task check` (runs fmt, lint, and test) when available
+- Verify no regressions
+- Fix any and all failures before continuing
+
+9. **Update documentation**
+
+- Create or update docs for new or changed functionality before committing
+
+10. **Report findings** (optional)
+
+- If you discover important learnings, wrap them in tags:
+- `<findings>Your learning here</findings>`
+- Be specific and actionable
+- Add the findings to the `## Findings` section in AGENTS.md
+
+11. **Complete and push**
+
+- Stage ONLY your code changes (NOT .beads/): `git restore .beads/`
+- Ensure branch is synced with main: `git pull --rebase origin main`
+- Push feature branch: `git push -u origin <branch-name>`
+- Create or update pull request: `gh pr create --title "type: description" --body "Detailed explanation"`
+- Add the `vibes` label to the PR: `gh pr edit <pr-number> --add-label vibes`
+- Check PR status: `gh pr checks` (do NOT use --watch flag as tests can take several minutes)
+- If checks fail, fix issues in a separate commit and push to update PR
+- If required tools or auth are unavailable, stop and report the blocker
+- Close the bead: `bd close {{taskId}} --db {{beadsDbPath}} --reason "Completed"`
+- When task is complete, output: `<promise>COMPLETE</promise>`
+- Update issue status if appropriate
+- When PR is merged, clean up worktree: `wt merge` (squashes, merges, and removes worktree)
+
+## Guidelines
+
+- IMMEDIATELY check if issue status is "blocked" at the start - if blocked, exit with message and do NOT proceed
+- ALWAYS check for existing PR first before creating a new worktree
+- Use `wt switch -c <branch>` to create worktrees for parallel work on multiple issues
+- If PR review state is "CHANGES_REQUESTED", address ALL requested changes before continuing
+- If PR review state is "APPROVED" or "COMMENTED" (without changes requested), no action needed on comments
+- Copilot reviews are advisory - apply suggestions that improve quality, skip those that don't add value
+- NEVER commit to main directly. Always work in a worktree on a feature branch
+- Do NOT include .beads/ in your commit - run 'git restore .beads/' before staging
+- Use `bd close` with the beads DB path so Ralph can track completion
+- MUST push feature branch and create PR before signaling completion
+- MUST verify all PR checks pass before signaling completion
+- NEVER use 'gh pr checks --watch' as it blocks indefinitely - use 'gh pr checks' without --watch
+- If PR checks fail, fix issues in a separate commit (not amend)
+- PR description must explain why changes are needed (not just what changed)
+- All lint and test violations MUST be fixed before committing
+- Write meaningful tests that cover the changes
+- When addressing review comments, make changes in separate commits (not amend)
+- If required tools or auth are unavailable, stop and report the blocker and push to update the PR
+
+Wait for issue context, then proceed.
+
+When finished, signal completion with:
+<promise>COMPLETE</promise>
