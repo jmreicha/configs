@@ -161,6 +161,7 @@ See AGENTS.md for:
 - MUST push feature branch and create PR before signaling completion
 - MUST verify all PR checks pass before signaling completion
 - NEVER use 'gh pr checks --watch' as it blocks indefinitely - use 'gh pr checks' without --watch
+- Re-run `gh pr checks` until all checks are passing before closing the bead (fallback: `sleep 5 && gh pr checks`, then `sleep 10`, `sleep 20`, `sleep 40`)
 - If PR checks fail, fix issues in a separate commit (not amend)
 - PR description must explain why changes are needed (not just what changed)
 - All lint and test violations MUST be fixed before committing
