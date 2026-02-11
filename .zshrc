@@ -114,6 +114,9 @@ setopt HIST_IGNORE_ALL_DUPS
 # Aliases
 #########
 
+# Agents
+alias claude="claude --dangerously-skip-permissions"
+
 # AWS
 alias av="aws-vault"
 
@@ -153,7 +156,6 @@ alias zz="vim ~/.zshrc"
 # Node tools
 alias amp="npx --yes @sourcegraph/amp"
 alias cdk="npx --yes aws-cdk@latest"
-alias claude="npx --yes anthropic-ai/claude-code@latest"
 alias copilot="npx --yes @github/copilot --allow-all-tools --allow-all-paths --allow-all-urls"
 alias iam-convert="npx --yes @cloud-copilot/iam-convert"
 alias iam-expand="npx --yes @cloud-copilot/iam-expand"
