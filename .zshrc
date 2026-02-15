@@ -154,6 +154,7 @@ alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
 
 # Node tools
+alias agnix="npx --yes agnix@latest"
 alias amp="npx --yes @sourcegraph/amp"
 alias cdk="npx --yes aws-cdk@latest"
 alias copilot="npx --yes @github/copilot --allow-all-tools --allow-all-paths --allow-all-urls"
@@ -162,6 +163,7 @@ alias iam-expand="npx --yes @cloud-copilot/iam-expand"
 alias iam-shrink="npx --yes @cloud-copilot/iam-shrink"
 alias ralph="npx --yes ralph-tui@latest"
 alias renovate="npx --yes renovate@latest"
+alias skills="npx --yes skills@latest"
 alias wrangler="npx --yes wrangler@latest"
 
 # Python tools
