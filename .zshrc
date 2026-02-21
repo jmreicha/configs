@@ -217,9 +217,6 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# OpenAI
-export OPENAI_API_KEY=
-
 # Python
 # export PYTHON_AUTO_VRUN=true
 # export PYTHON_VENV_NAME=".venv"
