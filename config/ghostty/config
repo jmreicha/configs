@@ -4,6 +4,10 @@ cursor-style = block
 shell-integration-features = no-cursor
 cursor-style-blink = true
 
+# Notifications
+bell-features = system
+bell-features = attention
+
 # Display
 fullscreen = true
 background-opacity = .7
