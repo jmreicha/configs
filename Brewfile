@@ -159,6 +159,7 @@ brew "steveyegge/beads/bd"
 brew "sysdig"
 brew "tabiew"
 brew "tailpipe"
+brew “tailscale”
 brew "tcpdump"
 brew "television"
 brew "tenv"
