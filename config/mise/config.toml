@@ -1,0 +1,6 @@
+[settings]
+idiomatic_version_file_enable_tools = ["go", "node", "python"]
+
+[tools]
+go = "latest"
+node = "lts"

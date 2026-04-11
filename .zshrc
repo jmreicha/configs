@@ -8,6 +8,11 @@ fi
 # Exit if not interactive shell
 [[ $- != *i* ]] && return
 
+# Homebrew (Linux)
+if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 #######
 # Zinit
 #######

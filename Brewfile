@@ -33,11 +33,11 @@ brew "aws-vault"
 brew "awscurl"
 brew "bash"
 brew "bat"
-brew "bats-assert"
 brew "bats-core"
-brew "bats-detik"
-brew "bats-file"
-brew "bats-support"
+brew "bats-core/bats-core/bats-assert"
+brew "bats-core/bats-core/bats-detik"
+brew "bats-core/bats-core/bats-file"
+brew "bats-core/bats-core/bats-support"
 brew "beads"
 brew "cfn-lint"
 brew "cfssl"
@@ -45,7 +45,6 @@ brew "checkov"
 brew "cloud-nuke"
 brew "cloudformation-guard"
 brew "cmctl"
-brew "colima"
 brew "colordiff"
 brew "commitizen"
 brew "conftest"
@@ -109,13 +108,12 @@ brew "lazydocker"
 brew "lazygit"
 brew "lazyssh"
 brew "lazysql"
-brew "lima"
-brew "localstack-cli"
+brew "localstack"
 brew "ls-lint"
 brew "lychee"
 brew "mise"
 brew "mkcert"
-brew "mole"
+brew "mole" if OS.mac?
 brew "mtr"
 brew "mycli"
 brew "nmap"
@@ -126,8 +124,6 @@ brew "oven-sh/bun/bun"
 brew "pandoc"
 brew "pgcli"
 brew "pinentry"
-brew "pinentry-mac"
-brew "pinentry-touchid"
 brew "pluto"
 brew "polaris"
 brew "popeye"
@@ -154,6 +150,7 @@ brew "starship"
 brew "steampipe"
 brew "sysdig"
 brew "tabiew"
+brew "talosctl"
 brew "tailpipe"
 brew "tailscale"
 brew "tcpdump"
@@ -180,34 +177,45 @@ brew "yq"
 brew "zizmor"
 brew "zoxide"
 
-# GUI tools
-cask "1password"
-cask "1password-cli"
-cask "arc"
-# cask "battery"
-cask "chatgpt"
-cask "claude-code"
-cask "codex"
-cask "dbeaver-community"
-cask "drawio"
-cask "firefox"
-cask "font-meslo-lg-nerd-font"
-cask "gcloud-cli"
-cask "ghostty"
-cask "iterm2"
-cask "jmreicha/tap/cfgctl"
-cask "kamillobinski/thock/thock"
-cask "maccy"
-cask "nova"
-cask "obsidian"
-cask "openlens"
-cask "raycast"
-cask "session-manager-plugin"
-cask "slack"
-cask "stats"
-cask "stratoshark"
-cask "steipete/tap/codexbar"
-cask "visual-studio-code"
-cask "wezterm"
-cask "zed"
-cask "zen"
+# macOS-only CLI tools
+brew "colima" if OS.mac?
+brew "lima" if OS.mac?
+brew "mole" if OS.mac?
+brew "pinentry-mac" if OS.mac?
+brew "pinentry-touchid" if OS.mac?
+
+# Linux-only CLI tools
+brew "strace" if OS.linux?
+
+
+# GUI tools (macOS only)
+cask "1password" if OS.mac?
+cask "1password-cli" if OS.mac?
+cask "arc" if OS.mac?
+# cask "battery" if OS.mac?
+cask "chatgpt" if OS.mac?
+cask "claude-code" if OS.mac?
+cask "codex" if OS.mac?
+cask "dbeaver-community" if OS.mac?
+cask "drawio" if OS.mac?
+cask "firefox" if OS.mac?
+cask "font-meslo-lg-nerd-font" if OS.mac?
+cask "gcloud-cli" if OS.mac?
+cask "ghostty" if OS.mac?
+cask "iterm2" if OS.mac?
+cask "jmreicha/tap/cfgctl" if OS.mac?
+cask "kamillobinski/thock/thock" if OS.mac?
+cask "maccy" if OS.mac?
+cask "nova" if OS.mac?
+cask "obsidian" if OS.mac?
+cask "openlens" if OS.mac?
+cask "raycast" if OS.mac?
+cask "session-manager-plugin" if OS.mac?
+cask "slack" if OS.mac?
+cask "stats" if OS.mac?
+cask "stratoshark" if OS.mac?
+cask "steipete/tap/codexbar" if OS.mac?
+cask "visual-studio-code" if OS.mac?
+cask "wezterm" if OS.mac?
+cask "zed" if OS.mac?
+cask "zen" if OS.mac?

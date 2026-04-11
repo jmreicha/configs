@@ -4,4 +4,8 @@
 Include ~/.orbstack/ssh/config
 
 Host *
-	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+	# Normalized path for 1Password SSH agent — works on both macOS and Linux.
+	# On Linux, 1Password creates this socket natively.
+	# On macOS, install.sh configure() creates a symlink here pointing to the
+	# actual socket at ~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock
+	IdentityAgent "~/.1password/agent.sock"

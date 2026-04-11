@@ -3,31 +3,11 @@
 # A cross platform installation script for basic setup including tools and other
 # configurations.
 
-# TODO
-# Make a runner user for Arch to test AUR package installs - https://blog.ganssle.io/articles/2019/12/gitlab-ci-arch-pkg.html
-# Make the install() function more DRY - reusable approach to passing different options for OSes
-# Caching for packages
-
 set -eou pipefail
-
-ALPINE_TOOLS="yq docker python3-dev py3-pip fd colordiff ca-certificates openssl ncurses coreutils python2 make gcc g++ libgcc linux-headers grep util-linux binutils findutils libressl-dev openssl-dev musl-dev libffi-dev rust cargo sudo zsh libstdc++ direnv bat pass shfmt"
-ARCH_TOOLS="python-pip fd go unzip base-devel fakeroot sudo bat shfmt"
-COMMON_TOOLS="git jq shellcheck fzf ripgrep yamllint highlight pandoc zip exa vim curl wget zoxide"
-DEBIAN_TOOLS="fd-find colordiff python3-pip ondir build-essential locales"
-LINUX_TOOLS="pass tmux zsh"
-NODE_TOOLS="bash-language-server fixjson"
-PY_TOOLS="ansible ansible-lint pylint flake8 bashate pre-commit isort virtualenvwrapper commitizen"
-
-ARCH_EXTRAS="docker ondir-git hadolint-bin colordiff yq direnv-bin bat bat-extras \
-    kubectl kubectx kube-linter k9s helm krew-bin \
-    tfenv tgenv terraform-ls tfsec-bin tflint-bin"
-
-# DEBIAN_EXTRAS="terraform-ls kubectx yq docker hadolint bat direnv"
-
-COMPOSE_VERSION="v2.0.1"
 
 set_env() {
     CI=${CI:-false}
+    RUNNER_PATH=""
     # Set options for running in CI
     if [[ $CI = true ]]; then
         if grep ID=ubuntu /etc/os-release; then
@@ -62,88 +42,8 @@ set_env_paths() {
     mkdir -p "$HOME/.config"
 }
 
-_alpine() {
-    $sudo apk update --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
-    if [[ $UPDATE ]]; then
-        $sudo apk upgrade --available --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
-        return
-    fi
-    touch "$HOME/.bashrc"
-    install_cmd="apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing"
-    echo "Installing tools: $COMMON_TOOLS $ALPINE_TOOLS"
-    $sudo $install_cmd $COMMON_TOOLS $ALPINE_TOOLS
-    if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
-        echo "Installing Python tools: $PY_TOOLS"
-        pip install wheel
-        pip install $PY_TOOLS
-    fi
-}
 
-_arch() {
-    # Assume we have yay install if we're trying to update
-    if [[ $UPDATE ]]; then
-        yay -Syu --noconfirm
-        return
-    fi
-    $sudo pacman -Syu --noconfirm
-    echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS"
-    $sudo pacman -S --needed --noconfirm $COMMON_TOOLS $LINUX_TOOLS $ARCH_TOOLS
-    # Skip yay install for now if we are running as the root user (CI)
-    if [[ $EUID != 0 ]]; then
-        echo "Installing extras: $ARCH_EXTRAS"
-        yay_cmd="yay -S --needed --noconfirm"
-        if ! yay -V &>/dev/null; then install_yay; fi
-        # Update package list
-        $yay_cmd $ARCH_EXTRAS
-    fi
-    echo "Installing Python tools: $PY_TOOLS"
-    pip install $PY_TOOLS
-}
-
-_bsd() {
-    echo
-}
-
-_fonts() {
-    if [[ ! -d $HOME/.local/share/fonts ]]; then
-        $sudo apt install fontconfig
-        cd ~
-        wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
-        mkdir -p .local/share/fonts
-        unzip Meslo.zip -d .local/share/fonts
-        cd .local/share/fonts
-        rm *Windows*
-        cd ~
-        rm Meslo.zip
-        fc-cache -fv
-    fi
-}
-
-_debian() {
-    $sudo apt update -y
-    if [[ $UPDATE ]]; then
-        $sudo apt upgrade
-        return
-    fi
-    install_cmd="$sudo apt install -y"
-    echo "Installing tools: $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS"
-    $install_cmd $COMMON_TOOLS $LINUX_TOOLS $DEBIAN_TOOLS
-    echo "Installing Python tools: $PY_TOOLS"
-    pip install $PY_TOOLS
-
-    # Install fonts for extra glyphs
-    _fonts
-
-    # Set the default locale otherwise the installer stops to configure it
-    $sudo sh -c "echo \"en_US.UTF-8 UTF-8\" >> /etc/locale.gen"
-    $sudo locale-gen
-}
-
-_gentoo() {
-    echo
-}
-
-_macos() {
+_brew_install() {
     brew analytics off
     brew update
     if [[ $UPDATE ]]; then
@@ -154,6 +54,108 @@ _macos() {
     brew bundle install || true
     brew update
     brew bundle install
+}
+
+_install_system_deps() {
+    # Install system-level dependencies that should not be managed by Homebrew.
+    # These are tools that require daemon/systemd integration or deep OS-level
+    # setup that brew cannot handle on Linux.
+    local pacman_pkgs=()
+    local apt_pkgs=()
+    local apk_pkgs=()
+
+    if ! command -v zsh &>/dev/null; then
+        pacman_pkgs+=(zsh)
+        apt_pkgs+=(zsh)
+        apk_pkgs+=(zsh)
+    fi
+
+    if ! command -v docker &>/dev/null; then
+        pacman_pkgs+=(docker docker-compose)
+        apt_pkgs+=(docker.io docker-compose)
+        apk_pkgs+=(docker docker-compose)
+    fi
+
+    if command -v pacman &>/dev/null; then
+        if [[ ${#pacman_pkgs[@]} -gt 0 ]]; then
+            echo "Installing system deps: ${pacman_pkgs[*]}"
+            $sudo pacman -S --needed --noconfirm "${pacman_pkgs[@]}"
+            if [[ " ${pacman_pkgs[*]} " == *" docker "* ]]; then
+                $sudo systemctl enable --now docker
+                $sudo usermod -aG docker "$USER"
+            fi
+        fi
+        # AUR packages
+        if command -v yay &>/dev/null; then
+            if ! yay -Qi zen-browser-bin &>/dev/null; then
+                echo "Installing zen-browser-bin"
+                yay -S --needed --noconfirm zen-browser-bin
+            fi
+        fi
+    elif command -v apt &>/dev/null; then
+        $sudo apt update -y
+        if [[ ${#apt_pkgs[@]} -gt 0 ]]; then
+            echo "Installing system deps: ${apt_pkgs[*]}"
+            $sudo apt install -y "${apt_pkgs[@]}"
+            if [[ " ${apt_pkgs[*]} " == *" docker.io "* ]]; then
+                $sudo systemctl enable --now docker
+                $sudo usermod -aG docker "$USER"
+            fi
+        fi
+        # Install Meslo Nerd Fonts for extra glyphs
+        if [[ ! -d $HOME/.local/share/fonts ]]; then
+            echo "Installing Meslo Nerd Fonts"
+            $sudo apt install -y fontconfig
+            wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip -P /tmp
+            mkdir -p "$HOME/.local/share/fonts"
+            unzip /tmp/Meslo.zip -d "$HOME/.local/share/fonts"
+            rm "$HOME/.local/share/fonts"/*Windows* /tmp/Meslo.zip
+            fc-cache -fv
+        fi
+        # Set default locale to avoid installer prompts
+        $sudo sh -c "echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen"
+        $sudo locale-gen
+    elif command -v apk &>/dev/null; then
+        if [[ ${#apk_pkgs[@]} -gt 0 ]]; then
+            echo "Installing system deps: ${apk_pkgs[*]}"
+            $sudo apk add "${apk_pkgs[@]}"
+            if [[ " ${apk_pkgs[*]} " == *" docker "* ]]; then
+                $sudo rc-update add docker default
+                $sudo addgroup "$USER" docker
+            fi
+        fi
+    else
+        echo "Warning: could not detect system package manager, skipping system deps"
+    fi
+}
+
+_linux_brew() {
+    _install_system_deps
+
+    # Add Homebrew to PATH for the current session if already installed
+    if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [[ -d "$HOME/.linuxbrew" ]]; then
+        eval "$("$HOME/.linuxbrew/bin/brew shellenv")"
+    fi
+
+    # Install Homebrew if still not available
+    if ! command -v brew &>/dev/null; then
+        echo "Installing Homebrew"
+        NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        # Re-initialize shellenv after fresh install
+        if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        elif [[ -d "$HOME/.linuxbrew" ]]; then
+            eval "$("$HOME/.linuxbrew/bin/brew shellenv")"
+        fi
+    fi
+
+    _brew_install
+}
+
+_macos() {
+    _brew_install
 
     # AWS CLI
     if ! command -v aws &>/dev/null; then
@@ -173,107 +175,27 @@ _macos() {
     defaults write -g ApplePressAndHoldEnabled -bool false
 }
 
-_nix() {
-    # Link configs
-    rm -rf ~/.zshrc && ln -s ~/configs/.zshrc ~/.zshrc
-    rm -rf ~/.config/starship.toml && ln -s ~/configs/config/starship/starship.toml ~/.config/starship.toml
-
-    # Vim
-    curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    rm -rf ~/.vimrc && ln -s ~/configs/.vimrc ~/.vimrc
-
-    # OSX
-    if [[ "$(uname -s)" = "Darwin" ]]; then
-        # This step needs sudo
-        if ! command -v nix-build; then
-            # TODO: run the original script to update the config file needed to map /run dir
-            #curl -L https://nixos.org/nix/install | sh -s -- --daemon --darwin-use-unencrypted-nix-store-volume
-            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sudo sh -s -- install
-        fi
-
-        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-            set +u
-            . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-            set -u
-        fi
-
-        mkdir -p ~/.nixpkgs && rm -rf ~/.nixpkgs/darwin-configuration.nix && ln -s ~/configs/nix/darwin-configuration.nix ~/.nixpkgs/darwin-configuration.nix
-        nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-
-        if ! command -v darwin-rebuild; then
-            ./result/bin/darwin-installer
-            exec zsh
-        fi
-
-        # Either move or chown config files created by nix installer
-        sudo mv /etc/bashrc /etc/bashrc.old
-        sudo mv /etc/zshrc /etc/zshrc.old
-        sudo chown $(id -un) /etc/nix/nix.conf
-        darwin-rebuild switch
-        exec zsh
-    else
-        # NIXOS
-        ln -s ~/configs/nix/configuration.nix ~/.nixpkgs/configuration.nix
-        nixos-rebuild switch
-    fi
-
-    # Extra channels
-    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-    nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
-    nix-channel --update
-    sudo nix-channel --update
-
-    # Home manager
-    nix-shell '<home-manager>' -A install
-    # mkdir -p ~/.config/nixpkgs && ln -s ~/configs/nix/home.nix ~/.config/nixpkgs/home.nix
-    mkdir -p ~/.config/home-manager && rm -rf ~/.config/home-manager/home.nix && ln -s ~/configs/nix/home.nix ~/.config/home-manager/home.nix
-    home-manager switch
-}
-
-_ubuntu() {
-    $sudo apt update -y
-    if [[ $UPDATE ]]; then
-        $sudo apt upgrade
-        return
-    fi
-    install_cmd="$sudo apt install -y --ignore-missing"
-    echo "Installing tools: ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS"
-    $install_cmd ${COMMON_TOOLS//exa/} $LINUX_TOOLS $DEBIAN_TOOLS
-    echo "Installing Python tools: $PY_TOOLS"
-    pip install $PY_TOOLS
-
-    # Install fonts for extra glyphs
-    _fonts
-}
 
 install() {
     set_env
     mkdir -p "$HOME/.config"
-    if grep ID=arch /etc/os-release >/dev/null 2>&1; then
-        _arch
-    elif grep ID=debian /etc/os-release >/dev/null 2>&1; then
-        _debian
-    elif grep ID=ubuntu /etc/os-release >/dev/null 2>&1; then
-        _ubuntu
-    elif grep ID=pop /etc/os-release >/dev/null 2>&1; then
-        _ubuntu
-    elif grep ID=alpine /etc/os-release >/dev/null 2>&1; then
-        _alpine
-    elif [[ "$(uname -s)" = "Darwin" ]]; then
+    if [[ "$(uname -s)" = "Darwin" ]]; then
         echo "Sudo password is required for installing rosetta and homebrew"
         sudo softwareupdate --install-rosetta --agree-to-license
         PATH=$PATH:/opt/homebrew/bin
         if ! command -v brew &>/dev/null; then
-            NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
         _macos
         #_nix
 
-        # No need to run custom installs for below Linux systems
+        # No need to run custom installs for Linux systems
         return
+    elif [[ "$(uname -s)" = "Linux" ]]; then
+        _linux_brew
     else
-        echo "Unkown OS"
-        exit 0
+        echo "Unknown OS"
+        exit 1
     fi
 
     # TODO: Golang
@@ -281,46 +203,36 @@ install() {
     # goenv global 1.24
     # go install -v golang.org/x/tools/gopls@latest
 
-    # Install starship across all systems
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
-
     if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_awscli
-        echo "Finished installing packages and tools"
     fi
+    echo "Finished installing packages and tools"
 }
 
 ### Non-packaged tools
-
-install_yay() {
-    git clone https://aur.archlinux.org/yay-bin.git
-    pushd yay-bin
-    makepkg -si
-    popd
-    rm -rf yay-bin
-}
 
 install_awscli() {
     if ! aws --version &>/dev/null; then
         echo "Installing AWS CLI"
         # Grab the newest version by default
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip -qq awscliv2.zip
+        unzip -qq -o awscliv2.zip
         $sudo ./aws/install
         rm -rf aws*
     fi
 }
 
-install_docker_compose() {
-    # https://docs.docker.com/compose/cli-command/#installing-compose-v2
-    mkdir -p ~/.docker/cli-plugins/
-    curl -SL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-    chmod +x ~/.docker/cli-plugins/docker-compose
-}
 
 configure() {
     # git pull
     echo "Configuring environment"
+
+    # Ensure Homebrew tools are available
+    if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [[ -d "$HOME/.linuxbrew" ]]; then
+        eval "$("$HOME/.linuxbrew/bin/brew shellenv")"
+    fi
 
     # Create extra directories if they don't exist
     mkdir -p "$HOME/.aws"
@@ -349,19 +261,18 @@ configure() {
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
+    mkdir -p "$HOME/.config/mise"
+    rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"
+    mkdir -p "$HOME/.config/uwsm"
+    rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
+    # On macOS, 1Password agent socket lives in a different path — create a
+    # normalized symlink so SSH config can use ~/.1password/agent.sock on both platforms
+    if [[ "$(uname -s)" = "Darwin" ]]; then
+        mkdir -p "$HOME/.1password"
+        ln -sf "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" "$HOME/.1password/agent.sock"
+    fi
 
-    # TODO: Switch this to config file
-    mise settings add idiomatic_version_file_enable_tools go
-    mise settings add idiomatic_version_file_enable_tools node
-    mise settings add idiomatic_version_file_enable_tools python
-
-    echo "Configuring global go"
-    mise use --global go@latest
-
-    echo "Configuring global nodejs"
-    mise use --global node@lts
-
-    echo "Confiugring global pre-commit hooks"
+    echo "Configuring global pre-commit hooks"
     pre-commit init-templatedir ~/.git-template --hook-type commit-msg -t post-commit -t pre-commit
 
     echo "Configuring Vim"
@@ -385,9 +296,22 @@ configure() {
 
 switch_shell() {
     if [[ ! $CI ]]; then
-        if [[ $SHELL != "/usr/bin/zsh" ]]; then
+        # Skip chsh on omarchy systems -- omarchy's boot chain requires bash as
+        # the login shell. Configure the terminal emulator to launch zsh instead.
+        if [[ -d "$HOME/.local/share/omarchy" ]]; then
+            echo "Omarchy detected: skipping login shell change (configure terminal emulator to use zsh)"
+            exec zsh
+            return
+        fi
+        local zsh_path
+        zsh_path="$(which zsh)"
+        if [[ $SHELL != "$zsh_path" ]]; then
             echo "Switching to zsh"
-            chsh -s "$(which zsh)"
+            # On Linux, brew's zsh won't be in /etc/shells by default
+            if [[ "$(uname -s)" = "Linux" ]] && ! grep -qF "$zsh_path" /etc/shells; then
+                echo "$zsh_path" | $sudo tee -a /etc/shells
+            fi
+            chsh -s "$zsh_path"
         fi
         echo "Non CI environment detected, reloading shell"
         exec zsh
@@ -451,12 +375,6 @@ main() {
     --update)
         UPDATE=true
         install
-        ;;
-    --all)
-        install
-        configure
-        # Change the shell as the last step because it is interactive
-        switch_shell
         ;;
     --extras)
         extras
