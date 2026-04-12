@@ -1,20 +1,8 @@
 # Custom sources
-tap "adembc/homebrew-tap"
-tap "alexnabokikh/tfsort"
-tap "anomalyco/tap"
-tap "aws/tap"
 tap "bats-core/bats-core"
-tap "busser/tap"
-tap "common-fate/granted"
-tap "derailed/popeye"
-tap "ekristen/tap"
-tap "fairwindsops/tap"
 tap "hashicorp/tap"
 tap "huseyinbabal/tap"
-tap "iann0036/iamlive"
 tap "jorgelbg/tap"
-tap "localstack/tap"
-tap "max-sixty/worktrunk"
 tap "turbot/tap"
 tap "ymtdzzz/tap"
 
@@ -87,7 +75,7 @@ brew "hl"
 brew "htop"
 brew "huseyinbabal/tap/taws"
 brew "hyperfine"
-brew "iamlive"
+brew "iann0036/iamlive/iamlive"
 brew "ingress2gateway"
 brew "iperf3"
 brew "jenv"
@@ -119,7 +107,7 @@ brew "mycli"
 brew "nmap"
 brew "ollama"
 brew "opencode"
-brew "otel-tui"
+brew "ymtdzzz/tap/otel-tui"
 brew "oven-sh/bun/bun"
 brew "pandoc"
 brew "pgcli"
@@ -182,7 +170,7 @@ brew "colima" if OS.mac?
 brew "lima" if OS.mac?
 brew "mole" if OS.mac?
 brew "pinentry-mac" if OS.mac?
-brew "pinentry-touchid" if OS.mac?
+brew "jorgelbg/tap/pinentry-touchid" if OS.mac?
 
 # Linux-only CLI tools
 brew "strace" if OS.linux?

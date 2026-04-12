@@ -1,5 +1,6 @@
 [settings]
 idiomatic_version_file_enable_tools = ["go", "node", "python"]
+node.verify = false
 
 [tools]
 go = "latest"

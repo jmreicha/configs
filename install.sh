@@ -5,6 +5,10 @@
 
 set -eou pipefail
 
+green() {
+    echo -e "\033[0;32m$*\033[0m"
+}
+
 set_env() {
     CI=${CI:-false}
     RUNNER_PATH=""
@@ -42,7 +46,6 @@ set_env_paths() {
     mkdir -p "$HOME/.config"
 }
 
-
 _brew_install() {
     brew analytics off
     brew update
@@ -50,7 +53,7 @@ _brew_install() {
         brew upgrade
         return
     fi
-    echo "Installing tools from Brewfile"
+    green "Installing tools from Brewfile"
     brew bundle install || true
     brew update
     brew bundle install
@@ -78,7 +81,7 @@ _install_system_deps() {
 
     if command -v pacman &>/dev/null; then
         if [[ ${#pacman_pkgs[@]} -gt 0 ]]; then
-            echo "Installing system deps: ${pacman_pkgs[*]}"
+            green "Installing system deps: ${pacman_pkgs[*]}"
             $sudo pacman -S --needed --noconfirm "${pacman_pkgs[@]}"
             if [[ " ${pacman_pkgs[*]} " == *" docker "* ]]; then
                 $sudo systemctl enable --now docker
@@ -88,14 +91,14 @@ _install_system_deps() {
         # AUR packages
         if command -v yay &>/dev/null; then
             if ! yay -Qi zen-browser-bin &>/dev/null; then
-                echo "Installing zen-browser-bin"
+                green "Installing zen-browser-bin"
                 yay -S --needed --noconfirm zen-browser-bin
             fi
         fi
     elif command -v apt &>/dev/null; then
         $sudo apt update -y
         if [[ ${#apt_pkgs[@]} -gt 0 ]]; then
-            echo "Installing system deps: ${apt_pkgs[*]}"
+            green "Installing system deps: ${apt_pkgs[*]}"
             $sudo apt install -y "${apt_pkgs[@]}"
             if [[ " ${apt_pkgs[*]} " == *" docker.io "* ]]; then
                 $sudo systemctl enable --now docker
@@ -104,7 +107,7 @@ _install_system_deps() {
         fi
         # Install Meslo Nerd Fonts for extra glyphs
         if [[ ! -d $HOME/.local/share/fonts ]]; then
-            echo "Installing Meslo Nerd Fonts"
+            green "Installing Meslo Nerd Fonts"
             $sudo apt install -y fontconfig
             wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip -P /tmp
             mkdir -p "$HOME/.local/share/fonts"
@@ -117,7 +120,7 @@ _install_system_deps() {
         $sudo locale-gen
     elif command -v apk &>/dev/null; then
         if [[ ${#apk_pkgs[@]} -gt 0 ]]; then
-            echo "Installing system deps: ${apk_pkgs[*]}"
+            green "Installing system deps: ${apk_pkgs[*]}"
             $sudo apk add "${apk_pkgs[@]}"
             if [[ " ${apk_pkgs[*]} " == *" docker "* ]]; then
                 $sudo rc-update add docker default
@@ -141,7 +144,7 @@ _linux_brew() {
 
     # Install Homebrew if still not available
     if ! command -v brew &>/dev/null; then
-        echo "Installing Homebrew"
+        green "Installing Homebrew"
         NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         # Re-initialize shellenv after fresh install
         if [[ -d /home/linuxbrew/.linuxbrew ]]; then
@@ -159,14 +162,14 @@ _macos() {
 
     # AWS CLI
     if ! command -v aws &>/dev/null; then
-        echo "Installing AWS CLI"
+        green "Installing AWS CLI"
         curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
         sudo installer -pkg AWSCLIV2.pkg -target /
     fi
 
     # Spotify
     if ! [[ -d /Applications/Spotify.app ]]; then
-        echo "Installing and configuring Spotify"
+        green "Installing and configuring Spotify"
         brew install --cask spotify
         bash <(curl -sSL https://spotx-official.github.io/run.sh) --blockupdates
     fi
@@ -175,12 +178,11 @@ _macos() {
     defaults write -g ApplePressAndHoldEnabled -bool false
 }
 
-
 install() {
     set_env
     mkdir -p "$HOME/.config"
     if [[ "$(uname -s)" = "Darwin" ]]; then
-        echo "Sudo password is required for installing rosetta and homebrew"
+        green "Sudo password is required for installing rosetta and homebrew"
         sudo softwareupdate --install-rosetta --agree-to-license
         PATH=$PATH:/opt/homebrew/bin
         if ! command -v brew &>/dev/null; then
@@ -206,14 +208,14 @@ install() {
     if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_awscli
     fi
-    echo "Finished installing packages and tools"
+    green "Finished installing packages and tools"
 }
 
 ### Non-packaged tools
 
 install_awscli() {
     if ! aws --version &>/dev/null; then
-        echo "Installing AWS CLI"
+        green "Installing AWS CLI"
         # Grab the newest version by default
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
         unzip -qq -o awscliv2.zip
@@ -222,10 +224,9 @@ install_awscli() {
     fi
 }
 
-
 configure() {
     # git pull
-    echo "Configuring environment"
+    green "Configuring environment"
 
     # Ensure Homebrew tools are available
     if [[ -d /home/linuxbrew/.linuxbrew ]]; then
@@ -238,6 +239,8 @@ configure() {
     mkdir -p "$HOME/.aws"
     mkdir -p "$HOME/.config/ghostty"
     mkdir -p "$HOME/.config/k9s"
+    mkdir -p "$HOME/.config/mise"
+    mkdir -p "$HOME/.config/uwsm"
     mkdir -p "$HOME/.ssh"
     mkdir -p "$HOME/.terragrunt/plugins"
     mkdir -p "$HOME/git"
@@ -261,9 +264,7 @@ configure() {
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
-    mkdir -p "$HOME/.config/mise"
     rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"
-    mkdir -p "$HOME/.config/uwsm"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
     # On macOS, 1Password agent socket lives in a different path — create a
     # normalized symlink so SSH config can use ~/.1password/agent.sock on both platforms
@@ -272,10 +273,14 @@ configure() {
         ln -sf "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" "$HOME/.1password/agent.sock"
     fi
 
-    echo "Configuring global pre-commit hooks"
+    green "Configuring global pre-commit hooks"
     pre-commit init-templatedir ~/.git-template --hook-type commit-msg -t post-commit -t pre-commit
+    git config --global init.templateDir ~/.git-template
 
-    echo "Configuring Vim"
+    green "Configuring Mise"
+    mise install
+
+    green "Configuring Vim"
 
     if [[ ! -d $HOME/.vim/plugged ]]; then
         # Vim 8.2+ tools/plugins + coc plugins
@@ -291,7 +296,7 @@ configure() {
     # Quick check if configs are linked
     ls -lah "$HOME"
 
-    echo "Close this shell and open a new one to finish configuration"
+    green "Close this shell and open a new one to finish configuration"
 }
 
 switch_shell() {
@@ -299,21 +304,21 @@ switch_shell() {
         # Skip chsh on omarchy systems -- omarchy's boot chain requires bash as
         # the login shell. Configure the terminal emulator to launch zsh instead.
         if [[ -d "$HOME/.local/share/omarchy" ]]; then
-            echo "Omarchy detected: skipping login shell change (configure terminal emulator to use zsh)"
+            green "Omarchy detected: skipping login shell change (configure terminal emulator to use zsh)"
             exec zsh
             return
         fi
         local zsh_path
         zsh_path="$(which zsh)"
         if [[ $SHELL != "$zsh_path" ]]; then
-            echo "Switching to zsh"
+            green "Switching to zsh"
             # On Linux, brew's zsh won't be in /etc/shells by default
             if [[ "$(uname -s)" = "Linux" ]] && ! grep -qF "$zsh_path" /etc/shells; then
                 echo "$zsh_path" | $sudo tee -a /etc/shells
             fi
             chsh -s "$zsh_path"
         fi
-        echo "Non CI environment detected, reloading shell"
+        green "Non CI environment detected, reloading shell"
         exec zsh
     fi
 }
@@ -388,4 +393,4 @@ main() {
 
 main "$@"
 echo
-echo "Finished bootstrapping environment"
+green "Finished bootstrapping environment"
