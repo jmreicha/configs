@@ -155,6 +155,12 @@ _linux_brew() {
     fi
 
     _brew_install
+
+    # SpotX - patch Spotify if installed
+    if command -v spotify &>/dev/null; then
+        green "Patching Spotify with SpotX"
+        bash <(curl -sSL https://spotx-official.github.io/run.sh)
+    fi
 }
 
 _macos() {

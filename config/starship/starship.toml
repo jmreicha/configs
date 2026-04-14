@@ -88,7 +88,7 @@ format = "[$symbol$status]($style)"
 
 [cmd_duration]
 style = "#a8a8a8"
-format = "([ ❮ ](#767676)[$duration ]($style))"
+format = "([ ❮ ](#767676)[ $duration]($style))"
 
 ### Right prompt tools and versions
 
@@ -133,14 +133,14 @@ format = "([ ❮ ](#767676)[$symbol$context]($style))"
 
 [nix_shell]
 symbol = " "
-format = "[${symbol}nix ${state} ]($style)"
+format = "([ ❮ ](#767676)[${symbol}nix ${state}]($style))"
 
 [memory_usage]
 disabled = false
 threshold = -1
-symbol = ""
+symbol = ""
 style = "#5f8787"
-format = "([ ❮ ](#767676)[$ram_pct $symbol]($style))"
+format = "([ ❮ ](#767676)[ $ram_pct]($style))"
 
 [time]
 disabled = true
@@ -155,17 +155,17 @@ format = "[ ❮ ](#767676)[$symbol]($style)"
 
 [os.symbols]
 "Alpine" = ""
-"Arch" =  ""
+"Arch" = ""
 "CentOS" = ""
 "Debian" = ""
 "Fedora" = ""
 "Gentoo" = ""
-"Linux" =  ""
+"Linux" = ""
 "Macos" = ""
 "Manjaro" = ""
-"Mint" =  ""
-"NixOS" =  ""
-"Raspbian" =  ""
+"Mint" = ""
+"NixOS" = ""
+"Raspbian" = ""
 "Ubuntu" = ""
 "Windows" = ""
 
@@ -190,7 +190,7 @@ format = "([ ❮ ](#767676)[tf $output]($style))"
 description = "Show disk used"
 command = 'df -h --output=avail "$PWD" | tail -n 1'
 style = "#00af5f"
-format = "[ ❮ ](#767676)[$output ]($style)"
+format = "[ ❮ ](#767676)[ $output]($style)"
 when = "true"
 os = "linux"
 
@@ -198,7 +198,7 @@ os = "linux"
 description = "Show % of disk used"
 command = "df -k | grep -E '/dev/disk(1|3)s(3|4)' | awk '{ print $5 }' | head -n 1 | sed 's/%//'"
 style = "#00af5f"
-format = "[ ❮ ](#767676)[$output% ]($style)"
+format = "[ ❮ ](#767676)[ $output%]($style)"
 when = "true"
 os = "macos"
 
@@ -206,7 +206,7 @@ os = "macos"
 description = "Show load average"
 command = "cat /proc/loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([ ❮ ](#767676)[$output ]($style))"
+format = "([ ❮ ](#767676)[ $output]($style))"
 when = "true"
 os = "linux"
 
@@ -214,6 +214,6 @@ os = "linux"
 description = "Show load average"
 command = "sysctl -n vm.loadavg | cut -d' ' -f 2"
 style = "#5f8787"
-format = "([ ❮ ](#767676)[$output ]($style))"
+format = "([ ❮ ](#767676)[ $output]($style))"
 when = "true"
 os = "macos"
