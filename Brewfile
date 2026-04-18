@@ -46,6 +46,7 @@ brew "difftastic"
 brew "direnv"
 brew "dive"
 brew "doctl"
+brew "dolt"
 brew "dust"
 brew "entr"
 brew "eza"
@@ -96,18 +97,16 @@ brew "lazydocker"
 brew "lazygit"
 brew "lazyssh"
 brew "lazysql"
-brew "localstack"
+brew "localstack/tap/localstack-cli"
 brew "ls-lint"
 brew "lychee"
 brew "mise"
 brew "mkcert"
-brew "mole" if OS.mac?
 brew "mtr"
 brew "mycli"
 brew "nmap"
 brew "ollama"
 brew "opencode"
-brew "ymtdzzz/tap/otel-tui"
 brew "oven-sh/bun/bun"
 brew "pandoc"
 brew "pgcli"
@@ -129,6 +128,7 @@ brew "s5cmd"
 brew "showkey"
 brew "semgrep"
 brew "sevenzip"
+brew "sheeki03/tap/tirith"
 brew "shellcheck"
 brew "shfmt"
 brew "snitch"
@@ -165,16 +165,15 @@ brew "yq"
 brew "zizmor"
 brew "zoxide"
 
-# macOS-only CLI tools
+# OSX CLI tools
 brew "colima" if OS.mac?
 brew "lima" if OS.mac?
 brew "mole" if OS.mac?
 brew "pinentry-mac" if OS.mac?
 brew "jorgelbg/tap/pinentry-touchid" if OS.mac?
 
-# Linux-only CLI tools
+# Linux CLI tools
 brew "strace" if OS.linux?
-
 
 # GUI tools (macOS only)
 cask "1password" if OS.mac?

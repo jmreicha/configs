@@ -170,6 +170,7 @@ alias ralph="npx --yes ralph-tui@latest"
 alias renovate="npx --yes renovate@latest"
 alias skills="npx --yes skills@latest"
 alias wrangler="npx --yes wrangler@latest"
+alias cf="npx --yes cf@latest"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
@@ -179,7 +180,6 @@ alias octodns-dump="uvx --with octodns-route53 --with octodns-cloudflare --from 
 alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
 alias samlocal="uvx --from aws-sam-cli-local samlocal"
 alias tflocal="uvx --from terraform-local tflocal"
-alias wafw00f="uvx wafw00f"
 
 # Terraform
 alias tf="terraform"
@@ -371,10 +371,11 @@ complete -o nospace -C /Users/joshuareichardt/.tenv/OpenTofu/1.11.2/tofu tofu
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
 # Init
-_evalcache starship init zsh
-_evalcache zoxide init zsh
-_evalcache thefuck --alias f -y
 _evalcache mise activate zsh
+_evalcache starship init zsh
+_evalcache thefuck --alias f -y
+_evalcache tirith init --shell zsh
+_evalcache zoxide init zsh
 
 # Debug
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
