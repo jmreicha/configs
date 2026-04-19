@@ -86,6 +86,9 @@ ZSH_THEME=""
 # Skip insecure directory permissions check to speed up start time
 ZSH_DISABLE_COMPFIX="true"
 
+# Don't expand aliases before completion — lets compdef mappings work correctly
+setopt COMPLETE_ALIASES
+
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
 

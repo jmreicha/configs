@@ -118,7 +118,6 @@ brew "powerpipe"
 brew "pre-commit"
 brew "prek"
 brew "procs"
-brew "qwen-code"
 brew "rclone"
 brew "ripgrep"
 brew "rsync"
@@ -154,6 +153,7 @@ brew "tldr"
 brew "tree"
 brew "trivy"
 brew "trufflehog"
+brew "ty"
 brew "uv"
 brew "vim"
 brew "virtctl"
@@ -175,7 +175,7 @@ brew "jorgelbg/tap/pinentry-touchid" if OS.mac?
 # Linux CLI tools
 brew "strace" if OS.linux?
 
-# GUI tools (macOS only)
+# OSX GUI tools
 cask "1password" if OS.mac?
 cask "1password-cli" if OS.mac?
 cask "arc" if OS.mac?
@@ -183,6 +183,7 @@ cask "arc" if OS.mac?
 cask "chatgpt" if OS.mac?
 cask "claude-code" if OS.mac?
 cask "codex" if OS.mac?
+cask "common-repo/tap/common-repo" if OS.mac?
 cask "dbeaver-community" if OS.mac?
 cask "drawio" if OS.mac?
 cask "firefox" if OS.mac?
