@@ -8,6 +8,7 @@ tap "ymtdzzz/tap"
 
 # CLI tools
 brew "act"
+brew "action-validator"
 brew "adr-tools"
 brew "ansible"
 brew "ansible-lint"
