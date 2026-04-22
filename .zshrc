@@ -64,7 +64,8 @@ zinit wait light-mode lucid for \
 # autoload -U compinit; compinit
 
 # Load completions after plugins
-mkdir -p ~/.cache/zinit/completions
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zinit"
+mkdir -p "$ZSH_CACHE_DIR/completions"
 autoload -Uz bashcompinit && bashcompinit
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
@@ -378,6 +379,15 @@ _evalcache mise activate zsh
 _evalcache starship init zsh
 _evalcache thefuck --alias f -y
 _evalcache tirith init --shell zsh
+# tirith uses zle -A to save original widgets, which creates builtin-type aliases.
+# fast-syntax-highlighting wraps those and calls ._tirith_original_* (dot = builtin
+# prefix), which fails because these aren't real ZSH builtins. Fix: redefine both
+# as user: type widgets that call the actual builtins directly. Runs after tirith
+# init so it survives future hook regenerations.
+_tirith_original_accept_line() { zle .accept-line }
+zle -N _tirith_original_accept_line
+_tirith_original_bracketed_paste() { zle .bracketed-paste -- "$@" }
+zle -N _tirith_original_bracketed_paste
 _evalcache zoxide init zsh
 
 # Debug
