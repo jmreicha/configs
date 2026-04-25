@@ -8,6 +8,9 @@
 [fetch]
 	prune = true
 
+[rebase]
+	autoStash = true
+
 [push]
 	default = simple
 

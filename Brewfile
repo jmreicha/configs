@@ -81,6 +81,7 @@ brew "iann0036/iamlive/iamlive"
 brew "ingress2gateway"
 brew "iperf3"
 brew "jenv"
+brew "jmreicha/tap/cfgctl"
 brew "jq"
 brew "k9s"
 brew "keep-sorted"
@@ -194,7 +195,6 @@ cask "font-meslo-lg-nerd-font" if OS.mac?
 cask "gcloud-cli" if OS.mac?
 cask "ghostty" if OS.mac?
 cask "iterm2" if OS.mac?
-cask "jmreicha/tap/cfgctl" if OS.mac?
 cask "kamillobinski/thock/thock" if OS.mac?
 cask "maccy" if OS.mac?
 cask "nova" if OS.mac?
