@@ -175,6 +175,8 @@ alias renovate="npx --yes renovate@latest"
 alias skills="npx --yes skills@latest"
 alias wrangler="npx --yes wrangler@latest"
 alias cf="npx --yes cf@latest"
+alias ghui="npx --yes @kitlangton/ghui"
+alias codeburn="npx --yes codeburn@latest"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
