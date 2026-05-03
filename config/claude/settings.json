@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(~/hack/**)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "medium",
+  "model": "claude-opus-4-6"
+}
