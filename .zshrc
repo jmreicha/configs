@@ -186,6 +186,7 @@ alias octodns-dump="uvx --with octodns-route53 --with octodns-cloudflare --from 
 alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
 alias samlocal="uvx --from aws-sam-cli-local samlocal"
 alias tflocal="uvx --from terraform-local tflocal"
+alias ty="uvx ty"
 
 # Terraform
 alias tf="terraform"

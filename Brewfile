@@ -179,6 +179,9 @@ brew "jorgelbg/tap/pinentry-touchid" if OS.mac?
 # Linux CLI tools
 brew "strace" if OS.linux?
 
+# GUI tools
+cask "devtunnel"
+
 # OSX GUI tools
 cask "1password" if OS.mac?
 cask "1password-cli" if OS.mac?
