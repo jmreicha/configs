@@ -288,8 +288,24 @@ configure() {
     green "Configuring Mise"
     mise install
 
-    green "Configuring Vim"
+    green "Configuring AI agents"
 
+    # Plugins
+    claude plugin marketplace add JuliusBrussee/caveman
+
+    claude plugin install caveman@caveman
+    claude plugin install superpowers@claude-plugins-official
+
+    # Skills
+    skills add blader/humanizer@humanizer --all --global
+    skills add mattpocock/skills --all --global
+
+    # TODO add personal custom plugins/skills repo
+
+    # Tools
+    ctx7 setup --cli --claude --codex --opencode
+
+    green "Configuring Vim"
     if [[ ! -d $HOME/.vim/plugged ]]; then
         # Vim 8.2+ tools/plugins + coc plugins
         curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \

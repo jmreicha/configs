@@ -164,19 +164,22 @@ alias zz="vim ~/.zshrc"
 alias agentcore="npx --yes @aws/agentcore@latest"
 alias agnix="npx --yes agnix@latest"
 alias cdk="npx --yes aws-cdk@latest"
+alias cf="npx --yes cf@latest"
+alias codeburn="npx --yes codeburn@latest"
+alias codegraph="npx --yes @colbymchenry/codegraph@latest"
 alias copilot="npx --yes @github/copilot@latest --allow-all-tools --allow-all-paths --allow-all-urls"
+alias ctx7="npx --yes ctx7@latest"
+alias ghui="npx --yes @kitlangton/ghui@latest"
 alias gws="npx --yes @googleworkspace/cli@latest"
 alias iam-convert="npx --yes @cloud-copilot/iam-convert@latest"
 alias iam-expand="npx --yes @cloud-copilot/iam-expand@latest"
 alias iam-shrink="npx --yes @cloud-copilot/iam-shrink@latest"
+alias openspec="npx --yes @fission-ai/openspec@latest"
 alias qmd="npx --yes @tobilu/qmd@latest"
 alias ralph="npx --yes ralph-tui@latest"
 alias renovate="npx --yes renovate@latest"
 alias skills="npx --yes skills@latest"
 alias wrangler="npx --yes wrangler@latest"
-alias cf="npx --yes cf@latest"
-alias ghui="npx --yes @kitlangton/ghui@latest"
-alias codeburn="npx --yes codeburn@latest"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
@@ -288,6 +291,15 @@ fi
 ###########
 # Functions
 ###########
+
+# Explain last command failure using Claude
+_wtf_precmd() { __WTF_LAST_EXIT=$?; __WTF_LAST_CMD=$(fc -ln -1 2>/dev/null) }
+precmd_functions+=(_wtf_precmd)
+
+wtf() {
+    echo "Explaining: '$__WTF_LAST_CMD' (exit $__WTF_LAST_EXIT)..."
+    claude -p "I ran: '$__WTF_LAST_CMD' (exit $__WTF_LAST_EXIT). In one paragraph, explain what went wrong and how to fix it."
+}
 
 # Clear docker containers, images and volumes
 dclean() {
