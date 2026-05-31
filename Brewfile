@@ -4,6 +4,7 @@ tap "datadog-labs/pack"
 tap "hashicorp/tap"
 tap "huseyinbabal/tap"
 tap "jorgelbg/tap"
+tap "manaflow-ai/cmux"
 tap "rhysmcneill/ssmctl"
 tap "turbot/tap"
 tap "ymtdzzz/tap"
@@ -197,6 +198,7 @@ cask "arc" if OS.mac?
 # cask "battery" if OS.mac?
 cask "chatgpt" if OS.mac?
 cask "claude-code" if OS.mac?
+cask "cmux" if OS.mac?
 cask "codex" if OS.mac?
 cask "common-repo/tap/common-repo" if OS.mac?
 cask "dbeaver-community" if OS.mac?
