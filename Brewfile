@@ -1,13 +1,30 @@
 # Custom sources
-tap "bats-core/bats-core"
-tap "datadog-labs/pack"
-tap "hashicorp/tap"
-tap "huseyinbabal/tap"
-tap "jorgelbg/tap"
-tap "manaflow-ai/cmux"
-tap "rhysmcneill/ssmctl"
-tap "turbot/tap"
-tap "ymtdzzz/tap"
+tap "adembc/tap", trusted: true
+tap "alexnabokikh/tfsort", trusted: true
+tap "anomalyco/tap", trusted: true
+tap "aquaproj/aqua", trusted: true
+tap "aws/tap", trusted: true
+tap "bats-core/bats-core", trusted: true
+tap "buo/cask-upgrade", trusted: true
+tap "busser/tap", trusted: true
+tap "common-fate/granted", trusted: true
+tap "datadog-labs/pack", trusted: true
+tap "derailed/popeye", trusted: true
+tap "deskflow/tap", trusted: true
+tap "ekristen/tap", trusted: true
+tap "fairwindsops/tap", trusted: true
+tap "hashicorp/tap", trusted: true
+tap "huseyinbabal/tap", trusted: true
+tap "jesseduffield/lazydocker", trusted: true
+tap "jesseduffield/lazygit", trusted: true
+tap "jorgelbg/tap", trusted: true
+tap "manaflow-ai/cmux", trusted: true
+tap "max-sixty/worktrunk", trusted: true
+tap "mhaeuser/mhaeuser", trusted: true
+tap "rhysmcneill/ssmctl", trusted: true
+tap "steveyegge/beads", trusted: true
+tap "turbot/tap", trusted: true
+tap "ymtdzzz/tap", trusted: true
 
 # CLI tools
 brew "act"
@@ -28,10 +45,10 @@ brew "awscurl"
 brew "bash"
 brew "bat"
 brew "bats-core"
-brew "bats-core/bats-core/bats-assert"
-brew "bats-core/bats-core/bats-detik"
-brew "bats-core/bats-core/bats-file"
-brew "bats-core/bats-core/bats-support"
+brew "bats-core/bats-core/bats-assert", trusted: true
+brew "bats-core/bats-core/bats-detik", trusted: true
+brew "bats-core/bats-core/bats-file", trusted: true
+brew "bats-core/bats-core/bats-support", trusted: true
 brew "beads"
 brew "boring"
 brew "cfn-lint"
@@ -46,7 +63,7 @@ brew "conftest"
 brew "coreutils"
 brew "crane"
 brew "curl"
-brew "deweysasser/tap/eks-kubeconfig-update"
+brew "deweysasser/tap/eks-kubeconfig-update", trusted: true
 brew "devspace"
 brew "diff-so-fancy"
 brew "difftastic"
@@ -76,40 +93,41 @@ brew "graphviz"
 brew "gron"
 brew "gum"
 brew "hadolint"
-brew "hashicorp/tap/vault"
+brew "hashicorp/tap/vault", trusted: true
 brew "hcl2json"
 brew "helm"
 brew "hl"
 brew "htop"
-brew "huseyinbabal/tap/taws"
+brew "huseyinbabal/tap/taws", trusted: true
 brew "hyperfine"
-brew "iann0036/iamlive/iamlive"
+brew "iann0036/iamlive/iamlive", trusted: true
 brew "ingress2gateway"
 brew "iperf3"
 brew "jenv"
-brew "jmreicha/tap/cfgctl"
+brew "jmreicha/tap/cfgctl", trusted: true
 brew "jq"
 brew "k9s"
 brew "keep-sorted"
 brew "kingfisher"
 brew "kind"
 brew "kor"
+brew "krew"
 brew "kube-linter"
 brew "kubeconform"
 brew "kubectl"
 brew "kubectx"
 brew "kubent"
 brew "kubescape"
-brew "lance0/tap/ttl"
+brew "lance0/tap/ttl", trusted: true
 brew "lazydocker"
 brew "lazygit"
 brew "lazyssh"
 brew "lazysql"
 brew "llmfit"
-brew "localstack/tap/localstack-cli"
+brew "localstack/tap/localstack-cli", trusted: true
 brew "ls-lint"
 brew "lychee"
-brew "matthart1983/tap/netwatch"
+brew "matthart1983/tap/netwatch", trusted: true
 brew "mise"
 brew "mkcert"
 brew "mq"
@@ -118,7 +136,7 @@ brew "mycli"
 brew "nmap"
 brew "ollama"
 brew "opencode"
-brew "oven-sh/bun/bun"
+brew "oven-sh/bun/bun", trusted: true
 brew "pandoc"
 brew "pgcli"
 brew "pinentry"
@@ -129,7 +147,7 @@ brew "powerpipe"
 brew "pre-commit"
 brew "prek"
 brew "procs"
-brew "datadog-labs/pack/pup"
+brew "datadog-labs/pack/pup", trusted: true
 brew "rclone"
 brew "resterm"
 brew "ripgrep"
@@ -140,7 +158,7 @@ brew "s5cmd"
 brew "showkey"
 brew "semgrep"
 brew "sevenzip"
-brew "sheeki03/tap/tirith"
+brew "sheeki03/tap/tirith", trusted: true
 brew "shellcheck"
 brew "shfmt"
 brew "snitch"
@@ -180,12 +198,22 @@ brew "yq"
 brew "zizmor"
 brew "zoxide"
 
+# Kubectl plugins
+krew "ctx"
+krew "ktop"
+krew "neat"
+krew "ns"
+krew "sniff"
+krew "tail"
+krew "tree"
+krew "radar"
+
 # OSX CLI tools
 brew "colima" if OS.mac?
 brew "lima" if OS.mac?
 brew "mole" if OS.mac?
 brew "pinentry-mac" if OS.mac?
-brew "jorgelbg/tap/pinentry-touchid" if OS.mac?
+brew "jorgelbg/tap/pinentry-touchid", trusted: true if OS.mac?
 
 # Linux CLI tools
 brew "strace" if OS.linux?
@@ -202,7 +230,7 @@ cask "chatgpt" if OS.mac?
 cask "claude-code" if OS.mac?
 cask "cmux" if OS.mac?
 cask "codex" if OS.mac?
-cask "common-repo/tap/common-repo" if OS.mac?
+cask "common-repo/tap/common-repo", trusted: true if OS.mac?
 cask "dbeaver-community" if OS.mac?
 cask "drawio" if OS.mac?
 cask "firefox" if OS.mac?
@@ -210,7 +238,7 @@ cask "font-meslo-lg-nerd-font" if OS.mac?
 cask "gcloud-cli" if OS.mac?
 cask "ghostty" if OS.mac?
 cask "iterm2" if OS.mac?
-cask "kamillobinski/thock/thock" if OS.mac?
+cask "kamillobinski/thock/thock", trusted: true if OS.mac?
 cask "maccy" if OS.mac?
 cask "nova" if OS.mac?
 cask "obsidian" if OS.mac?
@@ -220,7 +248,7 @@ cask "session-manager-plugin" if OS.mac?
 cask "slack" if OS.mac?
 cask "stats" if OS.mac?
 cask "stratoshark" if OS.mac?
-cask "steipete/tap/codexbar" if OS.mac?
+cask "steipete/tap/codexbar", trusted: true if OS.mac?
 cask "visual-studio-code" if OS.mac?
 cask "wezterm" if OS.mac?
 cask "zed" if OS.mac?
