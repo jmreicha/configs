@@ -13,6 +13,7 @@ tap "derailed/popeye", trusted: true
 tap "deskflow/tap", trusted: true
 tap "ekristen/tap", trusted: true
 tap "fairwindsops/tap", trusted: true
+tap "fujacob/cotabby", trusted: true
 tap "hashicorp/tap", trusted: true
 tap "huseyinbabal/tap", trusted: true
 tap "jesseduffield/lazydocker", trusted: true
@@ -22,7 +23,6 @@ tap "manaflow-ai/cmux", trusted: true
 tap "max-sixty/worktrunk", trusted: true
 tap "mhaeuser/mhaeuser", trusted: true
 tap "rhysmcneill/ssmctl", trusted: true
-tap "steveyegge/beads", trusted: true
 tap "turbot/tap", trusted: true
 tap "ymtdzzz/tap", trusted: true
 
@@ -56,6 +56,7 @@ brew "cfssl"
 brew "checkov"
 brew "cloud-nuke"
 brew "cloudformation-guard"
+brew "clusterctl"
 brew "cmctl"
 brew "colordiff"
 brew "commitizen"
@@ -63,7 +64,6 @@ brew "conftest"
 brew "coreutils"
 brew "crane"
 brew "curl"
-brew "deweysasser/tap/eks-kubeconfig-update", trusted: true
 brew "devspace"
 brew "diff-so-fancy"
 brew "difftastic"
@@ -118,6 +118,7 @@ brew "kubectl"
 brew "kubectx"
 brew "kubent"
 brew "kubescape"
+brew "kubevpn"
 brew "lance0/tap/ttl", trusted: true
 brew "lazydocker"
 brew "lazygit"
@@ -207,6 +208,7 @@ krew "sniff"
 krew "tail"
 krew "tree"
 krew "radar"
+krew "resource-capacity"
 
 # OSX CLI tools
 brew "colima" if OS.mac?
@@ -224,13 +226,12 @@ cask "devtunnel"
 # OSX GUI tools
 cask "1password" if OS.mac?
 cask "1password-cli" if OS.mac?
-cask "arc" if OS.mac?
-# cask "battery" if OS.mac?
 cask "chatgpt" if OS.mac?
 cask "claude-code" if OS.mac?
 cask "cmux" if OS.mac?
 cask "codex" if OS.mac?
 cask "common-repo/tap/common-repo", trusted: true if OS.mac?
+cask "cotabby" if OS.mac?
 cask "dbeaver-community" if OS.mac?
 cask "drawio" if OS.mac?
 cask "firefox" if OS.mac?

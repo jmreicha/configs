@@ -299,6 +299,8 @@ configure() {
     # Skills
     skills add blader/humanizer@humanizer --all --global
     skills add mattpocock/skills --all --global
+    skills add shadcn/improve --all --global
+    skills add uditgoenka/autoresearch --all --global
 
     # TODO add personal custom plugins/skills repo
 
