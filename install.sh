@@ -291,9 +291,9 @@ configure() {
     green "Configuring AI agents"
 
     # Plugins
-    claude plugin marketplace add JuliusBrussee/caveman
-
-    claude plugin install caveman@caveman
+    # TODO need to run install script to initialize hooks
+    claude plugin marketplace add DietrichGebert/ponytail
+    claude plugin install ponytail@ponytail
     claude plugin install superpowers@claude-plugins-official
 
     # Skills
@@ -304,6 +304,8 @@ configure() {
 
     # Tools
     ctx7 setup --cli --claude --codex --opencode
+    rtk telemetry disable && rtk init -g --auto-patch
+    uv tool install "headroom-ai[all]" && headroom init claude
 
     green "Configuring Vim"
     if [[ ! -d $HOME/.vim/plugged ]]; then

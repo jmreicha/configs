@@ -148,7 +148,6 @@ alias kns="kubens"
 alias ktop="k9s -n all"
 
 # Misc
-# alias bat="bat --number"
 alias cat="bat --style=plain --paging=never"
 alias diff="colordiff -u"
 alias e="exit"
