@@ -291,8 +291,9 @@ configure() {
     green "Configuring AI agents"
 
     # Plugins
-    # TODO need to run install script to initialize hooks
+    claude plugin marketplace add addyosmani/agent-skills
     claude plugin marketplace add DietrichGebert/ponytail
+    claude plugin install agent-skills@addy-agent-skills
     claude plugin install ponytail@ponytail
     claude plugin install superpowers@claude-plugins-official
 
