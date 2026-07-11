@@ -98,6 +98,7 @@ brew "hcl2json"
 brew "helm"
 brew "hl"
 brew "htop"
+brew "hunk"
 brew "huseyinbabal/tap/taws", trusted: true
 brew "hyperfine"
 brew "iann0036/iamlive/iamlive", trusted: true
@@ -201,6 +202,7 @@ brew "zoxide"
 
 # Kubectl plugins
 krew "ctx"
+krew "fd"
 krew "ktop"
 krew "neat"
 krew "ns"
