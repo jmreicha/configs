@@ -125,6 +125,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Agents
 alias claude="claude --dangerously-skip-permissions"
+alias cc="claude --dangerously-skip-permissions --model claude-opus-4-6"
+alias ccc="claude -c --model claude-opus-4-6"
 
 # AWS
 alias av="aws-vault"
@@ -242,7 +244,6 @@ export TERRAGRUNT_LOCAL="true"
 export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
 export TG_DOWNLOAD_DIR="$HOME/.terragrunt/cache"
 export TG_LOCAL="true"
-export TG_LOG_DISABLE="true"
 
 # SSH
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
