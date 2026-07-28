@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+
+  "shortcuts": {
+    "bindings": {
+      "prevSurface": "cmd+←",
+      "nextSurface": "cmd+→"
+    }
+  },
+
+  "actions": {
+    "default": {
+      "title": "default",
+      "type": "workspace",
+      "workspace": {
+        "cwd": "~/git/lytx/github/cloudinfra",
+        "name": "default"
+      }
+    }
+  },
+
+  "ui": {
+    "newWorkspace": {
+      "action": "default"
+    }
+  }
+}
