@@ -140,7 +140,7 @@ disabled = false
 threshold = -1
 symbol = ""
 style = "#5f8787"
-format = "([ ❮ ](#767676)[ $ram_pct]($style))"
+format = "([ ❮ ](#767676)[󰍛 $ram_pct]($style))"
 
 [time]
 disabled = true

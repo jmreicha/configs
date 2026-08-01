@@ -2,27 +2,17 @@
   "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
   "schemaVersion": 1,
 
+  "browser": {
+    "openTerminalLinksInCmuxBrowser": false,
+    "interceptTerminalOpenCommandInCmuxBrowser": false
+  },
+
   "shortcuts": {
     "bindings": {
       "prevSurface": "cmd+←",
-      "nextSurface": "cmd+→"
-    }
-  },
-
-  "actions": {
-    "default": {
-      "title": "default",
-      "type": "workspace",
-      "workspace": {
-        "cwd": "~/git/lytx/github/cloudinfra",
-        "name": "default"
-      }
-    }
-  },
-
-  "ui": {
-    "newWorkspace": {
-      "action": "default"
+      "nextSurface": "cmd+→",
+      "prevSidebarTab": "cmd+↑",
+      "nextSidebarTab": "cmd+↓"
     }
   }
 }
