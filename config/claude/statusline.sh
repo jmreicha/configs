@@ -70,7 +70,7 @@ grade() {  # print the color code for a limit percentage
 }
 
 ctx_seg="${dim}ctx:${rst} $(grade "$pct")${pct}%${rst}"
-cache_seg="${dim}cache:${rst} $(fmt_tokens "$reads")↓ $(fmt_tokens "$writes")↑${mid}${hit}% hit${mid}${saved}% saved"
+cache_seg="${dim}cache:${rst} $(fmt_tokens "$reads")↓ $(fmt_tokens "$writes")↑${mid}${hit}% hit"
 
 # cost = rate-limit budget consumed on a Pro/Max subscription (the real
 # constraint). Absent (-1) for pay-per-token API keys and before the first API
@@ -90,7 +90,7 @@ if command -v rtk >/dev/null 2>&1; then
         | jq -r '.summary | "\(.total_saved // 0) \((.avg_savings_pct // 0) | round) \(.total_output // 0)"' 2>/dev/null)"
     if [ -n "$rtk_saved" ] && [ "$rtk_saved" -gt 0 ] 2>/dev/null; then
         # saved = tokens rtk stripped; sent = tokens that actually reached context.
-        rtk_seg="${dim}rtk:${rst} $(fmt_tokens "$rtk_saved") saved${mid}${rtk_pct}% compression${mid}$(fmt_tokens "$rtk_sent") sent"
+        rtk_seg="${dim}rtk:${rst} $(fmt_tokens "$rtk_saved") saved${mid}${rtk_pct}% compressed${mid}$(fmt_tokens "$rtk_sent") sent"
     fi
 fi
 
