@@ -262,10 +262,12 @@ configure() {
 
     # Link configs
     rm -rf "$HOME/.claude/settings.json" || true && ln -s "$INSTALLER_PATH/configs/config/claude/settings.json" "$HOME/.claude/settings.json"
-    rm -rf "$HOME/.claude/statusline.sh" || true && ln -s "$INSTALLER_PATH/configs/config/claude/statusline.sh" "$HOME/.claude/statusline.sh"
+    mkdir -p "$HOME/.claude/hooks"
+    rm -rf "$HOME/.claude/hooks/statusline.sh" || true && ln -s "$INSTALLER_PATH/configs/config/claude/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"
+    rm -rf "$HOME/.config/cmux" || true && ln -s "$INSTALLER_PATH/configs/config/cmux" "$HOME/.config/cmux"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
