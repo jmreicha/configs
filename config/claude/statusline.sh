@@ -30,7 +30,10 @@ $(echo "$data" | jq -r --argjson wm "$write_mult" '
   | (if $tot > 0
        then ($tot - ($fresh + $reads * 0.1 + $writes * $wm)) * 100 / $tot
        else 0 end) as $saved
-  | [ (($c.used_percentage // 0) | round),
+  | (.model.id // "") as $mid
+  | (if ($mid | test("^claude-(fable-5|opus-[45]|sonnet-[45])")) then 1000000 else 200000 end) as $max
+  | (($fresh + $reads + $writes) * 100 / $max) as $pct
+  | [ ([$pct, 99] | min | round),
       $reads,
       $writes,
       ($hit | round),
