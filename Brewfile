@@ -13,13 +13,16 @@ tap "derailed/popeye", trusted: true
 tap "deskflow/tap", trusted: true
 tap "ekristen/tap", trusted: true
 tap "fairwindsops/tap", trusted: true
+tap "floci-io/floci", trusted: true
 tap "fujacob/cotabby", trusted: true
 tap "hashicorp/tap", trusted: true
 tap "huseyinbabal/tap", trusted: true
 tap "jesseduffield/lazydocker", trusted: true
+tap "kcl-lang/tap", trusted: true
 tap "jesseduffield/lazygit", trusted: true
 tap "jorgelbg/tap", trusted: true
 tap "manaflow-ai/cmux", trusted: true
+tap "norwoodj/tap", trusted: true
 tap "max-sixty/worktrunk", trusted: true
 tap "mhaeuser/mhaeuser", trusted: true
 tap "rhysmcneill/ssmctl", trusted: true
@@ -63,6 +66,7 @@ brew "commitizen"
 brew "conftest"
 brew "coreutils"
 brew "crane"
+brew "crossplane"
 brew "curl"
 brew "devspace"
 brew "diff-so-fancy"
@@ -76,6 +80,7 @@ brew "entr"
 brew "eza"
 brew "fd"
 brew "findutils"
+brew "floci"
 brew "fnm"
 brew "fzf"
 brew "gh"
@@ -96,6 +101,7 @@ brew "hadolint"
 brew "hashicorp/tap/vault", trusted: true
 brew "hcl2json"
 brew "helm"
+brew "helm-docs"
 brew "hl"
 brew "htop"
 brew "hunk"
@@ -108,12 +114,14 @@ brew "jenv"
 brew "jmreicha/tap/cfgctl", trusted: true
 brew "jq"
 brew "k9s"
+brew "kcl"
 brew "keep-sorted"
 brew "kingfisher"
 brew "kind"
 brew "kor"
 brew "krew"
 brew "kube-linter"
+brew "kube-score"
 brew "kubeconform"
 brew "kubectl"
 brew "kubectx"
