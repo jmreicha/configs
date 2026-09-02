@@ -47,16 +47,17 @@ set_env_paths() {
 }
 
 _brew_install() {
+    local brewfile="${1:-Brewfile.extras}"
     brew analytics off
     brew update
     if [[ $UPDATE ]]; then
         brew upgrade
         return
     fi
-    green "Installing tools from Brewfile"
-    brew bundle install || true
+    green "Installing tools from ${brewfile}"
+    brew bundle install --file="$brewfile" || true
     brew update
-    brew bundle install
+    brew bundle install --file="$brewfile"
 }
 
 _install_system_deps() {
@@ -133,6 +134,7 @@ _install_system_deps() {
 }
 
 _linux_brew() {
+    local brewfile="${1:-Brewfile.extras}"
     _install_system_deps
 
     # Add Homebrew to PATH for the current session if already installed
@@ -154,7 +156,7 @@ _linux_brew() {
         fi
     fi
 
-    _brew_install
+    _brew_install "$brewfile"
 
     # SpotX - patch Spotify if installed
     if command -v spotify &>/dev/null; then
@@ -164,7 +166,8 @@ _linux_brew() {
 }
 
 _macos() {
-    _brew_install
+    local brewfile="${1:-Brewfile.extras}"
+    _brew_install "$brewfile"
 
     # AWS CLI
     if ! command -v aws &>/dev/null; then
@@ -185,6 +188,7 @@ _macos() {
 }
 
 install() {
+    local brewfile="${1:-Brewfile.extras}"
     set_env
     mkdir -p "$HOME/.config"
     if [[ "$(uname -s)" = "Darwin" ]]; then
@@ -194,13 +198,13 @@ install() {
         if ! command -v brew &>/dev/null; then
             NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
-        _macos
+        _macos "$brewfile"
         #_nix
 
         # No need to run custom installs for Linux systems
         return
     elif [[ "$(uname -s)" = "Linux" ]]; then
-        _linux_brew
+        _linux_brew "$brewfile"
     else
         echo "Unknown OS"
         exit 1
@@ -291,6 +295,12 @@ configure() {
     mise install
 
     green "Configuring AI agents"
+
+    # Claude Code
+    if ! command -v claude &>/dev/null; then
+        green "Installing Claude Code"
+        curl -fsSL https://claude.ai/install.sh | bash
+    fi
 
     # Plugins
     claude plugin marketplace add addyosmani/agent-skills
@@ -404,6 +414,12 @@ main() {
     case $option in
     --install)
         install
+        ;;
+    --install-core)
+        install Brewfile.core
+        ;;
+    --install-extras)
+        install Brewfile.extras
         ;;
     --configure)
         configure

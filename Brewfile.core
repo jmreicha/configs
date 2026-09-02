@@ -1,0 +1,70 @@
+# Core system tools - the essentials for any machine
+
+# Taps needed by core
+tap "jesseduffield/lazygit", trusted: true
+tap "jorgelbg/tap", trusted: true
+
+# Shell essentials
+brew "bash"
+brew "coreutils"
+brew "curl"
+brew "findutils"
+brew "git"
+brew "gnupg"
+brew "pinentry"
+brew "rsync"
+brew "sevenzip"
+brew "vim"
+brew "watch"
+brew "wget"
+
+# Modern CLI replacements
+brew "bat"
+brew "colordiff"
+brew "diff-so-fancy"
+brew "difftastic"
+brew "direnv"
+brew "dust"
+brew "entr"
+brew "eza"
+brew "fd"
+brew "fnm"
+brew "fzf"
+brew "gh"
+brew "git-delta"
+brew "gping"
+brew "htop"
+brew "hyperfine"
+brew "jq"
+brew "lazygit"
+brew "mise"
+brew "procs"
+brew "ripgrep"
+brew "rtk"
+brew "shellcheck"
+brew "shfmt"
+brew "showkey"
+brew "starship"
+brew "thefuck"
+brew "tldr"
+brew "tree"
+brew "yq"
+brew "zoxide"
+
+# OSX core CLI
+brew "pinentry-mac" if OS.mac?
+brew "jorgelbg/tap/pinentry-touchid", trusted: true if OS.mac?
+
+# Linux core CLI
+brew "strace" if OS.linux?
+
+# OSX core GUI
+cask "1password" if OS.mac?
+cask "1password-cli" if OS.mac?
+cask "firefox" if OS.mac?
+cask "font-meslo-lg-nerd-font" if OS.mac?
+cask "ghostty" if OS.mac?
+cask "maccy" if OS.mac?
+cask "raycast" if OS.mac?
+cask "slack" if OS.mac?
+cask "stats" if OS.mac?
