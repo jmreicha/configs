@@ -78,6 +78,7 @@ brew "s5cmd"
 brew "snitch"
 brew "tabiew"
 brew "television"
+brew "viddy"
 brew "wasm-pack"
 brew "worktrunk"
 
