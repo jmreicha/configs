@@ -111,6 +111,7 @@ brew "iann0036/iamlive/iamlive", trusted: true
 brew "jmreicha/tap/cfgctl", trusted: true
 brew "localstack/tap/localstack-cli", trusted: true
 brew "datadog-labs/pack/pup", trusted: true
+brew "oras"
 brew "powerpipe"
 brew "semgrep"
 brew "sheeki03/tap/tirith", trusted: true
@@ -139,6 +140,7 @@ brew "hadolint"
 brew "helm"
 brew "helm-docs"
 brew "ingress2gateway"
+brew "k6"
 brew "k9s"
 brew "kcl"
 brew "kingfisher"
