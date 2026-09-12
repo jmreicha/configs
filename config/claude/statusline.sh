@@ -11,13 +11,14 @@ data=$(cat)
 # One jq pass emits every scalar, tab-separated. Cache savings are computed in
 # input-token-equivalents, so the % is rate-independent (no per-model price
 # table needed). All cache/token figures are the LAST turn's snapshot; cost is
-# the cumulative session total (they are not on the same clock — by design).
+# the cumulative session total. in: is a gauge (tokens currently in context);
+# out: is a counter (tokens generated all session) — different clocks, by design.
 #   uncached input = fresh + reads + writes           (every token at 1x)
 #   cached input   = fresh + reads*0.1 + writes*mult
 #   saved%         = (uncached - cached) / uncached
 # saved% can go slightly negative on an early write-heavy turn — that's the
 # up-front cost of building the cache before reads pay it back.
-IFS=$'\t' read -r pct reads writes hit saved model five_h seven_d cwd in_tok out_tok <<EOF
+IFS=$'\t' read -r pct reads writes hit saved model five_h seven_d cwd in_tok transcript <<EOF
 $(echo "$data" | jq -r --argjson wm "$write_mult" '
   (.context_window // {}) as $c
   | ($c.current_usage // {}) as $u
@@ -45,20 +46,28 @@ $(echo "$data" | jq -r --argjson wm "$write_mult" '
       (($rl.seven_day.used_percentage // -1) | round),
       (.workspace.current_dir // "."),
       ($c.total_input_tokens // 0),
-      ($c.total_output_tokens // 0)
+      (.transcript_path // "")
     ] | @tsv
 ')
 EOF
 
-fmt_tokens() {
-    local n=$1
-    if [ "$n" -ge 1000000 ] 2>/dev/null; then
-        printf "%.1fM" "$(echo "scale=1; $n / 1000000" | bc)"
-    elif [ "$n" -ge 1000 ] 2>/dev/null; then
-        printf "%.1fk" "$(echo "scale=1; $n / 1000" | bc)"
-    else
-        echo "$n"
-    fi
+# out_tok: cumulative output tokens for the whole session. NOT from
+# context_window.total_output_tokens — that field is only the MOST RECENT
+# response's output (docs: "output tokens from the most recent response"), so it
+# jumps around mid-turn and never accumulates. The transcript replays each
+# response 2-3x, so dedupe by message.id before summing.
+# ponytail: 8ms on a 900K transcript; if a session ever gets big enough to feel
+# it, cache the running total per session_id instead of rescanning.
+out_tok=0
+[ -f "$transcript" ] && out_tok=$(jq -s '[.[] | select(.message.usage and .message.id)]
+    | group_by(.message.id) | map(.[0].message.usage.output_tokens // 0) | add // 0' \
+    "$transcript" 2>/dev/null) && [ -n "$out_tok" ] || out_tok=0
+
+fmt_tokens() {  # ponytail: awk does the float math bash can't; bc truncated at
+                # scale=1 (24772 -> "24.7k"), %.1f rounds (-> "24.8k").
+    awk -v n="${1:-0}" 'BEGIN{ if (n>=1e6) printf "%.1fM", n/1e6;
+                               else if (n>=1000) printf "%.1fk", n/1000;
+                               else printf "%d", n }'
 }
 
 # ANSI styling — Claude Code renders these. Only the column identifiers
@@ -76,7 +85,11 @@ grade() {  # print the color code for a limit percentage
     else                                    printf '%s' "$grn"; fi
 }
 
-ctx_seg="${dim}ctx:${rst} $(grade "$pct")${pct}%${rst}${mid}${dim}in:${rst} $(fmt_tokens "$in_tok") ${dim}out:${rst} $(fmt_tokens "$out_tok")"
+# ctx: percentage and absolute are two views of ONE number (total_input_tokens
+# / window size), so the absolute carries no label of its own — a second
+# label would imply it differs from the %. out: is separate: a session-
+# cumulative counter, not the other half of an in/out pair.
+ctx_seg="${dim}ctx:${rst} $(grade "$pct")${pct}%${rst}${mid}$(fmt_tokens "$in_tok")${mid}${dim}out:${rst} $(fmt_tokens "$out_tok")"
 cache_seg="${dim}cache:${rst} $(fmt_tokens "$reads")↓ $(fmt_tokens "$writes")↑${mid}${hit}% hit"
 
 # cost = rate-limit budget consumed on a Pro/Max subscription (the real
