@@ -17,7 +17,7 @@ data=$(cat)
 #   saved%         = (uncached - cached) / uncached
 # saved% can go slightly negative on an early write-heavy turn — that's the
 # up-front cost of building the cache before reads pay it back.
-IFS=$'\t' read -r pct reads writes hit saved model five_h seven_d cwd <<EOF
+IFS=$'\t' read -r pct reads writes hit saved model five_h seven_d cwd in_tok out_tok <<EOF
 $(echo "$data" | jq -r --argjson wm "$write_mult" '
   (.context_window // {}) as $c
   | ($c.current_usage // {}) as $u
@@ -30,9 +30,11 @@ $(echo "$data" | jq -r --argjson wm "$write_mult" '
   | (if $tot > 0
        then ($tot - ($fresh + $reads * 0.1 + $writes * $wm)) * 100 / $tot
        else 0 end) as $saved
-  | (.model.id // "") as $mid
-  | (if ($mid | test("^claude-(fable-5|opus-[45]|sonnet-[45])")) then 1000000 else 200000 end) as $max
-  | (($fresh + $reads + $writes) * 100 / $max) as $pct
+  | ($c.context_window_size // 0) as $real_max
+  | (if $real_max > 0 then $real_max
+     elif ((.model.id // "") | test("^claude-(fable-5|opus-[45]|sonnet-[45])")) then 1000000
+     else 200000 end) as $max
+  | (($c.used_percentage // (($fresh + $reads + $writes) * 100 / $max))) as $pct
   | [ ([$pct, 99] | min | round),
       $reads,
       $writes,
@@ -41,7 +43,9 @@ $(echo "$data" | jq -r --argjson wm "$write_mult" '
       (.model.display_name // .model.id // "unknown"),
       (($rl.five_hour.used_percentage // -1) | round),
       (($rl.seven_day.used_percentage // -1) | round),
-      (.workspace.current_dir // ".")
+      (.workspace.current_dir // "."),
+      ($c.total_input_tokens // 0),
+      ($c.total_output_tokens // 0)
     ] | @tsv
 ')
 EOF
@@ -72,7 +76,7 @@ grade() {  # print the color code for a limit percentage
     else                                    printf '%s' "$grn"; fi
 }
 
-ctx_seg="${dim}ctx:${rst} $(grade "$pct")${pct}%${rst}"
+ctx_seg="${dim}ctx:${rst} $(grade "$pct")${pct}%${rst}${mid}${dim}in:${rst} $(fmt_tokens "$in_tok") ${dim}out:${rst} $(fmt_tokens "$out_tok")"
 cache_seg="${dim}cache:${rst} $(fmt_tokens "$reads")↓ $(fmt_tokens "$writes")↑${mid}${hit}% hit"
 
 # cost = rate-limit budget consumed on a Pro/Max subscription (the real
