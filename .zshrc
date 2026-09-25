@@ -141,7 +141,7 @@ alias la='eza -lbhHigmuSa --time-style=long-iso --git --color-scale'
 alias ld='eza -lD'
 alias ldd='eza -laD'
 alias ll='eza --group --header --group-directories-first --long'
-alias ls='eza -a --icons'
+alias ls='eza -a --icons=auto'
 alias lt='eza --tree --level=2'
 
 # Kubernetes
@@ -181,6 +181,7 @@ alias ralph="npx --yes ralph-tui@latest"
 alias renovate="npx --yes renovate@latest"
 alias skills="npx --yes skills@latest"
 alias wrangler="npx --yes wrangler@latest"
+alias zg="npx --yes @zvec/zvec-grep@latest"
 
 # Python tools
 alias awslocal="uvx --from awscli-local awslocal"
@@ -239,9 +240,11 @@ export LC_ALL=en_US.UTF-8
 # export PYTHON_AUTO_VRUN=true
 # export PYTHON_VENV_NAME=".venv"
 
-# Terraform/Terragrunt - set cache in one place
+# Terraform/Terragrunt
+export TENV_AUTO_INSTALL="true"
 export TERRAGRUNT_LOCAL="true"
 export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
+export TG_DEPENDENCY_FETCH_OUTPUT_FROM_STATE="true"
 export TG_DOWNLOAD_DIR="$HOME/.terragrunt/cache"
 export TG_LOCAL="true"
 
