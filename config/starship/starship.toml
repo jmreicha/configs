@@ -60,7 +60,7 @@ format = "( [+$added]($added_style))([ -$deleted]($deleted_style))"
 [git_status]
 stashed = "[*${count}](blue) "
 modified = "[!${count}](yellow) "
-staged = "[~${count}](green) "
+staged = "[~${count}](cyan) "
 untracked = "[?${count}](blue) "
 deleted = "[-${count}](red) "
 format = " ([$stashed$modified$staged$untracked$ahead_behind]($style))"
