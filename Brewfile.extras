@@ -199,6 +199,7 @@ brew "lima" if OS.mac?
 brew "mole" if OS.mac?
 
 # GUI tools
+cask "dbx"
 cask "devtunnel"
 
 # OSX GUI tools

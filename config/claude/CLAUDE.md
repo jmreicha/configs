@@ -1,8 +1,10 @@
+@~/.claude/RTK.md
 @RTK.md
 
 # Core Tenets
 
 - Always ask before making potentially destructive changes to AWS, Kubernetes, GCloud or other cloud resources.
+- Always lookup docs using context7 for things you aren't sure about.
 - Always prefer brevity and conciseness.
 - Always prefer keeping comments to 2 lines max to help human readability.
 - Always use the "lytxread" role when connecting to AWS unless told otherwise or elevated priviliges are required.
