@@ -193,6 +193,7 @@ alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from 
 alias openshell="uvx openshell"
 alias samlocal="uvx --from aws-sam-cli-local samlocal"
 alias tflocal="uvx --from terraform-local tflocal"
+alias markitdown="uvx --from 'markitdown[all]' markitdown"
 alias ty="uvx ty"
 
 # Terraform
