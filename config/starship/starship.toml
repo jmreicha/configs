@@ -11,10 +11,10 @@
 # Commands may be slower in restricted environments, e.g. containers
 command_timeout = 10000
 
-format = """$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status\
+format = """$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_metrics$git_status\
 $fill\
 $jobs$status$cmd_duration\
-$nix_shell$terraform${custom.terraform}${custom.terragrunt}$kubernetes$python$aws$nodejs$docker_context$golang${custom.loadavg-linux}${custom.loadavg-mac}${custom.disk-linux}${custom.disk-mac}$memory_usage$time$os
+$nix_shell$terraform${custom.terraform}${custom.opentofu}${custom.terragrunt}$kubernetes$helm$python$nodejs$golang$aws$gcloud$docker_context${custom.loadavg-linux}${custom.loadavg-mac}${custom.disk-linux}${custom.disk-mac}$memory_usage$time$os
 $character"""
 
 # TODO: transient prompt released in v1.10.1
@@ -22,32 +22,15 @@ $character"""
 # Additional padding between newlines
 add_newline = true
 
-[fill]
-symbol = " "
-
 [character]
 vimcmd_symbol = "[NORMAL ❯](#73cef4)"
 success_symbol = "[❯](green)"
 format = "\n$symbol "
 
+[fill]
+symbol = " "
+
 ### Left prompt
-
-[sudo]
-disabled = false
-symbol = "🧙"
-format = "[$symbol]($style)"
-
-[username]
-# Don't display for normal logged in user
-disabled = true
-style_user = "#d3b987"
-format = "[$user]($style)"
-
-[hostname]
-disabled = true
-ssh_only = true
-style = "#d3b987"
-format = "[@$hostname]($style)[ ❯](#767676)"
 
 [directory]
 read_only = " "
@@ -62,20 +45,49 @@ repo_root_format = "[ $before_root_path]($style)[$repo_root]($repo_root_style)[$
 format = "[ $path]($style)[$read_only]($read_only_style) "
 
 [git_branch]
-symbol = "  "
+symbol = " "
 style = "green"
 format = "[❯ ](#767676)[$symbol$branch]($style)"
+
+[git_commit]
+tag_disabled = false
+format = "[ \\($hash$tag\\)]($style)"
+
+[git_metrics]
+disabled = false
+format = "( [+$added]($added_style))([ -$deleted]($deleted_style))"
 
 [git_status]
 stashed = "[*${count}](blue) "
 modified = "[!${count}](yellow) "
-staged = "[+${count}](green) "
+staged = "[~${count}](green) "
 untracked = "[?${count}](blue) "
 deleted = "[-${count}](red) "
-format = " ([$stashed$modified$staged$untracked $ahead_behind]($style))"
+format = " ([$stashed$modified$staged$untracked$ahead_behind]($style))"
 #format = " ([$all_status $ahead_behind]($style))"
 
+[hostname]
+disabled = true
+ssh_only = true
+style = "#d3b987"
+format = "[@$hostname]($style)[ ❯](#767676)"
+
+[sudo]
+disabled = false
+symbol = "🧙"
+format = "[$symbol]($style)"
+
+[username]
+# Don't display for normal logged in user
+disabled = true
+style_user = "#d3b987"
+format = "[$user]($style)"
+
 ### Right prompt info
+
+[cmd_duration]
+style = "#a8a8a8"
+format = "([ ❮ ](#767676)[ $duration]($style))"
 
 [jobs]
 disabled = false
@@ -86,38 +98,7 @@ disabled = false
 map_symbol = false
 format = "[$symbol$status]($style)"
 
-[cmd_duration]
-style = "#a8a8a8"
-format = "([ ❮ ](#767676)[ $duration]($style))"
-
 ### Right prompt tools and versions
-
-[terraform]
-# We disable the native tf plugin because it is much slower than tfenv
-disabled = true
-format = "[ ❮ ](#767676)[tf $version]($style)"
-detect_extensions = ["tf"]
-detect_files = ["terragrunt.hcl"]
-
-[kubernetes]
-disabled = false
-style = "blue"
-format = '([ ❮ ](#767676)[$symbol$context (\[$namespace\])]($style))'
-detect_extensions = []
-detect_files = ['Chart.yaml']
-detect_folders = ['*helm*']
-
-[golang]
-symbol = " "
-format = "([ ❮ ](#767676)[$symbol($version)]($style))"
-
-[nodejs]
-symbol = " "
-format = "([ ❮ ](#767676)[$symbol($version)]($style))"
-
-[python]
-symbol = " "
-format = '([ ❮ ](#767676)[${symbol}${pyenv_prefix}(${version}) ([\($virtualenv\)](#306998))]($style))'
 
 [aws]
 disabled = false
@@ -131,9 +112,26 @@ symbol = " "
 symbol = " "
 format = "([ ❮ ](#767676)[$symbol$context]($style))"
 
-[nix_shell]
-symbol = " "
-format = "([ ❮ ](#767676)[${symbol}nix ${state}]($style))"
+[gcloud]
+disabled = false
+symbol = "󱇶 "
+format = '([ ❮ ](#767676)[$symbol$project( \($region\))]($style))'
+
+[golang]
+symbol = " "
+format = "([ ❮ ](#767676)[$symbol($version)]($style))"
+
+[helm]
+symbol = "⎈ "
+format = "([ ❮ ](#767676)[$symbol($version)]($style))"
+
+[kubernetes]
+disabled = false
+style = "blue"
+format = '([ ❮ ](#767676)[$symbol$context (\[$namespace\])]($style))'
+detect_extensions = []
+detect_files = ['Chart.yaml']
+detect_folders = ['*helm*']
 
 [memory_usage]
 disabled = false
@@ -142,12 +140,13 @@ symbol = ""
 style = "#5f8787"
 format = "([ ❮ ](#767676)[󰍛 $ram_pct]($style))"
 
-[time]
-disabled = true
-format = "([ ❮ ](#767676)[$time]($style))"
+[nix_shell]
+symbol = " "
+format = "([ ❮ ](#767676)[${symbol}nix ${state}]($style))"
 
-[shlvl]
-disabled = true
+[nodejs]
+symbol = " "
+format = "([ ❮ ](#767676)[$symbol($version)]($style))"
 
 [os]
 disabled = false
@@ -169,22 +168,48 @@ format = "[ ❮ ](#767676)[$symbol]($style)"
 "Ubuntu" = ""
 "Windows" = ""
 
-### Custom plugins
+[python]
+symbol = " "
+format = '([ ❮ ](#767676)[${symbol}${pyenv_prefix}(${version}) ([\($virtualenv\)](#306998))]($style))'
+
+[shlvl]
+disabled = true
+
+[terraform]
+# We disable the native tf plugin because it is much slower than tenv
+disabled = true
+format = "[ ❮ ](#767676)[tf $version]($style)"
+detect_extensions = ["tf"]
+detect_files = ["terragrunt.hcl"]
+
+[time]
+disabled = true
+format = "([ ❮ ](#767676)[$time]($style))"
+
+### Custom modules
+
+[custom.opentofu]
+description = "Shows active OpenTofu version from tenv version files"
+command = "cat .opentofu-version 2>/dev/null || cat \"$(git rev-parse --show-toplevel 2>/dev/null)/.opentofu-version\" 2>/dev/null"
+extensions = ["tf"]
+files = [".opentofu-version"]
+style = "#ffda18"
+format = "([ ❮ ](#767676)[tofu $output]($style))"
+
+[custom.terraform]
+description = "Shows active Terraform version from tenv version files"
+command = "cat .terraform-version 2>/dev/null || cat \"$(git rev-parse --show-toplevel 2>/dev/null)/.terraform-version\" 2>/dev/null"
+extensions = ["tf"]
+files = [".terraform-version", "terragrunt.hcl"]
+style = "#7b42bc"
+format = "([ ❮ ](#767676)[tf $output]($style))"
 
 [custom.terragrunt]
-description = "Shows the currently active tgenv Terragrunt version"
-command = "cat $(pwd)/.terragrunt-version || cat $(git rev-parse --show-toplevel)/.terragrunt-version || cat ~/.tgenv/version"
+description = "Shows active Terragrunt version from tenv version files"
+command = "cat .terragrunt-version 2>/dev/null || cat \"$(git rev-parse --show-toplevel 2>/dev/null)/.terragrunt-version\" 2>/dev/null"
 files = ["terragrunt.hcl"]
 style = "#0bb9f2"
 format = "([ ❮ ](#767676)[tg $output]($style))"
-
-[custom.terraform]
-description = "Shows the currently active tfenv Terraform version"
-command = "cat $(pwd)/.terraform-version || cat $(git rev-parse --show-toplevel)/.terraform-version || cat ~/.tfenv/version"
-extensions = ["tf"]
-files = ["terragrunt.hcl"]
-style = "#7b42bc"
-format = "([ ❮ ](#767676)[tf $output]($style))"
 
 [custom.disk-linux]
 description = "Show disk used"
