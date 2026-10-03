@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# Bootstrap an AI agent host with 1Password CLI access via a service account.
+# Idempotent: safe to re-run. See instructions/agent-bootstrap.md.
+
+set -eou pipefail
+
+CRED_FILE="${HOME}/.config/op/credentials"
+OP_VAULT="${OP_VAULT:-Pinchy}"
+# shellcheck disable=SC2016 # written literally into rc files
+TOKEN_LINE='[ -r "$HOME/.config/op/credentials" ] && export OP_SERVICE_ACCOUNT_TOKEN="$(tr -d '"'"'[:space:]'"'"' < "$HOME/.config/op/credentials")"'
+
+green() {
+    echo -e "\033[0;32m$*\033[0m"
+}
+
+red() {
+    echo -e "\033[0;31m$*\033[0m" >&2
+}
+
+load_brew() {
+    for b in /home/linuxbrew/.linuxbrew/bin/brew /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        [[ -x "$b" ]] && eval "$("$b" shellenv)" && return 0
+    done
+    return 1
+}
+
+install_brew() {
+    if load_brew; then
+        green "Homebrew present: $(brew --version | head -1)"
+        return
+    fi
+    green "Installing Homebrew"
+    NONINTERACTIVE=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    load_brew
+}
+
+install_op() {
+    # 1password-cli is a cask (no formula); the cask also ships Linux builds.
+    if brew list --cask 1password-cli &>/dev/null; then
+        green "1password-cli present: $(op --version)"
+    else
+        green "Installing 1password-cli"
+        brew install --cask 1password-cli
+    fi
+}
+
+write_token() {
+    mkdir -p "$(dirname "$CRED_FILE")"
+    chmod 700 "$(dirname "$CRED_FILE")"
+    if [[ ! -s "$CRED_FILE" ]]; then
+        # Token from env for unattended runs, otherwise prompt without echo.
+        local token="${OP_SERVICE_ACCOUNT_TOKEN:-}"
+        if [[ -z "$token" ]]; then
+            read -rsp "Paste the service account token (ops_...): " token
+            echo
+        fi
+        [[ "$token" == ops_* ]] || { red "Token must start with ops_"; exit 1; }
+        (umask 077 && printf '%s\n' "$token" >"$CRED_FILE")
+    fi
+    chmod 600 "$CRED_FILE"
+    green "Token file: $CRED_FILE (600)"
+}
+
+wire_shell() {
+    # The repo .zshrc already loads the token; bash hosts need it in ~/.bashrc.
+    local rc="${HOME}/.bashrc"
+    [[ -f "$rc" ]] || return 0
+    if ! grep -q 'brew shellenv' "$rc" && [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        # shellcheck disable=SC2016
+        printf '\n# Homebrew (Linux)\neval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"\n' >>"$rc"
+    fi
+    if ! grep -q 'OP_SERVICE_ACCOUNT_TOKEN' "$rc"; then
+        printf '\n# 1Password service account (agent host)\n%s\n' "$TOKEN_LINE" >>"$rc"
+    fi
+    green "Shell wired: $rc"
+}
+
+verify() {
+    eval "$TOKEN_LINE"
+    if ! op whoami 2>/dev/null | grep -q SERVICE_ACCOUNT; then
+        red "op is not authenticated as a service account; check the token"
+        exit 1
+    fi
+    green "Authenticated as service account. Vaults:"
+    op vault list
+    op vault get "$OP_VAULT" &>/dev/null || red "Warning: vault '$OP_VAULT' not visible to this token"
+}
+
+main() {
+    install_brew
+    install_op
+    write_token
+    wire_shell
+    verify
+    green "Done. Open a new shell (or source your rc file) to use op."
+}
+
+main "$@"

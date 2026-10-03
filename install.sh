@@ -266,6 +266,7 @@ configure() {
 
     # Link configs
     rm -rf "$HOME/.claude/settings.json" || true && ln -s "$INSTALLER_PATH/configs/config/claude/settings.json" "$HOME/.claude/settings.json"
+    rm -rf "$HOME/.claude/CLAUDE.md" || true && ln -s "$INSTALLER_PATH/configs/config/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
     mkdir -p "$HOME/.claude/hooks"
     rm -rf "$HOME/.claude/hooks/statusline.sh" || true && ln -s "$INSTALLER_PATH/configs/config/claude/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"

@@ -13,6 +13,9 @@ if [[ -d /home/linuxbrew/.linuxbrew ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+# 1Password service account, agent hosts only (file absent on personal machines).
+[[ -r "$HOME/.config/op/credentials" ]] && export OP_SERVICE_ACCOUNT_TOKEN="$(tr -d '[:space:]' <"$HOME/.config/op/credentials")"
+
 #######
 # Zinit
 #######
