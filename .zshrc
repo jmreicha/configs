@@ -128,8 +128,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Agents
 alias claude="claude --dangerously-skip-permissions"
-alias cc="claude --dangerously-skip-permissions --model claude-opus-4-6"
-alias ccc="claude -c --model claude-opus-4-6"
+alias cc="claude --dangerously-skip-permissions --model claude-opus-5-5"
+alias ccc="claude -c --model claude-opus-5-5"
 
 # AWS
 alias av="aws-vault"
@@ -248,10 +248,18 @@ export LC_ALL=en_US.UTF-8
 # Terraform/Terragrunt
 export TENV_AUTO_INSTALL="true"
 export TERRAGRUNT_LOCAL="true"
+# Centralized location for terraform cached files
 export TF_PLUGIN_CACHE_DIR="$HOME/.terragrunt/plugins"
+# Optimization to speed up dep fetching
 export TG_DEPENDENCY_FETCH_OUTPUT_FROM_STATE="true"
+# Centralized location for terragrunt cached files
 export TG_DOWNLOAD_DIR="$HOME/.terragrunt/cache"
+# Use local creds
 export TG_LOCAL="true"
+# Make outputs less verbose
+export TG_TF_FORWARD_STDOUT="true"
+# Default to using terraform
+export TG_TF_PATH="terraform"
 
 # SSH
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
