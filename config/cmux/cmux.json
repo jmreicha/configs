@@ -14,5 +14,9 @@
       "prevSidebarTab": "cmd+↑",
       "nextSidebarTab": "cmd+↓"
     }
+  },
+
+  "sidebar": {
+    "reorderOnNotification": false
   }
 }
