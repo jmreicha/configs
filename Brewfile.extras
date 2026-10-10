@@ -160,6 +160,7 @@ brew "kubescape"
 brew "kubevpn"
 brew "lazydocker"
 brew "vcluster"
+brew "openeverest/tap/everestctl", trusted: true
 brew "pluto"
 brew "polaris"
 brew "popeye"
