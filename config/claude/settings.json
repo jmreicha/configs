@@ -8,8 +8,14 @@
     "type": "command",
     "command": "bash ~/.claude/hooks/statusline.sh"
   },
+  "env": {
+    "CLAUDE_CODE_PLUGIN_DIRS": "/Users/joshuareichardt/git/jmreicha/agent-tools"
+  },
+  "model": "opus",
+  "tui": "fullscreen",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "effortLevel": "medium",
-  "model": "claude-opus-4-6"
+  "editorMode": "vim",
+  "autoCompactWindow": 420000
 }
