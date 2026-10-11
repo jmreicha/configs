@@ -264,6 +264,8 @@ configure() {
     rm -rf "$HOME/.claude/CLAUDE.md" || true && ln -s "$INSTALLER_PATH/configs/config/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
     mkdir -p "$HOME/.claude/hooks"
     rm -rf "$HOME/.claude/hooks/statusline.sh" || true && ln -s "$INSTALLER_PATH/configs/config/claude/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
+    mkdir -p "$HOME/.claude/rules"
+    rm -rf "$HOME/.claude/rules/arbiter" || true && ln -s "$INSTALLER_PATH/configs/config/claude/arbiter" "$HOME/.claude/rules/arbiter"
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"

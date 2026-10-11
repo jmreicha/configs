@@ -1,0 +1,362 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jmreicha/agent-tools/main/hooks/arbiter/rule.schema.json
+# Personal global arbiter rules, mostly codified from ~/.claude/CLAUDE.md.
+# Not codified (guidance only): brevity, 2-line comments, context7, `op read` for creds.
+# "Never print secrets" is only partly codified (secrets/*); bare `op read` needs pipelines.
+
+rules:
+  # "Never use aws sso login. It leaves credentials in plaintext."
+  - id: aws/no-sso-login
+    match: { cmd: aws, args: [sso, login] }
+    description: "aws sso login leaves plaintext credentials on disk."
+    hint: "Use `aws-vault exec <profile> -- aws ...` instead."
+    tests:
+      deny:
+        - aws sso login
+        - aws sso login --profile prod
+        - aws-vault exec lytxread -- aws sso login
+      allow:
+        - aws sso list-accounts
+        - git commit -m "never run aws sso login"
+
+  # "Always use aws-vault when connecting to AWS."
+  - id: aws/requires-vault
+    match: { cmd: aws }
+    unless: { wrapped_by: aws-vault }
+    action: rewrite
+    to:
+      prefix: "aws-vault exec {--profile|AWS_PROFILE|lytxread} --"
+      flags: { --profile: null }
+      env: { AWS_PROFILE: null }
+    description: "AWS access goes through aws-vault."
+    hint: "Run `aws-vault exec <profile> -- aws ...`, not `aws --profile`."
+    tests:
+      rewrite:
+        "aws s3 ls": "aws-vault exec lytxread -- aws s3 ls"
+        "aws s3 ls --profile prod": "aws-vault exec prod -- aws s3 ls"
+        "AWS_PROFILE=prod aws s3 ls": "aws-vault exec prod -- aws s3 ls"
+        "cd infra && aws s3 ls | head": "cd infra && aws-vault exec lytxread -- aws s3 ls | head"
+        "echo $(aws sts get-caller-identity)": "echo $(aws-vault exec lytxread -- aws sts get-caller-identity)"
+      allow:
+        - aws-vault exec lytxread -- aws s3 ls
+        - aws-vault exec lytxread -- bash -c 'aws s3 ls | head'
+        - echo "aws s3 ls"
+        - aws-vault list
+
+  # "Always use the lytxread role unless told otherwise or elevated privileges are required."
+  - id: aws/prefer-lytxread
+    match: { cmd: aws-vault, args: [exec] }
+    unless: { args: [exec, "lytxread*"] }
+    action: ask
+    description: "This uses an AWS role other than lytxread."
+    hint: "Use `aws-vault exec lytxread` unless elevated access is required."
+    tests:
+      ask:
+        - aws-vault exec admin -- aws s3 ls
+        - aws-vault exec --debug prod-admin -- aws iam list-users
+      allow:
+        - aws-vault exec lytxread -- aws s3 ls
+        - aws-vault exec lytxread-prod -- aws s3 ls
+        - aws-vault list
+
+  # "Always use kubectl --context with an existing profile."
+  - id: k8s/require-context
+    match: { cmd: kubectl }
+    unless:
+      - { flags: [--context] }
+      - { args: [config] }
+      - { args: [version], flags: [--client] }
+    description: "kubectl must target an explicit context."
+    hint: "Pass `--context <existing-context>` (see `kubectl config get-contexts`)."
+    tests:
+      deny:
+        - kubectl get pods
+        - kubectl -n kube-system get pods
+      allow:
+        - kubectl --context prod get pods
+        - kubectl get pods --context=prod
+        - kubectl config get-contexts
+        - kubectl version --client
+
+  # "Never create new Kubernetes profiles in ~/.kube/config."
+  - id: k8s/no-new-contexts
+    match:
+      - cmd: kubectl
+        args:
+          [config, [set-context, set-cluster, set-credentials, rename-context]]
+      - cmd: aws
+        args: [eks, update-kubeconfig]
+    description: "New kube contexts pollute ~/.kube/config."
+    hint: "Use an existing context from `kubectl config get-contexts`; ask the user if none fits."
+    tests:
+      deny:
+        - kubectl config set-context dev --cluster=dev
+        - aws-vault exec lytxread -- aws eks update-kubeconfig --name prod
+      allow:
+        - kubectl config get-contexts
+        - kubectl config use-context prod
+
+  - id: k8s/no-other-kubeconfig
+    match:
+      - { env: { KUBECONFIG: "*" } }
+      - { cmd: export, args: ["KUBECONFIG=*"] }
+      - { cmd: [kubectl, helm, k9s, stern, flux], flags: [--kubeconfig] }
+    description: "Kubernetes access uses the existing ~/.kube/config, not another kubeconfig."
+    hint: "Pick an existing context with `--context` (see `kubectl config get-contexts`); ask the user if none fits."
+    tests:
+      deny:
+        - KUBECONFIG=/tmp/kc kubectl get pods
+        - env KUBECONFIG=/tmp/kc kubectl get pods
+        - export KUBECONFIG=/tmp/kc
+        - kubectl --kubeconfig /tmp/kc --context dev get pods
+        - kubectl get pods --kubeconfig=/tmp/kc
+        - helm list --kubeconfig /tmp/kc
+      allow:
+        - kubectl --context dev get pods
+        - echo $KUBECONFIG
+
+  - id: k8s/kubeconfig-readonly
+    tool: [Bash, Edit, Write]
+    match: { path: "~/.kube/config" }
+    description: "Claude must not edit ~/.kube/config."
+    hint: "Use an existing context; ask the user to change kube config."
+    tests:
+      deny: ["~/.kube/config"]
+      allow: ["~/.kube/other-config"]
+
+  # "Always ask before making potentially destructive changes to AWS, Kubernetes, GCloud."
+  - id: k8s/ask-destructive
+    match:
+      cmd: kubectl
+      args:
+        [
+          [
+            delete,
+            drain,
+            cordon,
+            scale,
+            apply,
+            replace,
+            patch,
+            edit,
+            rollout,
+            annotate,
+            label,
+            taint,
+          ],
+        ]
+    action: ask
+    description: "This kubectl command changes cluster state."
+    tests:
+      ask:
+        - kubectl --context prod delete pod web-1
+        - kubectl --context prod apply -f deploy.yaml
+      allow:
+        - kubectl --context prod get pods
+        - kubectl --context prod logs deploy/delete-worker
+
+  - id: aws/ask-destructive
+    match:
+      cmd: aws
+      args:
+        [
+          [
+            "delete-*",
+            "terminate-*",
+            "remove-*",
+            "put-*",
+            "update-*",
+            "modify-*",
+            "create-*",
+            "rm",
+            "rb",
+            "mv",
+          ],
+        ]
+    action: ask
+    description: "This AWS command changes cloud resources."
+    tests:
+      ask:
+        - aws-vault exec lytxread -- aws ec2 terminate-instances --instance-ids i-1
+        - aws-vault exec lytxread -- aws s3 rm s3://bucket/key
+      allow:
+        - aws-vault exec lytxread -- aws ec2 describe-instances
+        - aws-vault exec lytxread -- aws s3 ls
+
+  - id: gcloud/ask-destructive
+    match:
+      {
+        cmd: gcloud,
+        args:
+          [
+            [
+              delete,
+              create,
+              update,
+              deploy,
+              set-iam-policy,
+              add-iam-policy-binding,
+            ],
+          ],
+      }
+    action: ask
+    description: "This gcloud command changes cloud resources."
+    tests:
+      ask: ["gcloud compute instances delete vm-1"]
+      allow: ["gcloud compute instances list"]
+
+  # Like kubectl --context: never rely on the active gcloud config's project.
+  - id: gcloud/require-project
+    match: { cmd: gcloud }
+    unless:
+      - { flags: [--project] }
+      - { args: [[auth, config, components, version, info, help, projects]] }
+    description: "gcloud must target an explicit project."
+    hint: "Pass `--project <project-id>` (see `gcloud projects list`)."
+    tests:
+      deny:
+        - gcloud compute instances list
+        - gcloud run services describe api --region us-east1
+      allow:
+        - gcloud compute instances list --project my-proj
+        - gcloud compute instances list --project=my-proj
+        - gcloud auth list
+        - gcloud config list
+        - gcloud projects list
+        - gcloud version
+
+  - id: iac/ask-apply
+    match:
+      - { cmd: [terraform, tofu, terragrunt], args: [[apply, destroy, import]] }
+      - { cmd: helm, args: [[install, upgrade, uninstall, rollback]] }
+    action: ask
+    description: "This applies infrastructure changes."
+    tests:
+      ask:
+        - terraform apply
+        - tofu destroy
+        - terragrunt apply
+        - terragrunt run-all destroy
+        - terragrunt run --all apply
+        - helm upgrade web ./chart
+      allow: ["terraform plan", "terragrunt plan", "helm list"]
+
+  # Terraform, Terragrunt, and OpenTofu versions are managed by tenv (its proxies are on PATH).
+  - id: iac/tenv-not-tfenv
+    match: { cmd: tfenv }
+    action: rewrite
+    to: { cmd: "tenv tf" }
+    description: "Terraform versions are managed by tenv."
+    tests:
+      rewrite:
+        "tfenv install 1.9.0": "tenv tf install 1.9.0"
+        "tfenv use 1.9.0": "tenv tf use 1.9.0"
+
+  - id: iac/tenv-not-tofuenv
+    match: { cmd: tofuenv }
+    action: rewrite
+    to: { cmd: "tenv tofu" }
+    description: "OpenTofu versions are managed by tenv."
+    tests:
+      rewrite:
+        "tofuenv install 1.8.0": "tenv tofu install 1.8.0"
+
+  - id: iac/versions-via-tenv
+    match:
+      - { cmd: [tfswitch, tgswitch] }
+      - { cmd: brew, args: [[install, reinstall], ["*terraform", "*terragrunt", "*opentofu"]] }
+      - { cmd: asdf, args: [[install, set, local, global], [terraform, terragrunt, opentofu]] }
+    description: "Terraform, Terragrunt, and OpenTofu versions are managed by tenv."
+    hint: "Use `tenv tf|tg|tofu install <version>` and `tenv tf use <version>`, or a .terraform-version file."
+    tests:
+      deny:
+        - tfswitch 1.9.0
+        - tgswitch
+        - brew install terraform
+        - brew install hashicorp/tap/terraform
+        - asdf install terragrunt 0.60.0
+      allow:
+        - tenv tf install 1.9.0
+        - brew install jq
+        - terraform version
+
+  # Claude must not branch, switch, or commit on its own initiative.
+  # ask (not deny) so an explicit request can still go through with your OK.
+  - id: git/ask-branch-or-commit
+    match:
+      - { cmd: git, args: [switch] }
+      # checkout with a target switches branches; -b/-B also creates one.
+      - { cmd: git, args: [checkout, "*"] }
+      - { cmd: git, args: [checkout], flags: [-b] }
+      - { cmd: git, args: [checkout], flags: [-B] }
+      # branch with a name creates, renames, or deletes; bare `git branch` lists.
+      - { cmd: git, args: [branch, "*"] }
+      - { cmd: git, args: [worktree, add] }
+      - { cmd: git, args: [commit] }
+    unless:
+      # `git checkout -- <file>` restores files, it doesn't switch branches.
+      - { cmd: git, args: [checkout], regex: "/\\s--(\\s|$)/" }
+    action: ask
+    description: Branches, switches, and commits need an explicit request from the user.
+    hint: Leave changes in the working tree and ask the user before branching or committing.
+    tests:
+      ask:
+        - git switch -c feat/x
+        - git switch main
+        - git checkout -b feat/x
+        - git checkout main
+        - git branch feat/x
+        - git worktree add ../wt -b feat/x
+        - git commit -m "msg"
+        # The heredoc commit message style Claude uses.
+        - "git add . && git commit -m \"$(cat <<'EOF'\nmsg\nEOF\n)\""
+      allow:
+        - git status
+        - git log --oneline
+        - git branch
+        - git branch -a
+        - git branch --show-current
+        - git checkout -- README.md
+        - git diff main
+
+  # "Never print or store secret values in chat, notes, memory, or files."
+  - id: secrets/no-reveal
+    match: { cmd: op, args: [item, get], flags: [--reveal] }
+    description: op item get --reveal prints secret values into the conversation.
+    hint: Pass the value straight to the command that needs it, e.g. `$(op read op://vault/item/field)`.
+    tests:
+      deny:
+        - op item get db --fields password --reveal
+        - op item get db --reveal --format json
+      allow:
+        - op item get db --fields username
+        - op item list
+
+  - id: secrets/no-env-dump
+    match: { cmd: printenv }
+    description: printenv can print secret environment variables into the conversation.
+    hint: Check a variable is set with `[ -n "$VAR" ] && echo set`, without printing its value.
+    tests:
+      deny:
+        - printenv
+        - printenv AWS_SECRET_ACCESS_KEY
+      allow:
+        - echo "$PATH"
+
+  - id: secrets/no-secret-files
+    tool: [Bash, Read, Edit, Write]
+    match: { path: ["*/.env", "*/.env.*", "~/.aws/credentials", "~/.ssh/id_*"] }
+    unless: { path: ["*/.env.example", "~/.ssh/*.pub"] }
+    description: Secret files stay out of the conversation.
+    hint: Ask the user for the specific non-secret value you need, or read .env.example.
+    tests:
+      deny:
+        - /repo/.env
+        - /repo/.env.local
+        - ~/.aws/credentials
+        - ~/.ssh/id_ed25519
+      allow:
+        - /repo/.env.example
+        - /repo/src/env.ts
+        - ~/.aws/config
+        - ~/.ssh/id_ed25519.pub
+        - ~/.ssh/config
