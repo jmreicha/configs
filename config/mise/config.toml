@@ -1,7 +1,45 @@
 [settings]
-idiomatic_version_file_enable_tools = ["go", "node", "python"]
-node.verify = false
+idiomatic_version_file_enable_tools = ["go", "java", "node", "python"]
+trusted_config_paths = ["~/git/jmreicha"]
 
 [tools]
+# Language tools
 go = "latest"
+java = "lts"
 node = "lts"
+
+# Go tools
+"go:golang.org/x/tools/gopls" = "latest"
+
+# Node tools
+"npm:@aws/agentcore" = "latest"
+"npm:@cloud-copilot/iam-convert" = { version = "latest", allow_low_downloads = true }
+"npm:@cloud-copilot/iam-expand" = "latest"
+"npm:@cloud-copilot/iam-shrink" = "latest"
+"npm:@colbymchenry/codegraph" = "latest"
+"npm:@dbx-app/cli" = "latest"
+"npm:@fission-ai/openspec" = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@googleworkspace/cli" = "latest"
+"npm:@kitlangton/ghui" = { version = "latest", allow_low_downloads = true }
+"npm:@tobilu/qmd" = "latest"
+"npm:@zvec/zvec-grep" = "latest"
+"npm:agnix" = "latest"
+"npm:aws-cdk" = "latest"
+"npm:cf" = "latest"
+"npm:codeburn" = "latest"
+"npm:ctx7" = "latest"
+"npm:ralph-tui" = { version = "latest", allow_low_downloads = true }
+"npm:renovate" = { version = "latest", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
+"npm:skills" = "latest"
+"npm:wrangler" = "latest"
+
+# Python tools
+"pipx:aws-sam-cli-local" = "latest"
+"pipx:awscli-local" = "latest"
+"pipx:c7n" = "latest"
+"pipx:iam-policy-autopilot" = "latest"
+"pipx:markitdown" = { version = "latest", extras = ["all"] }
+"pipx:ministack" = "latest"
+"pipx:octodns" = { version = "latest", with = ["octodns-route53", "octodns-cloudflare"] }
+"pipx:terraform-local" = "latest"

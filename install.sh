@@ -210,11 +210,6 @@ install() {
         exit 1
     fi
 
-    # TODO: Golang
-    # goenv install
-    # goenv global 1.24
-    # go install -v golang.org/x/tools/gopls@latest
-
     if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_awscli
     fi
@@ -366,22 +361,9 @@ switch_shell() {
 }
 
 extras() {
-    # Python
+    # Python (uv tool) and mise-managed runtimes/npm/pipx/go tools
     uv tool upgrade --all
-    # uv tool install c7n
-    # uvx --from c7n custodian
-    # uv tool install octodns
-    # uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump
-
-    # Node
-    npm upgrade -g
-    # npm install -g eslint
-    # npx eslint
-    # npm install -g wrangler
-    # npx wrangler
-
-    # Golang
-    # go install golang.org/x/tools/gopls@latest
+    mise upgrade
 
     # Steampipe
     steampipe plugin update --all
