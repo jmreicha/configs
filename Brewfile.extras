@@ -40,6 +40,7 @@ brew "ast-grep"
 brew "ariga/tap/atlas", trusted: true
 brew "beads"
 brew "boring"
+brew "cocogitto"
 brew "commitizen"
 brew "dolt"
 brew "floci"
