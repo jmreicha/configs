@@ -318,6 +318,16 @@ rules:
         - git checkout -- README.md
         - git diff main
 
+  # The built-in tool makes a worktree without running git, so the rule above misses it.
+  - id: git/ask-worktree-tool
+    tool: [EnterWorktree]
+    action: ask
+    description: Worktrees need an explicit request from the user.
+    hint: Work in the current checkout unless the user asked for a worktree.
+    tests:
+      ask: [EnterWorktree]
+      allow: [Read]
+
   # "Never print or store secret values in chat, notes, memory, or files."
   - id: secrets/no-reveal
     match: { cmd: op, args: [item, get], flags: [--reveal] }
