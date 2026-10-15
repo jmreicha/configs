@@ -6,7 +6,8 @@
 - Always ask me when you are usure about a decision.
 - Always lookup docs using context7 for things you aren't sure about.
 - Always prefer brevity and conciseness.
-- Always prefer keeping comments to 2 lines max to help human readability.
+- Always prefer keeping comments to 1-2 lines max to help human readability.
+- Always explain why someting is being done with a comment, not what.
 - Always fetch credentials with "op read op://..." when a 1Password service account is configured. See instructions/agent-bootstrap.md.
 - Always write a failing test first when adding a new feature or fixing something.
 
