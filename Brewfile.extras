@@ -117,7 +117,6 @@ brew "datadog-labs/pack/pup", trusted: true
 brew "oras"
 brew "powerpipe"
 brew "semgrep"
-brew "sheeki03/tap/tirith", trusted: true
 brew "sops"
 brew "ssmctl"
 brew "steampipe"

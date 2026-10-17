@@ -319,6 +319,8 @@ configure() {
     ctx7 setup --cli --claude --codex --opencode
     rtk telemetry disable && rtk init -g --auto-patch
     uv tool install "headroom-ai[all]" && headroom init claude
+    # Tools above rewrite settings.json in place, replacing the symlink; restore it
+    ln -sf "$INSTALLER_PATH/configs/config/claude/settings.json" "$HOME/.claude/settings.json"
 
     green "Configuring Vim"
     if [[ ! -d $HOME/.vim/plugged ]]; then

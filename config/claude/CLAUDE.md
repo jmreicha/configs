@@ -1,6 +1,12 @@
 @~/.claude/RTK.md
 @RTK.md
 
+# Workflow Lifecycle
+
+The general workflow should follow the following development lifecycle.
+
+Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Monitor/Observer -> Refactor -> (Repeat)
+
 # Core Tenets
 
 - Always ask me when you are usure about a decision.

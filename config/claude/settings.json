@@ -1,21 +1,59 @@
 {
-  "permissions": {
-    "allow": [
-      "Edit(~/hack/**)"
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/hooks/statusline.sh"
   },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "agent-skills@addy-agent-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "headroom-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "chopratejas/headroom"
+      }
+    },
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    }
+  },
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
   "env": {
     "CLAUDE_CODE_PLUGIN_DIRS": "/Users/joshuareichardt/git/jmreicha/agent-tools"
   },
-  "model": "opus",
-  "tui": "fullscreen",
-  "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true,
   "effortLevel": "medium",
-  "editorMode": "vim",
-  "autoCompactWindow": 420000
+  "autoCompactWindow": 420000,
+  "permissions": {
+    "allow": [
+      "Edit(~/hack/**)"
+    ]
+  },
+  "autoUpdatesChannel": "latest"
 }
