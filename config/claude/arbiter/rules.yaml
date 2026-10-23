@@ -77,6 +77,28 @@ rules:
         - kubectl config get-contexts
         - kubectl version --client
 
+  # Several Argo CD servers; never rely on the active `argocd context`.
+  - id: argocd/require-context
+    match: { cmd: argocd }
+    unless:
+      - { flags: [--argocd-context] }
+      # These manage or name contexts themselves rather than target one.
+      - { args: [[context, login, logout, relogin, completion, help]] }
+      - { args: [version], flags: [--client] }
+    description: "argocd must target an explicit Argo CD context."
+    hint: "Pass `--argocd-context <name>` (see `argocd context` for saved contexts)."
+    tests:
+      deny:
+        - argocd app list
+        - argocd app sync web
+        - argocd app get web --grpc-web
+      allow:
+        - argocd --argocd-context prod app list
+        - argocd app sync web --argocd-context=prod
+        - argocd context
+        - argocd login argocd.example.com --sso
+        - argocd version --client
+
   # "Never create new Kubernetes profiles in ~/.kube/config."
   - id: k8s/no-new-contexts
     match:
@@ -279,6 +301,30 @@ rules:
         - brew install jq
         - terraform version
 
+  # Always use uv to manage Python environments.
+  - id: python/use-uv
+    match:
+      - { cmd: [pip, pip3, virtualenv, pipx] }
+      # `python -m pip`: -m is a flag, and its value lands in args.
+      - { cmd: [python, python3], flags: [-m], args: [[pip, venv, virtualenv]] }
+    description: Python packages and environments are managed with uv.
+    hint: "Use `uv add`, `uv pip install`, `uv venv`, `uvx <tool>`, or `uv tool install` instead."
+    tests:
+      deny:
+        - pip install requests
+        - pip3 install -r requirements.txt
+        - python -m pip install requests
+        - python3 -m venv .venv
+        - virtualenv .venv
+        - pipx install ruff
+      allow:
+        - uv add requests
+        - uv pip install requests
+        - uv venv
+        - uvx ruff check
+        - python3 -m pytest
+        - python3 script.py
+
   # Claude must not branch, switch, or commit on its own initiative.
   # ask (not deny) so an explicit request can still go through with your OK.
   - id: git/ask-branch-or-commit
@@ -328,7 +374,7 @@ rules:
       ask: [EnterWorktree]
       allow: [Read]
 
-  # "Never print or store secret values in chat, notes, memory, or files."
+  # Never print or store secret values in chat, notes, memory, or files.
   - id: secrets/no-reveal
     match: { cmd: op, args: [item, get], flags: [--reveal] }
     description: op item get --reveal prints secret values into the conversation.
