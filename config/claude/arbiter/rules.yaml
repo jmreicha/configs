@@ -45,7 +45,10 @@ rules:
   # "Always use the lytxread role unless told otherwise or elevated privileges are required."
   - id: aws/prefer-lytxread
     match: { cmd: aws-vault, args: [exec] }
-    unless: { args: [exec, "lytxread*"] }
+    # Profiles are named <account>/lytxread; globs match the whole arg, so cover both forms.
+    unless:
+      - { args: [exec, "lytxread*"] }
+      - { args: [exec, "*/lytxread"] }
     action: ask
     description: "This uses an AWS role other than lytxread."
     hint: "Use `aws-vault exec lytxread` unless elevated access is required."
@@ -53,9 +56,14 @@ rules:
       ask:
         - aws-vault exec admin -- aws s3 ls
         - aws-vault exec --debug prod-admin -- aws iam list-users
+        - aws-vault exec pipeline-dev/cloudinfra -- aws s3 ls
+        - aws-vault exec pipeline-dev/foo -- aws s3 ls
+        - aws-vault exec foo/lytxread-admin -- aws s3 ls
       allow:
         - aws-vault exec lytxread -- aws s3 ls
         - aws-vault exec lytxread-prod -- aws s3 ls
+        - aws-vault exec pipeline-dev/lytxread -- aws s3 ls
+        - aws-vault exec --debug internalservices-dev/lytxread -- aws s3 ls
         - aws-vault list
 
   # "Always use kubectl --context with an existing profile."
