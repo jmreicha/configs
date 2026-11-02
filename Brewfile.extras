@@ -35,6 +35,7 @@ brew "act"
 brew "actionlint"
 brew "action-validator"
 brew "adr-tools"
+brew "adrs"
 brew "agent-browser"
 brew "ast-grep"
 brew "ariga/tap/atlas", trusted: true
