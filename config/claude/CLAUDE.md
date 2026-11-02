@@ -16,6 +16,7 @@ Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests 
 - Always explain why someting is being done with a comment, not what.
 - Always fetch credentials with "op read op://..." when a 1Password service account is configured. See instructions/agent-bootstrap.md.
 - Always write a failing test first when adding a new feature or fixing something.
+- Always take a step back after implementing a solution and see if there is a better way to do it in terms of scalability, maintainability, etc.
 
 - Never make assumptions without asking first.
 - Never print or store secret values in chat, notes, memory, or files. Refer to them by op:// reference.
