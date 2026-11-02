@@ -243,6 +243,7 @@ configure() {
     # Create extra directories if they don't exist
     mkdir -p "$HOME/.aws"
     mkdir -p "$HOME/.config/ghostty"
+    mkdir -p "$HOME/.config/herdr"
     mkdir -p "$HOME/.config/k9s"
     mkdir -p "$HOME/.config/mise"
     mkdir -p "$HOME/.config/uwsm"
@@ -270,6 +271,10 @@ configure() {
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"
     rm -rf "$HOME/.config/cmux" || true && ln -s "$INSTALLER_PATH/configs/config/cmux" "$HOME/.config/cmux"
+    rm -rf "$HOME/.config/herdr/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+    mkdir -p "$HOME/.config/herdr-app/mods" "$HOME/.config/herdr-app/layouts"
+    rm -rf "$HOME/.config/herdr-app/mods/my-spaces" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/my-spaces" "$HOME/.config/herdr-app/mods/my-spaces"
+    rm -rf "$HOME/.config/herdr-app/layouts/my-main.json" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/layouts/my-main.json" "$HOME/.config/herdr-app/layouts/my-main.json"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"

@@ -19,7 +19,6 @@ brew "watch"
 brew "wget"
 
 # Modern CLI replacements
-brew "1password-cli"
 brew "bat"
 brew "colordiff"
 brew "diff-so-fancy"
@@ -64,6 +63,7 @@ brew "strace" if OS.linux?
 
 # OSX core GUI
 cask "1password" if OS.mac?
+cask "1password-cli" if OS.mac?
 cask "firefox" if OS.mac?
 cask "font-meslo-lg-nerd-font" if OS.mac?
 cask "ghostty" if OS.mac?

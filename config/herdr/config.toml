@@ -1,0 +1,8 @@
+onboarding = false
+
+# Ported from cmux: cmd+arrows for tab/workspace switching, defaults kept as fallbacks
+[keys]
+previous_tab = ["prefix+p", "cmd+left"]
+next_tab = ["prefix+n", "cmd+right"]
+previous_workspace = "cmd+up"
+next_workspace = "cmd+down"
