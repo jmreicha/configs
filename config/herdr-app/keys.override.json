@@ -1,0 +1,18 @@
+{
+  "global": {
+    "cmd-shift-b": "layout.toggle:panel",
+    "cmd-p": "mod.open:my-picker",
+    "cmd-left": "pane.go:left",
+    "cmd-right": "pane.go:right",
+    "cmd-up": "pane.go:up",
+    "cmd-down": "pane.go:down",
+    "cmd-alt-left": "tab.prev",
+    "cmd-alt-right": "tab.next",
+    "cmd-alt-up": "space.prev",
+    "cmd-alt-down": "space.next"
+  },
+  "terminal": {
+    "cmd-left": "pane.go:left",
+    "cmd-right": "pane.go:right"
+  }
+}

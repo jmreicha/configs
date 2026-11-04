@@ -127,7 +127,9 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Agents
-alias claude="claude --dangerously-skip-permissions"
+# Org-specific Claude settings live outside this public repo; load them only where present
+[[ -f "$HOME/.claude/settings.work.json" ]] && _claude_work="--settings $HOME/.claude/settings.work.json"
+alias claude="claude ${_claude_work-} --dangerously-skip-permissions"
 alias cc="claude --dangerously-skip-permissions --model claude-opus-5-5"
 alias ccc="claude -c --model claude-opus-5-5"
 

@@ -1,5 +1,5 @@
 {
-  "model": "opus",
+  "model": "claude-opus-5-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash '/Users/joshuareichardt/.claude/hooks/herdr-agent-state.sh' session",
+            "command": "f=\"$HOME/.claude/hooks/herdr-agent-state.sh\"; [ -f \"$f\" ] && bash \"$f\" session || true",
             "timeout": 10
           }
         ]
@@ -33,7 +33,10 @@
     "superpowers@claude-plugins-official": true,
     "ponytail@ponytail": true,
     "gopls-lsp@claude-plugins-official": true,
-    "agent-skills@addy-agent-skills": true
+    "agent-skills@addy-agent-skills": true,
+    "mattpocock-skills@mattpocock": true,
+    "honeycomb@claude-plugins-official": true,
+    "agent-tools@agent-tools": true
   },
   "extraKnownMarketplaces": {
     "ponytail": {
@@ -53,6 +56,24 @@
         "source": "github",
         "repo": "addyosmani/agent-skills"
       }
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    },
+    "honeycomb-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "honeycombio/agent-skill"
+      }
+    },
+    "agent-tools": {
+      "source": {
+        "source": "github",
+        "repo": "jmreicha/agent-tools"
+      }
     }
   },
   "tui": "fullscreen",
@@ -65,8 +86,17 @@
   "autoCompactWindow": 420000,
   "permissions": {
     "allow": [
-      "Edit(~/hack/**)"
-    ]
+      "Bash(**)",
+      "Edit(**)",
+      "Edit(~/hack/**)",
+      "Read(**)",
+      "WebFetch(domain:*)"
+    ],
+    "defaultMode": "auto"
   },
-  "autoUpdatesChannel": "latest"
+  "autoUpdatesChannel": "latest",
+  "awaySummaryEnabled": false,
+  "theme": "dark",
+  "autoCompactEnabled": true,
+  "skipAutoPermissionPrompt": true
 }

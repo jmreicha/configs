@@ -279,6 +279,9 @@ configure() {
     rm -rf "$HOME/.config/herdr-app/mods/github" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/github" "$HOME/.config/herdr-app/mods/github"
     rm -rf "$HOME/.config/herdr-app/mods/issue-agent" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/issue-agent" "$HOME/.config/herdr-app/mods/issue-agent"
     rm -rf "$HOME/.config/herdr-app/layouts/my-main.json" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/layouts/my-main.json" "$HOME/.config/herdr-app/layouts/my-main.json"
+    # Merge overrides into herdr's own keys.json so we only track our changes, not its defaults
+    K="$HOME/.config/herdr-app/keys.json"
+    [[ -f "$K" ]] && jq -s '.[0] * .[1]' "$K" "$INSTALLER_PATH/configs/config/herdr-app/keys.override.json" > "$K.tmp" && mv "$K.tmp" "$K"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
