@@ -98,5 +98,8 @@
   "awaySummaryEnabled": false,
   "theme": "dark",
   "autoCompactEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "attribution": {
+    "commit": ""
+  }
 }
