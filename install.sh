@@ -322,6 +322,7 @@ configure() {
 
     # Skills
     skills add blader/humanizer@humanizer --all --global
+    skills add cloudflare/security-audit-skill --all --global
     skills add mattpocock/skills --all --global
     skills add shadcn/improve --all --global
     skills add uditgoenka/autoresearch --all --global
