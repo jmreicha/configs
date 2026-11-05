@@ -5,7 +5,7 @@
 
 The general workflow should follow the following development lifecycle.
 
-Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Monitor/Observer -> Refactor -> (Repeat)
+Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Security review -> Monitor/Observer -> Refactors -> (Repeat)
 
 # Core Tenets
 
