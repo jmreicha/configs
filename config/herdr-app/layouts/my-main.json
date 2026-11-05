@@ -147,6 +147,13 @@
                       "content": {
                         "mod": "github"
                       }
+                    },
+                    {
+                      "id": "jira",
+                      "type": "block",
+                      "content": {
+                        "mod": "jira"
+                      }
                     }
                   ],
                   "active": "files"

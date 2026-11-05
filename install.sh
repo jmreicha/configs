@@ -278,6 +278,7 @@ configure() {
     rm -rf "$HOME/.config/herdr-app/mods/my-picker" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/my-picker" "$HOME/.config/herdr-app/mods/my-picker"
     rm -rf "$HOME/.config/herdr-app/mods/github" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/github" "$HOME/.config/herdr-app/mods/github"
     rm -rf "$HOME/.config/herdr-app/mods/issue-agent" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/issue-agent" "$HOME/.config/herdr-app/mods/issue-agent"
+    rm -rf "$HOME/.config/herdr-app/mods/jira" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/jira" "$HOME/.config/herdr-app/mods/jira"
     rm -rf "$HOME/.config/herdr-app/layouts/my-main.json" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/layouts/my-main.json" "$HOME/.config/herdr-app/layouts/my-main.json"
     # Merge overrides into herdr's own keys.json so we only track our changes, not its defaults
     K="$HOME/.config/herdr-app/keys.json"

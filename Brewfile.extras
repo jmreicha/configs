@@ -6,6 +6,7 @@ tap "adembc/tap", trusted: true
 tap "alexnabokikh/tfsort", trusted: true
 tap "anomalyco/tap", trusted: true
 tap "aquaproj/aqua", trusted: true
+tap "atlassian/homebrew-acli", trusted: true
 tap "aws/tap", trusted: true
 tap "bats-core/bats-core", trusted: true
 tap "buo/cask-upgrade", trusted: true
@@ -33,6 +34,7 @@ tap "ymtdzzz/tap", trusted: true
 # Dev tools
 brew "act"
 brew "actionlint"
+brew "acli"
 brew "action-validator"
 brew "adr-tools"
 brew "adrs"
