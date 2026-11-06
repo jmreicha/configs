@@ -174,6 +174,8 @@ rules:
             taint,
           ],
         ]
+    # The local Docker Desktop cluster is disposable, so changes there don't need a prompt.
+    unless: { regex: "/--context[= ]docker-desktop(\\s|$)/" }
     action: ask
     description: "This kubectl command changes cluster state."
     tests:
@@ -183,6 +185,8 @@ rules:
       allow:
         - kubectl --context prod get pods
         - kubectl --context prod logs deploy/delete-worker
+        - kubectl --context docker-desktop delete pod web-1
+        - kubectl apply -f deploy.yaml --context=docker-desktop
 
   - id: aws/ask-destructive
     match:
@@ -258,6 +262,8 @@ rules:
     match:
       - { cmd: [terraform, tofu, terragrunt], args: [[apply, destroy, import]] }
       - { cmd: helm, args: [[install, upgrade, uninstall, rollback]] }
+    # Same as k8s/ask-destructive: the local Docker Desktop cluster is fair game.
+    unless: { cmd: helm, regex: "/--kube-context[= ]docker-desktop(\\s|$)/" }
     action: ask
     description: "This applies infrastructure changes."
     tests:
@@ -268,7 +274,13 @@ rules:
         - terragrunt run-all destroy
         - terragrunt run --all apply
         - helm upgrade web ./chart
-      allow: ["terraform plan", "terragrunt plan", "helm list"]
+        - helm upgrade web ./chart --kube-context prod
+      allow:
+        - terraform plan
+        - terragrunt plan
+        - helm list
+        - helm upgrade web ./chart --kube-context docker-desktop
+        - helm install web ./chart --kube-context=docker-desktop
 
   # Terraform, Terragrunt, and OpenTofu versions are managed by tenv (its proxies are on PATH).
   - id: iac/tenv-not-tfenv
