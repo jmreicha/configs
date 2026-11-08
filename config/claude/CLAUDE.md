@@ -1,17 +1,22 @@
 @~/.claude/RTK.md
 @RTK.md
 
+# Workflow Lifecycle
+
+The general workflow should follow the following development lifecycle.
+
+Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Security review -> Monitor/Observer -> Refactors -> (Repeat)
+
 # Core Tenets
 
-- Always ask before making potentially destructive changes to AWS, Kubernetes, GCloud or other cloud resources.
+- Always ask me when you are usure about a decision.
 - Always lookup docs using context7 for things you aren't sure about.
 - Always prefer brevity and conciseness.
-- Always prefer keeping comments to 2 lines max to help human readability.
-- Always use the "lytxread" role when connecting to AWS unless told otherwise or elevated priviliges are required.
-- Always use "aws-vault" when connecting to AWS.
-- Always use "kubectl --context" with existing profile when connecting to clusters.
+- Always prefer keeping comments to 1-2 lines max to help human readability.
+- Always explain why someting is being done with a comment, not what.
 - Always fetch credentials with "op read op://..." when a 1Password service account is configured. See instructions/agent-bootstrap.md.
+- Always write a failing test first when adding a new feature or fixing something.
+- Always take a step back after implementing a solution and see if there is a better way to do it in terms of scalability, maintainability, etc.
 
-- Never create new Kubernetes profiles in ~/.kube/config. It pollutes configurations.
+- Never make assumptions without asking first.
 - Never print or store secret values in chat, notes, memory, or files. Refer to them by op:// reference.
-- Never use "aws sso login" to connect to an AWS account. It leaves credentials in plaintext.

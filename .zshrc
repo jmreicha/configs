@@ -127,7 +127,9 @@ setopt HIST_IGNORE_ALL_DUPS
 #########
 
 # Agents
-alias claude="claude --dangerously-skip-permissions"
+# Org-specific Claude settings live outside this public repo; load them only where present
+[[ -f "$HOME/.claude/settings.work.json" ]] && _claude_work="--settings $HOME/.claude/settings.work.json"
+alias claude="claude ${_claude_work-} --dangerously-skip-permissions"
 alias cc="claude --dangerously-skip-permissions --model claude-opus-5-5"
 alias ccc="claude -c --model claude-opus-5-5"
 
@@ -164,41 +166,8 @@ alias vv="vim ~/.vimrc"
 alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias zz="vim ~/.zshrc"
 
-# Node tools
-alias agentcore="npx --yes @aws/agentcore@latest"
-alias agnix="npx --yes agnix@latest"
-alias cdk="npx --yes aws-cdk@latest"
-alias cf="npx --yes cf@latest"
-alias codeburn="npx --yes codeburn@latest"
-alias codegraph="npx --yes @colbymchenry/codegraph@latest"
-alias copilot="npx --yes @github/copilot@latest --allow-all-tools --allow-all-paths --allow-all-urls"
-alias ctx7="npx --yes ctx7@latest"
-alias dbx="npx --yes @dbx-app/cli@latest"
-alias ghui="npx --yes @kitlangton/ghui@latest"
-alias gws="npx --yes @googleworkspace/cli@latest"
-alias iam-convert="npx --yes @cloud-copilot/iam-convert@latest"
-alias iam-expand="npx --yes @cloud-copilot/iam-expand@latest"
-alias iam-shrink="npx --yes @cloud-copilot/iam-shrink@latest"
-alias openspec="npx --yes @fission-ai/openspec@latest"
-alias qmd="npx --yes @tobilu/qmd@latest"
-alias ralph="npx --yes ralph-tui@latest"
-alias renovate="npx --yes renovate@latest"
-alias skills="npx --yes skills@latest"
-alias wrangler="npx --yes wrangler@latest"
-alias zg="npx --yes @zvec/zvec-grep@latest"
-
-# Python tools
-alias awslocal="uvx --from awscli-local awslocal"
-alias custodian="uvx --from c7n custodian"
-alias iam-policy-autopilot="uvx iam-policy-autopilot"
-alias ministack="uvx ministack"
-alias octodns-dump="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
-alias octodns-sync="uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump"
-alias openshell="uvx openshell"
-alias samlocal="uvx --from aws-sam-cli-local samlocal"
-alias tflocal="uvx --from terraform-local tflocal"
-alias markitdown="uvx --from 'markitdown[all]' markitdown"
-alias ty="uvx ty"
+# mise-managed tools (config/mise/config.toml)
+alias copilot="copilot --allow-all-tools --allow-all-paths --allow-all-urls"
 
 # Terraform
 alias tf="terraform"
@@ -226,9 +195,6 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden -g "!.git/*"'
 # GPG key
 export GPG_TTY=$(tty)
 # export SOPS_PGP_FP="2AF2A2053D553C2FAE789DD6A9752A813F1EF110"
-
-# Goenv
-export GOENV_ROOT="$HOME/.goenv"
 
 # HSTR
 export HH_CONFIG=keywords,hicolor,rawhistory,noconfirm
@@ -286,10 +252,8 @@ if [[ -z "$__PATH_SET" ]]; then
         "/opt/homebrew/bin"
         "/usr/local/bin"
         "${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-${HOME}/.local/share}/aquaproj-aqua}/bin"
-        "${GOENV_ROOT}/bin"
         "${HOME}/.local/bin"
         "${HOME}/.local/share"
-        "${HOME}/.tgenv/bin"
         "${HOME}/bin"
         "${KREW_ROOT:-${HOME}/.krew}/bin"
         "${PATH}"
@@ -344,7 +308,6 @@ if [[ $(uname) == "Darwin" ]]; then
     # 1password
     # source "$HOME"/.config/op/plugins.sh
     export OP_PLUGIN_ALIASES_SOURCED=1
-    alias gh="op plugin run -- gh"
     alias doctl="op plugin run -- doctl"
 fi
 
@@ -411,16 +374,6 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 _evalcache mise activate zsh
 _evalcache starship init zsh
 _evalcache thefuck --alias f -y
-_evalcache tirith init --shell zsh
-# tirith uses zle -A to save original widgets, which creates builtin-type aliases.
-# fast-syntax-highlighting wraps those and calls ._tirith_original_* (dot = builtin
-# prefix), which fails because these aren't real ZSH builtins. Fix: redefine both
-# as user: type widgets that call the actual builtins directly. Runs after tirith
-# init so it survives future hook regenerations.
-_tirith_original_accept_line() { zle .accept-line }
-zle -N _tirith_original_accept_line
-_tirith_original_bracketed_paste() { zle .bracketed-paste -- "$@" }
-zle -N _tirith_original_bracketed_paste
 _evalcache zoxide init zsh
 
 # Debug

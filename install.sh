@@ -210,11 +210,6 @@ install() {
         exit 1
     fi
 
-    # TODO: Golang
-    # goenv install
-    # goenv global 1.24
-    # go install -v golang.org/x/tools/gopls@latest
-
     if [[ -z ${REMOTE_CONTAINERS-} ]] || [[ -z ${CODESPACES-} ]]; then
         install_awscli
     fi
@@ -248,6 +243,7 @@ configure() {
     # Create extra directories if they don't exist
     mkdir -p "$HOME/.aws"
     mkdir -p "$HOME/.config/ghostty"
+    mkdir -p "$HOME/.config/herdr"
     mkdir -p "$HOME/.config/k9s"
     mkdir -p "$HOME/.config/mise"
     mkdir -p "$HOME/.config/uwsm"
@@ -269,10 +265,24 @@ configure() {
     rm -rf "$HOME/.claude/CLAUDE.md" || true && ln -s "$INSTALLER_PATH/configs/config/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
     mkdir -p "$HOME/.claude/hooks"
     rm -rf "$HOME/.claude/hooks/statusline.sh" || true && ln -s "$INSTALLER_PATH/configs/config/claude/statusline.sh" "$HOME/.claude/hooks/statusline.sh"
+    mkdir -p "$HOME/.claude/rules"
+    rm -rf "$HOME/.claude/rules/arbiter" || true && ln -s "$INSTALLER_PATH/configs/config/claude/arbiter" "$HOME/.claude/rules/arbiter"
     rm -rf "$HOME/.config/ghostty/config" || true && ln -s "$INSTALLER_PATH/configs/config/ghostty/config" "$HOME/.config/ghostty/config"
     rm -rf "$HOME/.config/k9s/config.yaml" || true && ln -s "$INSTALLER_PATH/configs/config/k9s/config.yaml" "$HOME/.config/k9s/config.yaml"
     rm -rf "$HOME/.config/mise/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/mise/config.toml" "$HOME/.config/mise/config.toml"
     rm -rf "$HOME/.config/cmux" || true && ln -s "$INSTALLER_PATH/configs/config/cmux" "$HOME/.config/cmux"
+    rm -rf "$HOME/.config/herdr/config.toml" || true && ln -s "$INSTALLER_PATH/configs/config/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+    mkdir -p "$HOME/.config/herdr-app/mods" "$HOME/.config/herdr-app/layouts"
+    rm -rf "$HOME/.config/herdr-app/mods/my-spaces" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/my-spaces" "$HOME/.config/herdr-app/mods/my-spaces"
+    rm -rf "$HOME/.config/herdr-app/mods/my-tabs" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/my-tabs" "$HOME/.config/herdr-app/mods/my-tabs"
+    rm -rf "$HOME/.config/herdr-app/mods/my-picker" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/my-picker" "$HOME/.config/herdr-app/mods/my-picker"
+    rm -rf "$HOME/.config/herdr-app/mods/github" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/github" "$HOME/.config/herdr-app/mods/github"
+    rm -rf "$HOME/.config/herdr-app/mods/issue-agent" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/issue-agent" "$HOME/.config/herdr-app/mods/issue-agent"
+    rm -rf "$HOME/.config/herdr-app/mods/jira" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/mods/jira" "$HOME/.config/herdr-app/mods/jira"
+    rm -rf "$HOME/.config/herdr-app/layouts/my-main.json" || true && ln -s "$INSTALLER_PATH/configs/config/herdr-app/layouts/my-main.json" "$HOME/.config/herdr-app/layouts/my-main.json"
+    # Merge overrides into herdr's own keys.json so we only track our changes, not its defaults
+    K="$HOME/.config/herdr-app/keys.json"
+    [[ -f "$K" ]] && jq -s '.[0] * .[1]' "$K" "$INSTALLER_PATH/configs/config/herdr-app/keys.override.json" > "$K.tmp" && mv "$K.tmp" "$K"
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
@@ -320,6 +330,7 @@ configure() {
 
     # Skills
     skills add blader/humanizer@humanizer --all --global
+    skills add cloudflare/security-audit-skill --all --global
     skills add mattpocock/skills --all --global
     skills add shadcn/improve --all --global
     skills add uditgoenka/autoresearch --all --global
@@ -328,6 +339,8 @@ configure() {
     ctx7 setup --cli --claude --codex --opencode
     rtk telemetry disable && rtk init -g --auto-patch
     uv tool install "headroom-ai[all]" && headroom init claude
+    # Tools above rewrite settings.json in place, replacing the symlink; restore it
+    ln -sf "$INSTALLER_PATH/configs/config/claude/settings.json" "$HOME/.claude/settings.json"
 
     green "Configuring Vim"
     if [[ ! -d $HOME/.vim/plugged ]]; then
@@ -372,22 +385,9 @@ switch_shell() {
 }
 
 extras() {
-    # Python
+    # Python (uv tool) and mise-managed runtimes/npm/pipx/go tools
     uv tool upgrade --all
-    # uv tool install c7n
-    # uvx --from c7n custodian
-    # uv tool install octodns
-    # uvx --with octodns-route53 --with octodns-cloudflare --from octodns octodns-dump
-
-    # Node
-    npm upgrade -g
-    # npm install -g eslint
-    # npx eslint
-    # npm install -g wrangler
-    # npx wrangler
-
-    # Golang
-    # go install golang.org/x/tools/gopls@latest
+    mise upgrade
 
     # Steampipe
     steampipe plugin update --all

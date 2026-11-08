@@ -1,21 +1,55 @@
 [settings]
-idiomatic_version_file_enable_tools = ["go", "node", "python"]
-node.verify = false
+idiomatic_version_file_enable_tools = ["go", "java", "node", "python"]
+trusted_config_paths = ["~/git/jmreicha"]
 
 [tools]
+# Language tools
 go = "latest"
+java = "lts"
 node = "lts"
 
-# Language servers for Claude Code LSP plugins (see install.sh)
-"aqua:rust-lang/rust-analyzer" = "latest"
+# Go tools
 "go:golang.org/x/tools/gopls" = "latest"
+
+# Node tools
+"npm:@aws/agentcore" = "latest"
+"npm:@cloud-copilot/iam-convert" = { version = "latest", allow_low_downloads = true }
+"npm:@cloud-copilot/iam-expand" = "latest"
+"npm:@cloud-copilot/iam-shrink" = "latest"
+"npm:@colbymchenry/codegraph" = "latest"
+"npm:@dbx-app/cli" = "latest"
+"npm:@fission-ai/openspec" = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@googleworkspace/cli" = "latest"
+"npm:@kitlangton/ghui" = { version = "latest", allow_low_downloads = true }
+"npm:@tobilu/qmd" = "latest"
+"npm:@zvec/zvec-grep" = "latest"
+"npm:agnix" = "latest"
+"npm:aws-cdk" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:cf" = "latest"
+"npm:codeburn" = "latest"
+"npm:ctx7" = "latest"
+"npm:dockerfile-language-server-nodejs" = "latest"
 "npm:pyright" = "latest"
+"npm:ralph-tui" = { version = "latest", allow_low_downloads = true }
+"npm:renovate" = { version = "latest", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
+"npm:skills" = "latest"
 "npm:typescript" = "6"  # 7+ (native) has no tsserver.js for typescript-language-server
 "npm:typescript-language-server" = "latest"
-
-# Language servers for the agent-tools plugin (jmreicha/agent-tools .lsp.json)
-"aqua:hashicorp/terraform-ls" = "latest"
-"aqua:koalaman/shellcheck" = "latest"
-"npm:bash-language-server" = "latest"
-"npm:dockerfile-language-server-nodejs" = "latest"
+"npm:wrangler" = "latest"
 "npm:yaml-language-server" = "latest"
+
+# Python tools
+"pipx:aws-sam-cli-local" = "latest"
+"pipx:awscli-local" = "latest"
+"pipx:c7n" = "latest"
+"pipx:iam-policy-autopilot" = "latest"
+"pipx:markitdown" = { version = "latest", extras = ["all"] }
+"pipx:ministack" = "latest"
+"pipx:octodns" = { version = "latest", with = ["octodns-route53", "octodns-cloudflare"] }
+"pipx:terraform-local" = "latest"
+
+# Binary tools (language servers for Claude Code LSP plugins; shellcheck comes from brew)
+"aqua:hashicorp/terraform-ls" = "latest"
+"aqua:rust-lang/rust-analyzer" = "latest"
