@@ -320,14 +320,20 @@ configure() {
     claude plugin install ponytail@ponytail
     claude plugin install superpowers@claude-plugins-official
 
+    # Code intelligence (LSP); language servers come from mise (config/mise/config.toml)
+    for lsp in gopls-lsp pyright-lsp rust-analyzer-lsp typescript-lsp; do
+        claude plugin install "$lsp@claude-plugins-official"
+    done
+    # Personal plugin: skills, hooks, and shell/YAML/Terraform/Dockerfile LSPs
+    claude plugin marketplace add jmreicha/agent-tools
+    claude plugin install agent-tools@agent-tools
+
     # Skills
     skills add blader/humanizer@humanizer --all --global
     skills add cloudflare/security-audit-skill --all --global
     skills add mattpocock/skills --all --global
     skills add shadcn/improve --all --global
     skills add uditgoenka/autoresearch --all --global
-
-    # TODO add personal custom plugins/skills repo
 
     # Tools
     ctx7 setup --cli --claude --codex --opencode
