@@ -5,3 +5,17 @@ node.verify = false
 [tools]
 go = "latest"
 node = "lts"
+
+# Language servers for Claude Code LSP plugins (see install.sh)
+"aqua:rust-lang/rust-analyzer" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"npm:pyright" = "latest"
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+
+# Language servers for the infra-lsp plugin (jmreicha/agent-tools)
+"aqua:hashicorp/terraform-ls" = "latest"
+"aqua:koalaman/shellcheck" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:dockerfile-language-server-nodejs" = "latest"
+"npm:yaml-language-server" = "latest"
