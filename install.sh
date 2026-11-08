@@ -314,10 +314,9 @@ configure() {
     for lsp in gopls-lsp pyright-lsp rust-analyzer-lsp typescript-lsp; do
         claude plugin install "$lsp@claude-plugins-official"
     done
-    # Personal plugins: skills/hooks + shell, YAML, Terraform and Dockerfile LSPs
+    # Personal plugin: skills, hooks, and shell/YAML/Terraform/Dockerfile LSPs
     claude plugin marketplace add jmreicha/agent-tools
     claude plugin install agent-tools@agent-tools
-    claude plugin install infra-lsp@agent-tools
 
     # Skills
     skills add blader/humanizer@humanizer --all --global

@@ -13,7 +13,7 @@ node = "lts"
 "npm:typescript" = "latest"
 "npm:typescript-language-server" = "latest"
 
-# Language servers for the infra-lsp plugin (jmreicha/agent-tools)
+# Language servers for the agent-tools plugin (jmreicha/agent-tools .lsp.json)
 "aqua:hashicorp/terraform-ls" = "latest"
 "aqua:koalaman/shellcheck" = "latest"
 "npm:bash-language-server" = "latest"
