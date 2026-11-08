@@ -10,7 +10,7 @@ node = "lts"
 "aqua:rust-lang/rust-analyzer" = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
 "npm:pyright" = "latest"
-"npm:typescript" = "latest"
+"npm:typescript" = "6"  # 7+ (native) has no tsserver.js for typescript-language-server
 "npm:typescript-language-server" = "latest"
 
 # Language servers for the agent-tools plugin (jmreicha/agent-tools .lsp.json)
