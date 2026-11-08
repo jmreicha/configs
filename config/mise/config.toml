@@ -8,9 +8,6 @@ go = "latest"
 java = "lts"
 node = "lts"
 
-# Go tools
-"go:golang.org/x/tools/gopls" = "latest"
-
 # Node tools
 "npm:@aws/agentcore" = "latest"
 "npm:@cloud-copilot/iam-convert" = { version = "latest", allow_low_downloads = true }
@@ -26,19 +23,13 @@ node = "lts"
 "npm:@zvec/zvec-grep" = "latest"
 "npm:agnix" = "latest"
 "npm:aws-cdk" = "latest"
-"npm:bash-language-server" = "latest"
 "npm:cf" = "latest"
 "npm:codeburn" = "latest"
 "npm:ctx7" = "latest"
-"npm:dockerfile-language-server-nodejs" = "latest"
-"npm:pyright" = "latest"
 "npm:ralph-tui" = { version = "latest", allow_low_downloads = true }
 "npm:renovate" = { version = "latest", trust_policy_excludes = ["@yarnpkg/libzip@3.2.2"] }
 "npm:skills" = "latest"
-"npm:typescript" = "6"  # 7+ (native) has no tsserver.js for typescript-language-server
-"npm:typescript-language-server" = "latest"
 "npm:wrangler" = "latest"
-"npm:yaml-language-server" = "latest"
 
 # Python tools
 "pipx:aws-sam-cli-local" = "latest"
@@ -50,6 +41,13 @@ node = "lts"
 "pipx:octodns" = { version = "latest", with = ["octodns-route53", "octodns-cloudflare"] }
 "pipx:terraform-local" = "latest"
 
-# Binary tools (language servers for Claude Code LSP plugins; shellcheck comes from brew)
+# LSPs for Claude Code plugins (shellcheck for bash-language-server comes from brew)
 "aqua:hashicorp/terraform-ls" = "latest"
 "aqua:rust-lang/rust-analyzer" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:dockerfile-language-server-nodejs" = "latest"
+"npm:pyright" = "latest"
+"npm:typescript" = "6"  # 7+ (native) has no tsserver.js for typescript-language-server
+"npm:typescript-language-server" = "latest"
+"npm:yaml-language-server" = "latest"
