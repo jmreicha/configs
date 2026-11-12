@@ -165,7 +165,7 @@ brew "kubevpn"
 brew "kwok"
 brew "lazydocker"
 brew "vcluster"
-brew "pluto"
+brew "fairwindsops/tap/pluto"
 brew "polaris"
 brew "popeye"
 brew "schemahero/tap/schemahero", trusted: true
@@ -211,7 +211,7 @@ cask "devtunnel"
 cask "chatgpt" if OS.mac?
 cask "cmux" if OS.mac?
 cask "codex" if OS.mac?
-cask "common-repo/tap/common-repo", trusted: true if OS.mac?
+brew "common-repo/tap/common-repo", trusted: true
 cask "cotabby" if OS.mac?
 cask "dbeaver-community" if OS.mac?
 cask "drawio" if OS.mac?
