@@ -222,6 +222,8 @@ export TG_DEPENDENCY_FETCH_OUTPUT_FROM_STATE="true"
 export TG_DOWNLOAD_DIR="$HOME/.terragrunt/cache"
 # Use local creds
 export TG_LOCAL="true"
+# Ensure deprecated functionality fails rather than warn
+export TG_STRICT_MODE="true"
 # Make outputs less verbose
 export TG_TF_FORWARD_STDOUT="true"
 # Default to using terraform
