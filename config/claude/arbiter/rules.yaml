@@ -345,34 +345,25 @@ rules:
         - python3 -m pytest
         - python3 script.py
 
-  # Claude must not branch, switch, or commit on its own initiative.
+  # Claude must not delete or rename branches, add worktrees, or commit on its own initiative.
   # ask (not deny) so an explicit request can still go through with your OK.
   - id: git/ask-branch-or-commit
     match:
-      - { cmd: git, args: [switch] }
-      # checkout with a target switches branches; -b/-B also creates one.
-      - { cmd: git, args: [checkout, "*"] }
-      - { cmd: git, args: [checkout], flags: [-b] }
-      - { cmd: git, args: [checkout], flags: [-B] }
-      # branch with a name creates, renames, or deletes; bare `git branch` lists.
-      - { cmd: git, args: [branch, "*"] }
+      # Creating and switching branches is fine; deleting, renaming or copying one asks.
+      - { cmd: git, args: [branch], regex: "/\\s(-[dDmMcC]|--delete|--move|--copy)(\\s|$)/" }
       - { cmd: git, args: [worktree, add] }
       - { cmd: git, args: [commit] }
-    unless:
-      # `git checkout -- <file>` restores files, it doesn't switch branches.
-      - { cmd: git, args: [checkout], regex: "/\\s--(\\s|$)/" }
     action: ask
-    description: Branches, switches, and commits need an explicit request from the user.
-    hint: Leave changes in the working tree and ask the user before branching or committing.
+    description: Deleting or renaming branches, new worktrees, and commits need an explicit request from the user.
+    hint: Leave changes in the working tree and ask the user before committing or removing branches.
     tests:
       ask:
-        - git switch -c feat/x
-        - git switch main
-        - git checkout -b feat/x
-        - git checkout main
-        - git branch feat/x
+        - git branch -D feat/x
+        - git branch -d feat/x
+        - git branch -m old new
         - git worktree add ../wt -b feat/x
         - git commit -m "msg"
+        - git -C /repo commit -m "msg"
         # The heredoc commit message style Claude uses.
         - "git add . && git commit -m \"$(cat <<'EOF'\nmsg\nEOF\n)\""
       allow:
@@ -383,6 +374,17 @@ rules:
         - git branch --show-current
         - git checkout -- README.md
         - git diff main
+        # Creating and switching branches is fine; deleting, renaming and committing still ask.
+        - git switch main
+        - git checkout main
+        - git switch -c feat/x
+        - git switch --create feat/x
+        - git checkout -b feat/x
+        - git branch feat/x
+        # Looking at a tag or commit in another dir, or detached, leaves your branch alone.
+        - git -C /tmp/repo checkout v1.2.0
+        - git checkout --detach v1.2.0
+        - git clone https://github.com/o/r /tmp/r && git -C /tmp/r checkout v1
 
   # The built-in tool makes a worktree without running git, so the rule above misses it.
   - id: git/ask-worktree-tool
