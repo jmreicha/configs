@@ -65,6 +65,7 @@ brew "llmfit"
 brew "ls-lint"
 brew "lychee"
 brew "matthart1983/tap/netwatch", trusted: true
+brew "qu8n/tap/mddog", trusted: true
 brew "mkcert"
 brew "mq"
 brew "mtr"
