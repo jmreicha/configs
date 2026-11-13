@@ -32,8 +32,12 @@ function node(n) {
     case "inlineCard": case "blockCard": case "embedCard": return `<${n.attrs?.url ?? ""}>`;
     case "mention": case "emoji": case "status": return n.attrs?.text ?? "";
     case "date": return n.attrs?.timestamp ? new Date(Number(n.attrs.timestamp)).toISOString().slice(0, 10) : "";
-    case "tableRow": return `| ${c.map((cell) => blocks(cell.content, " ")).join(" | ")} |`;
-    case "table": return c.map(node).join("\n");
+    case "tableRow": return `| ${c.map((cell) => blocks(cell.content, " ").replace(/\|/g, "\\|").replace(/\n/g, " ")).join(" | ")} |`;
+    // Markdown only renders a table after a header separator, so add one under the first row.
+    case "table": {
+      const rows = c.map(node), cols = c[0]?.content?.length ?? 0;
+      return [rows[0], `|${" --- |".repeat(cols)}`, ...rows.slice(1)].join("\n");
+    }
     case "mediaSingle": case "mediaGroup": case "media": return "_[attachment]_";
     // Panels, expands and anything newer: keep the text.
     default: return c ? blocks(c) : n.text ?? "";

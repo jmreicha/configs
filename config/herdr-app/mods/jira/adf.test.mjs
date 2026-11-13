@@ -19,4 +19,10 @@ assert.equal(adfToMarkdown(doc({ type: "codeBlock", content: [text("ls -la")] })
 assert.equal(adfToMarkdown(doc(p(text("a")), p(text("b")))), "a\n\nb");
 // Unknown nodes keep their text rather than vanishing.
 assert.equal(adfToMarkdown(doc({ type: "panel", content: [p(text("note"))] })), "note");
+// Tables need a header separator row, or markdown shows raw pipes.
+const cell = (type, t) => ({ type, content: [p(text(t))] });
+assert.equal(adfToMarkdown(doc({ type: "table", content: [
+  { type: "tableRow", content: [cell("tableHeader", "Repo"), cell("tableHeader", "Modules")] },
+  { type: "tableRow", content: [cell("tableCell", "org"), cell("tableCell", "folder")] },
+] })), "| Repo | Modules |\n| --- | --- |\n| org | folder |");
 console.log("ok");

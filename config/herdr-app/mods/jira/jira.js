@@ -110,3 +110,17 @@ export async function mapLimit(items, n, fn) {
   await Promise.all(Array.from({ length: Math.min(n, items.length) }, worker));
   return out;
 }
+
+const KEY = /^[A-Z][A-Z0-9_]*-\d+$/;
+
+// A bare key or a pasted Jira URL -> ticket key; anything else stays a list filter.
+// Only the key is kept (never the URL's host), and it's validated before reaching acli.
+export function ticketRef(text) {
+  const s = text.trim();
+  if (KEY.test(s.toUpperCase())) return s.toUpperCase();
+  if (/\s/.test(s) || !s.includes("/")) return null;
+  let url;
+  try { url = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`); } catch { return null; }
+  const key = (url.searchParams.get("selectedIssue") ?? url.pathname.match(/\/browse\/([^/]+)/)?.[1] ?? "").toUpperCase();
+  return KEY.test(key) ? key : null;
+}

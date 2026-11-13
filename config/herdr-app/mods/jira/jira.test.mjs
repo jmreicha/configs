@@ -1,6 +1,6 @@
 // Run: node jira.test.mjs
 import assert from "node:assert/strict";
-import { parentOf, mapLimit, isOpen, childArgs, byStatus, projectOf, groupByProject, matches, statusRank, browseUrl, siteFrom, relatedPrs, detailRows, linkedWork, prTone, ago } from "./jira.js";
+import { ticketRef, parentOf, mapLimit, isOpen, childArgs, byStatus, projectOf, groupByProject, matches, statusRank, browseUrl, siteFrom, relatedPrs, detailRows, linkedWork, prTone, ago } from "./jira.js";
 
 const issue = (key, status, category, summary = "s") => ({ key, fields: { summary, status: { name: status, statusCategory: { key: category } } } });
 
@@ -73,4 +73,15 @@ let running = 0, peak = 0;
 const out = await mapLimit([30, 10, 20, 5], 2, async (ms) => { running++; peak = Math.max(peak, running); await new Promise((r) => setTimeout(r, ms)); running--; return ms; });
 assert.deepEqual(out, [30, 10, 20, 5]);
 assert.equal(peak, 2);
+// The search box opens any ticket by key or pasted URL.
+assert.equal(ticketRef("EAB-123"), "EAB-123");
+assert.equal(ticketRef("  eab-123 "), "EAB-123");
+assert.equal(ticketRef("https://acme.atlassian.net/browse/CLOUDINFRA-4913"), "CLOUDINFRA-4913");
+assert.equal(ticketRef("https://acme.atlassian.net/browse/EAB-1?focusedCommentId=9"), "EAB-1");
+assert.equal(ticketRef("https://acme.atlassian.net/jira/software/projects/EAB/boards/1?selectedIssue=EAB-77"), "EAB-77");
+assert.equal(ticketRef("acme.atlassian.net/browse/EAB-5"), "EAB-5");
+assert.equal(ticketRef("vpn"), null);
+assert.equal(ticketRef("fix EAB-1 later"), null, "free text stays a filter");
+assert.equal(ticketRef("EAB-1; rm -rf /"), null);
+assert.equal(ticketRef("https://evil.example/browse/EAB-1"), "EAB-1", "only the key is used, never the host");
 console.log("ok");

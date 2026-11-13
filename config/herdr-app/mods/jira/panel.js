@@ -3,7 +3,7 @@ import { v_flex, h_flex, InputState, Input, TextView } from "gpui-base";
 import { exec, home, theme, nextCommand } from "herdr";
 import { openUrl } from "./open.js";
 import { adfToMarkdown } from "./adf.js";
-import { SEARCH_ARGS, parentArgs, parentOf, mapLimit, viewArgs, childArgs, prSearchArgs, projectOf, groupByProject, matches, siteFrom, browseUrl, relatedPrs, detailRows, linkedWork, prTone, ago, byStatus, isOpen } from "./jira.js";
+import { SEARCH_ARGS, ticketRef, parentArgs, parentOf, mapLimit, viewArgs, childArgs, prSearchArgs, projectOf, groupByProject, matches, siteFrom, browseUrl, relatedPrs, detailRows, linkedWork, prTone, ago, byStatus, isOpen } from "./jira.js";
 
 function friendlyError(output) {
   if (/unauthorized|auth login/i.test(output)) return "Run acli jira auth login --web first";
@@ -36,8 +36,9 @@ export class Panel {
     // key -> parent (or null); cached so labels show at once and only new tickets are looked up.
     this.parents = JSON.parse(localStorage.getItem("parents") ?? "{}");
     this.filters = { text: "", projects: new Set(), statuses: new Set() };
-    this.search = InputState.new({ placeholder: "Filter by key or title" });
+    this.search = InputState.new({ placeholder: "Filter, or Enter a key / URL" });
     this.search.on("change", (_e, cx) => { this.filters = { ...this.filters, text: this.search.value() }; cx.notify(); });
+    this.search.on("submit", (_e, cx) => this.openRef(cx));
     cx.spawn(async (cx) => {
       try { this.site = siteFrom(await run("acli", ["jira", "auth", "status"])); } catch { this.site = null; }
       cx.notify();
@@ -85,6 +86,15 @@ export class Panel {
     this.parents = fresh;
     localStorage.setItem("parents", JSON.stringify(fresh));
     cx.notify();
+  }
+
+  // Any ticket, not just assigned ones: a key or pasted URL opens straight into the detail view.
+  openRef(cx) {
+    const key = ticketRef(this.search.value());
+    if (!key) return;
+    this.search.set_value("");
+    this.filters = { ...this.filters, text: "" };
+    this.openDetail({ key, fields: {} }, cx);
   }
 
   toggle(set, value, cx) {
@@ -301,7 +311,9 @@ export class Panel {
     const t = theme();
     const shell = () => v_flex().id("jira").size_full().min_h(0).rounded(10).overflow_hidden().bg(t.background).border_1().border_color(t.border).text_color(t.foreground).text_size(13);
     if (this.detail) return shell().child(this.detailView(t));
-    const groups = groupByProject(this.issues.filter((i) => matches(i, this.filters)));
+    const ref = ticketRef(this.filters.text);
+    const filters = ref ? { ...this.filters, text: ref } : this.filters;
+    const groups = groupByProject(this.issues.filter((i) => matches(i, filters)));
     const shown = groups.reduce((n, g) => n + g.issues.length, 0);
     return shell()
       .child(h_flex().h(42).flex_none().px(12).gap(6).items_center().border_b(1).border_color(t.border)
@@ -313,7 +325,11 @@ export class Panel {
       .child(this.filterBar(t))
       .when(Boolean(this.picker), (e) => e.child(this.pickerView(t)))
       .child(v_flex().id("jira-list").flex_1().min_h(0).overflow_y_scrollbar().p(6).gap(8)
+        .when(Boolean(ref), (e) => e.child(h_flex().id("jira-open-ref").flex_none().h(30).px(10).gap(8).items_center().rounded(7).cursor_pointer()
+          .border_1().border_color(t.accent).hover((s) => s.bg(t.hover)).on_click((_e, cx) => this.openRef(cx))
+          .child(div().text_size(11).text_color(t.dim).child("↵ Open"))
+          .child(div().text_size(12).text_color(t.accent).child(ref))))
         .children(groups.map((g) => this.group(g, t)))
-        .when(!shown, (e) => e.child(div().p(8).text_color(this.error ? t.ansi1 : t.dim).child(this.emptyText()))));
+        .when(!shown && !ref, (e) => e.child(div().p(8).text_color(this.error ? t.ansi1 : t.dim).child(this.emptyText()))));
   }
 }
