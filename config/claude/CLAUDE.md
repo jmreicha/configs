@@ -5,12 +5,13 @@
 
 The general workflow should follow the following development lifecycle.
 
-Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Security review -> Monitor/Observer -> Refactors -> (Repeat)
+Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Security review -> Monitor/Observer -> Refactors -> Update docs/diagrams -> (Repeat)
 
 # Core Tenets
 
 - Always ask me when you are usure about a decision.
 - Always lookup docs using context7 for things you aren't sure about.
+- Always check for outdated docs when changes have been made.
 - Always prefer brevity and conciseness.
 - Always prefer keeping comments to 1-2 lines max to help human readability.
 - Always explain why someting is being done with a comment, not what.

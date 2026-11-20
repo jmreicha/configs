@@ -1,6 +1,6 @@
 // Workspace spaces: stable colored avatars, worktrees under their checkout,
 // grouped by machine when more than one is known. After a space's name, the repo
-// its first terminal is in now, ahead/behind and ±total/+added/-removed uncommitted lines; repo/branch text is hidden. Agent state lives in the agents list, not here. Click to
+// its first terminal is in now, ahead/behind and +added/-removed uncommitted lines; repo/branch text is hidden. Agent state lives in the agents list, not here. Click to
 // switch, right-click for its menu, drag to reorder.
 
 import { View, div, svg } from "gpui-kit";
@@ -282,8 +282,6 @@ export default class Spaces extends View {
       .when(g.ahead > 0, (el) => el.child(div().flex_none().text_color(t.ansi2).child(`\u2191${g.ahead}`)))
       .when(g.behind > 0, (el) => el.child(div().flex_none().text_color(t.ansi1).child(`\u2193${g.behind}`)))
       .when(g.added + g.removed > 0, (el) => el.child(h_flex().flex_none().font_bold()
-        .child(div().text_color(t.ansi4).child(`\u00b1${g.added + g.removed}`))
-        .child(div().text_color(t.dim).child("/"))
         .child(div().text_color(t.ansi2).child(`+${g.added}`))
         .child(div().text_color(t.dim).child("/"))
         .child(div().text_color(t.ansi1).child(`-${g.removed}`))))
