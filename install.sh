@@ -286,6 +286,13 @@ configure() {
     rm -rf "$HOME/.config/opencode" || true && ln -s "$INSTALLER_PATH/configs/config/opencode" "$HOME/.config/opencode"
     rm -rf "$HOME/.config/starship.toml" || true && ln -s "$INSTALLER_PATH/configs/config/starship/starship.toml" "$HOME/.config/starship.toml"
     rm -rf "$HOME/.config/uwsm/default" || true && ln -s "$INSTALLER_PATH/configs/config/uwsm/default" "$HOME/.config/uwsm/default"
+    # Vale reads its global config from a different folder on each OS
+    if [[ "$(uname -s)" = "Darwin" ]]; then VALE_DIR="$HOME/Library/Application Support/vale"; else VALE_DIR="$HOME/.config/vale"; fi
+    mkdir -p "$VALE_DIR"
+    rm -rf "$VALE_DIR/.vale.ini" || true && ln -s "$INSTALLER_PATH/configs/config/vale/.vale.ini" "$VALE_DIR/.vale.ini"
+    # Packages aren't tracked, so download them on every install
+    mkdir -p "$VALE_DIR/styles"
+    if command -v vale >/dev/null; then vale --config "$VALE_DIR/.vale.ini" sync || true; fi
     rm -rf "$HOME/.gitconfig" || true && ln -s "$INSTALLER_PATH/configs/.gitconfig" "$HOME/.gitconfig"
     rm -rf "$HOME/.ssh/config" || true && ln -s "$INSTALLER_PATH/configs/config/ssh" "$HOME/.ssh/config"
     rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/configs/.tmux.conf" "$HOME/.tmux.conf"
