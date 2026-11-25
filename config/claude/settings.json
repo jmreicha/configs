@@ -56,9 +56,9 @@
   },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
-    "ponytail@ponytail": true,
+    "ponytail@ponytail": false,
     "gopls-lsp@claude-plugins-official": true,
-    "agent-skills@addy-agent-skills": true,
+    "agent-skills@addy-agent-skills": false,
     "mattpocock-skills@mattpocock": true,
     "honeycomb@claude-plugins-official": true,
     "agent-tools@agent-tools": true,

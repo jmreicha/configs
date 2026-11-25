@@ -9,6 +9,7 @@ Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests 
 
 # Core Tenets
 
+- Always load the agent-tools:terraform skill when doing Terraform and Terragrunt work
 - Always ask me when you are usure about a decision.
 - Always lookup docs using context7 for things you aren't sure about.
 - Always check for outdated docs when changes have been made.
