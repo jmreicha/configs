@@ -297,7 +297,8 @@ configure() {
     mkdir -p "$VALE_DIR/styles"
     if command -v vale >/dev/null; then vale --config "$VALE_DIR/.vale.ini" sync || true; fi
     rm -rf "$HOME/.gitconfig" || true && ln -s "$INSTALLER_PATH/configs/.gitconfig" "$HOME/.gitconfig"
-    rm -rf "$HOME/.ssh/config" || true && ln -s "$INSTALLER_PATH/configs/config/ssh" "$HOME/.ssh/config"
+    # A plain file, not a link, because sandboxes refuse links inside ~/.ssh
+    rm -rf "$HOME/.ssh/config" || true && printf 'Include %s\n' "$INSTALLER_PATH/configs/config/ssh" >"$HOME/.ssh/config"
     rm -rf "$HOME/.tmux.conf" || true && ln -s "$INSTALLER_PATH/configs/.tmux.conf" "$HOME/.tmux.conf"
     rm -rf "$HOME/.vimrc" || true && ln -s "$INSTALLER_PATH/configs/.vimrc" "$HOME/.vimrc"
     rm -rf "$HOME/.zshrc" || true && ln -s "$INSTALLER_PATH/configs/.zshrc" "$HOME/.zshrc"
