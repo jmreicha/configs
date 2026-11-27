@@ -192,8 +192,11 @@ install() {
     set_env
     mkdir -p "$HOME/.config"
     if [[ "$(uname -s)" = "Darwin" ]]; then
-        green "Sudo password is required for installing rosetta and homebrew"
-        sudo softwareupdate --install-rosetta --agree-to-license
+        # Skip when present so re-runs don't need sudo
+        if ! arch -x86_64 /usr/bin/true &>/dev/null; then
+            green "Sudo password is required for installing rosetta"
+            sudo softwareupdate --install-rosetta --agree-to-license
+        fi
         PATH=$PATH:/opt/homebrew/bin
         if ! command -v brew &>/dev/null; then
             NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -307,7 +310,8 @@ configure() {
 
     green "Configuring global pre-commit hooks"
     pre-commit init-templatedir ~/.git-template --hook-type commit-msg -t post-commit -t pre-commit
-    git config --global init.templateDir ~/.git-template
+    # Literal ~ keeps the path portable; skip when set so git doesn't reformat the file
+    [[ "$(git config --global init.templateDir)" == '~/.git-template' ]] || git config --global init.templateDir '~/.git-template'
 
     green "Configuring Mise"
     mise install
@@ -321,11 +325,6 @@ configure() {
     fi
 
     # Plugins
-    claude plugin marketplace add addyosmani/agent-skills
-    claude plugin marketplace add DietrichGebert/ponytail
-    claude plugin install agent-skills@addy-agent-skills
-    claude plugin install ponytail@ponytail
-    claude plugin install superpowers@claude-plugins-official
 
     # Code intelligence (LSP); language servers come from mise (config/mise/config.toml)
     for lsp in gopls-lsp pyright-lsp rust-analyzer-lsp typescript-lsp; do

@@ -7,9 +7,12 @@ The general workflow should follow the following development lifecycle.
 
 Issue/PRD/Design/ADR -> Specs -> Failing tests -> Implement + fix failing tests -> Security review -> Monitor/Observer -> Refactors -> Update docs/diagrams -> (Repeat)
 
+The agent-tools:sdlc skill is the entry point for this lifecycle and routes to the other skills.
+
 # Core Tenets
 
-- Always load the agent-tools:terraform skill when doing Terraform and Terragrunt work
+- Always invoke agent-tools:sdlc before starting non-trivial coding, infrastructure, or docs work.
+- Always check the skill list before answering or acting, and invoke every skill whose description matches the task, such as agent-tools:terraform for Terraform and Terragrunt.
 - Always ask me when you are usure about a decision.
 - Always lookup docs using context7 for things you aren't sure about.
 - Always check for outdated docs when changes have been made.

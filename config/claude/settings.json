@@ -55,10 +55,7 @@
     "command": "bash ~/.claude/hooks/statusline.sh"
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "ponytail@ponytail": false,
     "gopls-lsp@claude-plugins-official": true,
-    "agent-skills@addy-agent-skills": false,
     "mattpocock-skills@mattpocock": true,
     "honeycomb@claude-plugins-official": true,
     "agent-tools@agent-tools": true,
@@ -67,22 +64,10 @@
     "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "ponytail": {
-      "source": {
-        "source": "github",
-        "repo": "DietrichGebert/ponytail"
-      }
-    },
     "headroom-marketplace": {
       "source": {
         "source": "github",
         "repo": "chopratejas/headroom"
-      }
-    },
-    "addy-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "addyosmani/agent-skills"
       }
     },
     "mattpocock": {
